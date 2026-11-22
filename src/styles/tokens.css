@@ -1,0 +1,46 @@
+/* DESIGN.md tokens + the Slate accent "Gesso" (docs/design-notes.md §1).
+   Dark is the default; [data-theme="light"] redefines. A user-picked accent
+   overrides --accent / --accent-ink inline (src/app/theme.ts); the -lo/-md/-hi
+   scale derives from it with relative colour syntax. */
+
+:root {
+  --bg: #0a0a0a;  --bg-raise: #121214;  --nav-bg: rgba(10,10,10,.88);
+  --line: rgba(255,255,255,.08);  --line-hi: rgba(255,255,255,.16);
+  --text: #efefef;  --mid: #8d8d96;  --dim: #5c5c66;
+
+  --accent: #d4ee5e;  --accent-ink: #0a0a0a;
+  --accent-lo: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-md: color-mix(in srgb, var(--accent) 22%, transparent);
+  --accent-hi: color-mix(in srgb, var(--accent) 36%, transparent);
+
+  --warn: #ff5c8a;  --ok: #4ade80;
+
+  /* how much of a block colour goes into its fill (design-notes §3) */
+  --tint: 20%;  --tint-shift: 11%;  --hatch: 30%;
+
+  --syne: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --mono: "DM Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sys: -apple-system, system-ui, "Roboto", "Segoe UI", sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);  --spring: cubic-bezier(.34,1.56,.64,1);
+  --pad: 16px;
+  --gutter: 32px;
+  --st: env(safe-area-inset-top, 0px);
+  --sb: env(safe-area-inset-bottom, 0px);
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  --bg: #fafafa;  --bg-raise: #f1f1f4;  --nav-bg: rgba(250,250,250,.9);
+  --line: rgba(0,0,0,.08);  --line-hi: rgba(0,0,0,.16);
+  --text: #17171a;  --mid: #55555f;  --dim: #8a8a94;
+  --accent: #5a7000;  --accent-ink: #ffffff;
+  --accent-lo: color-mix(in srgb, var(--accent) 7%, transparent);
+  --accent-md: color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-hi: color-mix(in srgb, var(--accent) 28%, transparent);
+  --warn: #e0336a;  --ok: #1f8a4c;
+  --tint: 26%;  --tint-shift: 14%;  --hatch: 40%;
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}

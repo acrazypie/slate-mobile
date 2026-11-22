@@ -1,0 +1,36 @@
+# Dependencies / build output
+node_modules/
+www/
+*.tsbuildinfo
+
+# iOS
+ios/App/Pods/
+ios/App/output/
+ios/DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/local.properties
+android/.idea/
+*.apk
+*.aab
+
+# Secrets — never commit
+*.keystore
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+keystore.properties
+.env*
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+.claude/

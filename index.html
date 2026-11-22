@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-platform="web">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Slate</title>
+    <link rel="icon" href="./favicon.svg" />
+    <script>
+      // Theme before first paint (no flash). The saved value is a mirror
+      // written by src/app/theme.ts; the source of truth is Preferences.
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem('slate:theme'); } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

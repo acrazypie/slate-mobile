@@ -1,0 +1,117 @@
+/* Android chrome: Material 3 adapted (design-notes §6, docs/mockups/src/android.css). */
+
+[data-look="android"] {
+  --tab-space: calc(80px + var(--sb));
+  --m3-c-low: #111214;
+  --m3-c: #161719;
+  --m3-c-high: #1c1d20;
+  --m3-c-highest: #25262a;
+  --m3-sec: color-mix(in srgb, var(--accent) 18%, #161719);
+  --m3-on-sec: color-mix(in srgb, var(--accent) 70%, #ffffff);
+  --m3-outline: #8d8d96;
+  --m3-outline-var: rgba(255,255,255,.16);
+}
+[data-look="android"][data-theme="light"] {
+  --m3-c-low: #f4f4f6;
+  --m3-c: #efeff2;
+  --m3-c-high: #e9e9ed;
+  --m3-c-highest: #e2e2e7;
+  --m3-sec: color-mix(in srgb, var(--accent) 22%, #f4f4f6);
+  --m3-on-sec: color-mix(in srgb, var(--accent) 45%, #000000);
+  --m3-outline: #74747e;
+  --m3-outline-var: rgba(0,0,0,.14);
+}
+
+/* top app bar: title left, icon buttons right */
+[data-look="android"] .cal-head { padding-left: 4px; padding-right: 4px; }
+[data-look="android"] .cal-head__bar { grid-template-columns: 1fr auto auto auto; grid-template-areas: "title nav today sum"; gap: 0; }
+[data-look="android"] .cal-head__bar > :nth-child(4) { grid-area: sum; }
+[data-look="android"] .cal-head__title { padding-left: 12px; }
+[data-look="android"] .cal-head__title .tag { font-size: 10px; letter-spacing: .16em; margin-bottom: 6px; }
+[data-look="android"] .cal-head__title h1 { font-size: 22px; letter-spacing: -.025em; }
+[data-look="android"] .gbtn.round, [data-look="android"] .cal-head__today { width: 48px; height: 48px; min-width: 48px; padding: 0; border-radius: 50%; }
+[data-look="android"] .gbtn svg.i { width: 24px; height: 24px; }
+[data-look="android"] .cal-head__nav .gbtn { width: 40px; min-width: 40px; color: var(--mid); }
+[data-look="android"] .cal-head .seg { margin: 14px 12px 0; }
+[data-look="android"] .gbtn:active { background: var(--m3-c-highest); }
+
+/* M3 segmented buttons */
+[data-look="android"] .seg { height: 40px; border-radius: 999px; border: 1px solid var(--m3-outline); overflow: hidden; }
+[data-look="android"] .seg button { display: flex; align-items: center; justify-content: center; gap: 6px; font: 600 13px/1 var(--sys); letter-spacing: .01em; color: var(--text); }
+[data-look="android"] .seg button + button { border-left: 1px solid var(--m3-outline); }
+[data-look="android"] .seg button.on { background: var(--m3-sec); color: var(--m3-on-sec); }
+[data-look="android"] .seg button.on .seg__check { display: block; width: 16px; height: 16px; stroke-width: 2.2; }
+
+/* navigation bar with pill indicator */
+[data-look="android"] .tabbar { left: 0; right: 0; bottom: 0; height: var(--tab-space); padding: 12px 8px var(--sb); background: var(--m3-c); }
+[data-look="android"] .tabbar__item { justify-content: flex-start; gap: 4px; font: 600 12px/16px var(--sys); letter-spacing: .02em; color: var(--mid); }
+[data-look="android"] .tabbar__icon { width: 64px; height: 32px; border-radius: 16px; }
+[data-look="android"] .tabbar__item.active { color: var(--text); }
+[data-look="android"] .tabbar__item.active .tabbar__icon { background: var(--m3-sec); color: var(--m3-on-sec); }
+
+/* large app bar pages */
+[data-look="android"] .page__bar { min-height: 8px; }
+[data-look="android"] .page__bar--back { min-height: 56px; padding-left: 4px; }
+[data-look="android"] .gbtn.back { width: auto; border-radius: 999px; padding: 0 12px 0 8px; }
+[data-look="android"] .grp-h, [data-look="android"] .flabel { font: 600 14px/1.3 var(--sys); color: var(--accent); }
+[data-look="android"] .grp-h { padding-left: calc(var(--pad) + 12px); }
+
+/* separated tonal list items */
+[data-look="android"] .grp { display: grid; gap: 2px; }
+[data-look="android"] .irow { background: var(--m3-c); border-radius: 4px; }
+[data-look="android"] .grp > :first-child { border-radius: 20px 20px 4px 4px; }
+[data-look="android"] .grp > :last-child { border-radius: 4px 4px 20px 20px; }
+[data-look="android"] .grp > :only-child { border-radius: 20px; }
+[data-look="android"] .irow__head { min-height: 64px; gap: 16px; }
+[data-look="android"] .irow__ic { width: 40px; height: 40px; border-radius: 50%; background: var(--m3-c-highest); color: var(--text); }
+[data-look="android"] .irow:not(.irow--noicon) > :not(.irow__head) { margin-left: 72px; }
+[data-look="android"] .irow__nm small { font-size: 12px; }
+[data-look="android"] .checkmark { width: 20px; height: 20px; border-radius: 3px; border: 2px solid var(--m3-outline); opacity: 1; display: grid; place-items: center; color: transparent; }
+[data-look="android"] .checkmark.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+[data-look="android"] .checkmark svg.i { width: 15px; height: 15px; stroke-width: 3; }
+
+/* M3 switch */
+[data-look="android"] .switch { width: 52px; height: 32px; background: var(--m3-c-highest); box-shadow: inset 0 0 0 2px var(--m3-outline); }
+[data-look="android"] .switch::after { top: 8px; left: 8px; width: 16px; height: 16px; background: var(--m3-outline); box-shadow: none; }
+[data-look="android"] .switch.on { background: var(--accent); box-shadow: none; }
+[data-look="android"] .switch.on::after { top: 4px; left: 24px; width: 24px; height: 24px; background: var(--accent-ink); }
+
+/* chips radius 8 with a check */
+[data-look="android"] .chip { border-radius: 8px; height: 34px; box-shadow: inset 0 0 0 1px var(--m3-outline-var); color: var(--text); font-size: 12.5px; padding: 0 12px; }
+[data-look="android"] .chip.sel { background: var(--m3-sec); color: var(--m3-on-sec); box-shadow: none; }
+[data-look="android"] .chip.sel .chip__check { display: block; width: 16px; height: 16px; stroke-width: 2.4; }
+[data-look="android"] .chip.sel .dot { display: none; }
+
+/* bottom sheet: handle, ✕ + left title, filled Save */
+[data-look="android"] .sheet { background: var(--m3-c-low); border-radius: 28px 28px 0 0; }
+[data-look="android"] .sheet::before { top: 14px; width: 32px; height: 4px; margin-left: -16px; border-radius: 2px; background: var(--m3-outline); opacity: .5; }
+[data-look="android"] .sheet__bar { padding: 30px 12px 8px 4px; gap: 4px; }
+[data-look="android"] .sheet__close { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; }
+[data-look="android"] .sheet__title { font: 700 22px/1.2 var(--syne); letter-spacing: -.03em; padding-left: 4px; }
+[data-look="android"] .sheet__ok { height: 40px; padding: 0 20px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font: 600 14px/1 var(--sys); }
+[data-look="android"] .sheet__ok svg { display: none; }
+[data-look="android"] .sheet__spacer { width: 0; }
+
+/* outlined text fields */
+[data-look="android"] .fld:not(.fld--static) { margin: 0 var(--pad) 14px; border: 1px solid var(--m3-outline); border-radius: 8px; min-height: 56px; padding: 0 16px; }
+[data-look="android"] .form-grp .fld { margin: 0 0 14px; }
+[data-look="android"] .fld:focus-within { border: 2px solid var(--accent); padding: 0 15px; }
+[data-look="android"] .fld__l { position: absolute; top: -9px; left: 12px; padding: 0 4px; background: var(--m3-c-low); font: 400 12px/16px var(--mono); color: var(--mid); }
+[data-look="android"] .fld:focus-within .fld__l { color: var(--accent); }
+[data-look="android"] .fld input, [data-look="android"] .fld select, [data-look="android"] .fld__show { width: 100%; font: 400 16px/1.2 var(--mono); padding: 14px 0; -webkit-appearance: none; appearance: none; }
+[data-look="android"] .sheet__body { padding-top: 12px; }
+[data-look="android"] .fld--title { margin-top: 4px; }
+[data-look="android"] .fld--title input { font: 700 24px/1.1 var(--syne); letter-spacing: -.03em; caret-color: var(--accent); }
+[data-look="android"] .fld--notes textarea { width: 100%; padding: 16px 0 10px; resize: none; font: 400 16px/1.4 var(--mono); }
+[data-look="android"] .form-grp { margin-top: 22px; }
+[data-look="android"] .fld__err { margin-top: -8px; }
+
+[data-look="android"] .dialog { background: var(--m3-c-high); border-radius: 28px; }
+[data-look="android"] .tile { border-radius: 16px; }
+[data-look="android"] .shift-rows.rows { border: 0; display: grid; gap: 2px; }
+[data-look="android"] .shift-rows .row { background: var(--m3-c); border: 0; border-radius: 4px; padding: 10px 16px; min-height: 72px; }
+[data-look="android"] .shift-rows .row:first-child { border-radius: 20px 20px 4px 4px; }
+[data-look="android"] .shift-rows .row:last-child { border-radius: 4px 4px 20px 20px; }
+[data-look="android"] .shift-rows .row:only-child { border-radius: 20px; }
+[data-look="android"] .shift-rows .row__idx { display: none; }
+[data-look="android"] .shift-rows .glyph--lg { width: 40px; height: 40px; border-radius: 12px; }

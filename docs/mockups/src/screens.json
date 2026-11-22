@@ -1,0 +1,36 @@
+{
+  "ios": [
+    "01-week-dark",
+    "01-week-light",
+    "02-day-dark",
+    "03-month-dark",
+    "04-block-sheet-dark",
+    "04b-time-picker-dark",
+    "05-shifts-dark",
+    "05b-shift-editor-dark",
+    "06-settings-dark",
+    "06-settings-light",
+    "06b-settings-backup-dark",
+    "06c-device-calendars-dark",
+    "07-permission-dark",
+    "07b-permission-system-dark",
+    "08-empty-dark"
+  ],
+  "android": [
+    "01-week-dark",
+    "01-week-light",
+    "02-day-dark",
+    "03-month-dark",
+    "04-block-sheet-dark",
+    "04b-time-picker-dark",
+    "05-shifts-dark",
+    "05b-shift-editor-dark",
+    "06-settings-dark",
+    "06-settings-light",
+    "06b-settings-backup-dark",
+    "06c-device-calendars-dark",
+    "07-permission-dark",
+    "07b-permission-system-dark",
+    "08-empty-dark"
+  ]
+}
