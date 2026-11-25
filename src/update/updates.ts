@@ -72,8 +72,20 @@ export function availableUpdate(release: GitHubRelease, installed: string): Avai
   return update;
 }
 
+/** Gives up after 15 seconds, so a dead connection shows an error instead of "checking" forever. */
+const CHECK_TIMEOUT_MS = 15_000;
+
 export async function fetchLatestRelease(fetchFn: typeof fetch = fetch): Promise<GitHubRelease> {
-  const res = await fetchFn(LATEST_RELEASE_URL, { headers: { Accept: 'application/vnd.github+json' } });
-  if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
-  return (await res.json()) as GitHubRelease;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), CHECK_TIMEOUT_MS);
+  try {
+    const res = await fetchFn(LATEST_RELEASE_URL, { headers: { Accept: 'application/vnd.github+json' }, signal: controller.signal });
+    if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
+    return (await res.json()) as GitHubRelease;
+  } catch (err) {
+    if (controller.signal.aborted) throw new Error('GitHub did not answer in time');
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
 }

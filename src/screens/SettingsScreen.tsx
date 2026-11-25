@@ -46,6 +46,11 @@ export function SettingsScreen() {
     void appVersion().then(setVersion);
     void kv.get(LAST_EXPORT_KEY).then(setLastExport);
   }, []);
+  // Opening the Updates page always checks now, so the page never sits on "checking".
+  useEffect(() => {
+    if (page === 'updates') void update.check();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   if (page === 'calendars') return <CalendarPicker onBack={() => setPage('phone')} />;
   if (page === 'account') return <AccountScreen onBack={() => setPage('main')} />;
