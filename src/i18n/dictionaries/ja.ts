@@ -51,6 +51,7 @@ export const ja: Dictionary = {
     "month": "月"
   },
   "nav": {
+    "summary": "集計",
     "calendar": "カレンダー",
     "shifts": "シフト",
     "settings": "設定"

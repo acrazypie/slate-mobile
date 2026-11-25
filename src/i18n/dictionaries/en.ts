@@ -51,6 +51,7 @@ export const en: Dictionary = {
     "month": "Month"
   },
   "nav": {
+    "summary": "Summary",
     "calendar": "Calendar",
     "shifts": "Shifts",
     "settings": "Settings"

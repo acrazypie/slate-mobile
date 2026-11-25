@@ -52,6 +52,7 @@ export const it = {
     "month": "Mese"
   },
   "nav": {
+    "summary": "Riepilogo",
     "calendar": "Calendario",
     "shifts": "Turni",
     "settings": "Impostazioni"

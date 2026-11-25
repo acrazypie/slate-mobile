@@ -10,7 +10,6 @@ import { capitalize, fill, formatDate } from '../i18n/format';
 import { computePay, formatMoney } from '../lib/pay';
 import { CATEGORIES, CATEGORY_COLORS, SHIFT_DEFAULT_COLOR, formatDuration } from '../lib/types';
 import { dayContents, daysFrom, summarize, weekStart } from '../lib/days';
-import { Sheet } from '../ui/Sheet';
 import { Icon } from '../ui/icons';
 
 export function SummaryPanel({ anchor }: { anchor: Date }) {
@@ -89,16 +88,5 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
         <p className="note"><Icon name="info" />{fill(t.breaks.excluded, { minutes: s.breaks })}</p>
       )}
     </section>
-  );
-}
-
-export function SummarySheet({ open, onClose, anchor }: { open: boolean; onClose: () => void; anchor: Date }) {
-  const { t } = useI18n();
-  return (
-    <Sheet open={open} onClose={onClose} title={t.summary.title} compact>
-      <div className="pad">
-        <SummaryPanel anchor={anchor} />
-      </div>
-    </Sheet>
   );
 }

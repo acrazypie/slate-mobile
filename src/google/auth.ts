@@ -5,7 +5,7 @@
 
 import { SocialLogin } from '@capgo/capacitor-social-login';
 import type { KeyValueStore } from '../data/storage';
-import { GOOGLE_SCOPES, GOOGLE_WEB_CLIENT_ID } from './config';
+import { GOOGLE_IOS_CLIENT_ID, GOOGLE_SCOPES, GOOGLE_WEB_CLIENT_ID } from './config';
 
 export const GOOGLE_SESSION_KEY = 'slate:google-session';
 
@@ -20,7 +20,9 @@ export interface GoogleSession {
 
 let ready: Promise<void> | null = null;
 function initialize(): Promise<void> {
-  ready ??= SocialLogin.initialize({ google: { webClientId: GOOGLE_WEB_CLIENT_ID, mode: 'online' } }).then(() => undefined);
+  ready ??= SocialLogin.initialize({
+    google: { webClientId: GOOGLE_WEB_CLIENT_ID, iOSClientId: GOOGLE_IOS_CLIENT_ID || undefined, mode: 'online' },
+  }).then(() => undefined);
   return ready;
 }
 

@@ -51,6 +51,7 @@ export const nl: Dictionary = {
     "month": "Maand"
   },
   "nav": {
+    "summary": "Overzicht",
     "calendar": "Agenda",
     "shifts": "Diensten",
     "settings": "Instellingen"

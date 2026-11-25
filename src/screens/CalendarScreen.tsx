@@ -16,7 +16,6 @@ import { Segmented } from '../ui/controls';
 import { WeekView } from './WeekView';
 import { DayView } from './DayView';
 import { MonthView } from './MonthView';
-import { SummarySheet } from '../sheets/SummarySheet';
 import { BlockSheet, type BlockTarget } from '../sheets/BlockSheet';
 import { CreateSheet } from '../sheets/CreateSheet';
 import { ShiftSheet } from '../sheets/ShiftSheet';
@@ -43,7 +42,6 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
   const [slide, setSlide] = useState<'next' | 'prev' | null>(null);
 
   // sheets
-  const [summaryOpen, setSummaryOpen] = useState(false);
   const [blockTarget, setBlockTarget] = useState<BlockTarget | null>(null);
   const [create, setCreate] = useState<{ date: Date; hour: number } | null>(null);
   const [shiftEdit, setShiftEdit] = useState<{ placed?: PlacedShift; placeOn?: string } | null>(null);
@@ -157,9 +155,6 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
               <Icon name="chevronRight" />
             </button>
           </div>
-          <button type="button" className="gbtn round" onClick={() => setSummaryOpen(true)} aria-label={t.summary.title}>
-            <Icon name="chart" />
-          </button>
           <button type="button" className="gbtn round accent ios-only" onClick={() => actions.onSlot(view === 'day' ? anchor : isSameDay(range.start, weekStart(today)) ? today : range.start, 9)} aria-label={t.calendar.add}>
             <Icon name="plus" />
           </button>
@@ -200,7 +195,6 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
         <Icon name="plus" />
       </button>
 
-      <SummarySheet open={summaryOpen} onClose={() => setSummaryOpen(false)} anchor={anchor} />
       <CreateSheet
         context={create}
         onClose={() => setCreate(null)}
