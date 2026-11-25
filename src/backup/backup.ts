@@ -7,7 +7,7 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { kv, repo } from '../app/store';
-import { isNative } from '../native/platform';
+import { isNative, platform } from '../native/platform';
 import { keyFromDate } from '../lib/recurrence';
 
 export const LAST_EXPORT_KEY = 'slate:last-export';
@@ -21,6 +21,18 @@ export async function exportBackup(): Promise<'shared' | 'cancelled'> {
     const a = Object.assign(document.createElement('a'), { href: url, download: name });
     a.click();
     URL.revokeObjectURL(url);
+    await kv.set(LAST_EXPORT_KEY, new Date().toISOString());
+    return 'shared';
+  }
+  // iPhone: the Filesystem plugin is left out of the iOS build (see ios-build.yml),
+  // so the backup is shared as text instead of as a file.
+  if (platform === 'ios') {
+    try {
+      await Share.share({ title: name, text });
+    } catch (err) {
+      if (/cancel/i.test(String((err as Error)?.message ?? err))) return 'cancelled';
+      throw err;
+    }
     await kv.set(LAST_EXPORT_KEY, new Date().toISOString());
     return 'shared';
   }

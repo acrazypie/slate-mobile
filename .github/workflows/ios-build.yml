@@ -34,6 +34,13 @@ jobs:
           npm run build
           npx cap sync ios
 
+      - name: Leave the Filesystem plugin out of the iOS build
+        # Its Swift package does not build on the runners (no such module
+        # 'IONFilesystemLib'). iOS does not need it: backups are shared as text.
+        run: |
+          sed -i '/CapacitorFilesystem/d' ios/App/CapApp-SPM/Package.swift
+          ! grep -q CapacitorFilesystem ios/App/CapApp-SPM/Package.swift
+
       - name: Build the app (unsigned)
         working-directory: ios/App
         run: |
