@@ -328,7 +328,7 @@ export function SettingsScreen() {
       {page === 'updates' && update.status.kind !== 'unsupported' && (
         <Group label={t.update.title} footer={t.update.footer}>
           <Row
-            icon="refresh"
+            icon={update.status.kind === 'upToDate' ? 'check' : 'refresh'}
             name={
               update.status.kind === 'upToDate' ? fill(t.update.upToDate, { version: update.status.version })
               : update.status.kind === 'available' || update.status.kind === 'needsPermission' ? fill(t.update.available, { version: update.status.update.version })
@@ -342,8 +342,16 @@ export function SettingsScreen() {
             {(update.status.kind === 'available' || update.status.kind === 'needsPermission') && (
               <button type="button" className="btn" onClick={() => void update.install()}>{t.update.install}</button>
             )}
-            {(update.status.kind === 'upToDate' || update.status.kind === 'error') && (
-              <button type="button" className="btn btn--ghost" onClick={() => void update.check()}>{t.update.check}</button>
+            {update.status.kind === 'upToDate' && <Icon name="check" className="update-latest" />}
+            {update.status.kind !== 'installing' && (
+              <button
+                type="button"
+                className="btn btn--ghost"
+                disabled={update.status.kind === 'checking' || update.status.kind === 'idle'}
+                onClick={() => void update.check()}
+              >
+                {t.update.check}
+              </button>
             )}
           </Row>
         </Group>
@@ -357,6 +365,7 @@ export function SettingsScreen() {
       <Group>
         <Row icon="info" name={t.settings.legalTerms} chevron onClick={() => openLegal('terms')} />
         <Row icon="lock" name={t.settings.legalPrivacy} chevron onClick={() => openLegal('privacy')} />
+        <Row icon="layout" name={t.settings.legalWebsite} chevron onClick={() => window.open(LEGAL_URL, '_blank', 'noopener')} />
       </Group>
       </>
       )}

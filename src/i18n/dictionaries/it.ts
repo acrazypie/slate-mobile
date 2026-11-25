@@ -368,6 +368,7 @@ export const it = {
     "privacyNote": "I tuoi dati restano su questo telefono. Escono solo se esporti un backup o attivi la copia nel calendario.",
     "legalTerms": "Termini di servizio",
     "legalPrivacy": "Informativa sulla privacy",
+    "legalWebsite": "Sito web",
     "fonts": "Caratteri: Syne e DM Mono (SIL Open Font License)",
     "loadProblem": "I dati salvati non si potevano leggere. Ne è stata conservata una copia e l'app è ripartita da zero.",
     "tag": "Su questo dispositivo",

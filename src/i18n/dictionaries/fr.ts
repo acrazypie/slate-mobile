@@ -367,6 +367,7 @@ export const fr: Dictionary = {
     "privacyNote": "Vos données restent sur ce téléphone. Elles ne sortent que si vous exportez une sauvegarde ou activez la copie dans un calendrier.",
     "legalTerms": "Conditions d’utilisation",
     "legalPrivacy": "Politique de confidentialité",
+    "legalWebsite": "Site web",
     "fonts": "Polices : Syne et DM Mono (SIL Open Font License)",
     "loadProblem": "Les données enregistrées étaient illisibles. Une copie a été conservée et l’app est repartie de zéro.",
     "tag": "Sur cet appareil",

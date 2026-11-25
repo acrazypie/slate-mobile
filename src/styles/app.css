@@ -183,7 +183,7 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .shift-rows { margin: 18px var(--pad) 0; }
 .tabfade { display: none; }
 
-.tabbar { position: fixed; z-index: 40; display: grid; grid-template-columns: repeat(3, 1fr); font-family: var(--sys); }
+.tabbar { position: fixed; z-index: 40; display: grid; grid-template-columns: repeat(4, 1fr); font-family: var(--sys); }
 .tabbar__item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--mid); transition: color .2s; }
 .tabbar__icon { display: grid; place-items: center; transition: background .3s var(--ease), transform .3s var(--spring); }
 .tabbar__icon svg.i { width: 24px; height: 24px; stroke-width: 1.7; }
@@ -466,3 +466,6 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .icon-pick { display: grid; justify-items: center; gap: 6px; background: none; border: 0; padding: 4px 0; color: var(--text); font: 400 11.5px/1.2 var(--mono); cursor: pointer; }
 .icon-pick img { width: 100%; max-width: 64px; aspect-ratio: 1; border-radius: 22%; }
 .icon-pick.sel img { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Updates: the check mark shown when this is the latest version */
+.update-latest { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }

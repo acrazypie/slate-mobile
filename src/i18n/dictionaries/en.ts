@@ -367,6 +367,7 @@ export const en: Dictionary = {
     "privacyNote": "Your data stays on this phone. It only leaves if you export a backup or turn on copying to a calendar.",
     "legalTerms": "Terms of service",
     "legalPrivacy": "Privacy policy",
+    "legalWebsite": "Website",
     "fonts": "Fonts: Syne and DM Mono (SIL Open Font License)",
     "loadProblem": "Your saved data could not be read. A copy was kept and the app started afresh.",
     "tag": "On this device",
