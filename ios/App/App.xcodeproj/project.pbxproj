@@ -17,7 +17,7 @@
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 		FC5956AA9E134A14A65A1564 /* AppIconPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6576DD7839F147C89CBE50B0 /* AppIconPlugin.swift */; };
-		21C98CC4687241D5873193F6 /* AppIconPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB4FCDA26AD467FB3B24C6E /* AppIconPlugin.m */; };
+		03A3F4122C364220BA4AA583 /* AppBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6C295EFFB641A1AF89C99F /* AppBridgeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		6576DD7839F147C89CBE50B0 /* AppIconPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconPlugin.swift; sourceTree = "<group>"; };
-		DAB4FCDA26AD467FB3B24C6E /* AppIconPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconPlugin.m; sourceTree = "<group>"; };
+		5F6C295EFFB641A1AF89C99F /* AppBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBridgeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				6576DD7839F147C89CBE50B0 /* AppIconPlugin.swift */,
-				DAB4FCDA26AD467FB3B24C6E /* AppIconPlugin.m */,
+				5F6C295EFFB641A1AF89C99F /* AppBridgeViewController.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -166,7 +166,7 @@
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				FC5956AA9E134A14A65A1564 /* AppIconPlugin.swift in Sources */,
-				21C98CC4687241D5873193F6 /* AppIconPlugin.m in Sources */,
+				03A3F4122C364220BA4AA583 /* AppBridgeViewController.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,7 +6,11 @@ import UIKit
 /// icon (AppIcon); the others are alternate icons declared in Info.plist.
 /// iOS shows its own confirmation alert when the icon changes.
 @objc(AppIconPlugin)
-public class AppIconPlugin: CAPPlugin {
+public class AppIconPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "AppIconPlugin"
+    public let jsName = "AppIcon"
+    public let pluginMethods: [CAPPluginMethod] = [CAPPluginMethod(name: "set", returnType: CAPPluginReturnPromise)]
+
 
     /// Colour key -> alternate icon name. nil = the primary icon.
     private func iconName(for key: String) -> String?? {
