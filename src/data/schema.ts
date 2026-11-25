@@ -6,8 +6,10 @@
 
 import type { Block, Rotation, Shift, ShiftAssignment, ViewMode } from '../lib/types';
 import type { Locale } from '../i18n/config';
+import type { Report } from '../lib/reportTypes';
+import { DEFAULT_SUMMARY_RANGE, type SummaryRange } from '../lib/summaryRange';
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export type ThemeSetting = 'system' | 'light' | 'dark';
 
@@ -88,6 +90,8 @@ export const APP_ICON_KEYS: AppIconKey[] = ['teal', 'lime', 'violet', 'apricot']
 export interface Settings {
   theme: ThemeSetting;
   appIcon: AppIconKey;
+  /** Which days the summary covers (Settings › Summary). */
+  summaryRange: SummaryRange;
   notifications: NotificationSettings;
   mode: AppMode;
   pay: PaySettings;
@@ -110,6 +114,8 @@ export interface SlateData {
   shifts: Shift[];
   assignments: ShiftAssignment[];
   rotations: Rotation[];
+  /** Reports added to the summary, in the order they were added. */
+  reports: Report[];
   settings: Settings;
 }
 
@@ -120,6 +126,7 @@ export const DEFAULT_ACCENT = '#6BB6A3';
 export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
   appIcon: 'teal',
+  summaryRange: DEFAULT_SUMMARY_RANGE,
   mode: 'local',
   pay: { hourlyRate: null, currency: '', overtimeAfterHours: null, overtimeMultiplier: 1.5 },
   notifications: { enabled: true, leadMinutes: 10, events: true, shifts: true, newVersion: true, donate: true },
@@ -146,6 +153,7 @@ export function emptyData(): SlateData {
     shifts: [],
     assignments: [],
     rotations: [],
+    reports: [],
     settings: structuredClone(DEFAULT_SETTINGS),
   };
 }

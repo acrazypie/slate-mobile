@@ -1,57 +1,65 @@
-// Hours summary (design-notes §3, month view): two-cell HUD (this week /
-// this month) and one row per category plus shifts. Unlike the web app it
-// follows the period on screen, not always the current one.
+// The summary: the period from Settings › Summary (today's week, fortnight,
+// month or year, or the custom dates), its hours and earnings, the reports the
+// user added, and the buttons to add a report and export a PDF.
 
 import { useMemo, useState } from 'react';
-import { endOfMonth, startOfMonth } from 'date-fns';
 import { useData, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
-import { capitalize, fill, formatDate } from '../i18n/format';
+import { formatDate } from '../i18n/format';
 import { computePay, formatMoney } from '../lib/pay';
 import { CATEGORIES, CATEGORY_COLORS, SHIFT_DEFAULT_COLOR, formatDuration } from '../lib/types';
-import { dayContents, daysFrom, summarize, weekStart } from '../lib/days';
+import { dayContents, summarize } from '../lib/days';
+import { periodDays, periodFor } from '../lib/summaryRange';
+import { platform } from '../native/platform';
 import { Icon } from '../ui/icons';
+import { AddReportSheet, ReportCards } from './SummaryReports';
+import { PdfExportSheet } from './PdfExportSheet';
+
+/** PDF export writes a file with Capacitor Filesystem and shares it; the iOS build leaves that plugin out. */
+export const PDF_EXPORT_AVAILABLE = platform !== 'ios';
+
+/** Asks the app to switch tabs (App.tsx listens for it). */
+export function goToTab(tab: 'calendar' | 'shifts' | 'summary' | 'settings') {
+  window.dispatchEvent(new CustomEvent('slate:navigate', { detail: { tab } }));
+}
 
 export function SummaryPanel({ anchor }: { anchor: Date }) {
   const { t, locale } = useI18n();
   const data = useData();
   const settings = useSettings();
-  const [scope, setScope] = useState<'week' | 'month'>('week');
-  const week = useMemo(() => summarize(dayContents(data, daysFrom(weekStart(anchor), 7))), [data, anchor]);
-  const month = useMemo(() => {
-    const start = startOfMonth(anchor);
-    return summarize(dayContents(data, daysFrom(start, endOfMonth(anchor).getDate())));
-  }, [data, anchor]);
-  const s = scope === 'week' ? week : month;
+  const [adding, setAdding] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const period = useMemo(() => periodFor(settings.summaryRange, anchor), [settings.summaryRange, anchor]);
+  const s = useMemo(() => summarize(dayContents(data, periodDays(period))), [data, period]);
   const max = Math.max(1, ...CATEGORIES.map((c) => s.byCategory[c]), s.shifts);
   const hours = (m: number) => Math.round((m / 60) * 10) / 10;
-  const monthName = capitalize(formatDate(locale, anchor, 'monthYear').replace(String(anchor.getFullYear()), '').trim());
   const pay = useMemo(
     () => computePay(Object.entries(s.shiftsByWeek).map(([weekStart, minutes]) => ({ weekStart, minutes })), settings.pay),
     [s, settings.pay],
   );
+  const label = `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
 
   return (
     <section className="summary">
       <div className="summary__head">
-        <span className="summary__switch">
-          <button type="button" className={scope === 'week' ? 'on' : ''} onClick={() => setScope('week')}>{t.views.week}</button>
-          {' / '}
-          <button type="button" className={scope === 'month' ? 'on' : ''} onClick={() => setScope('month')}>{t.views.month}</button>
-        </span>
+        <span className="summary__range">{label}</span>
+        <button type="button" className="summary__change" onClick={() => goToTab('settings')}>{t.summaryUi.change}</button>
       </div>
+
       <div className="hud">
         <div className="hud__c">
-          <span className="label">{t.summary.thisWeek}</span>
-          <div className="hud__v">{hours(week.total)}<small>h</small></div>
-          <div className="bar"><i style={{ width: `${Math.min(100, (week.total / Math.max(month.total, 1)) * 100 * 4)}%` }} /></div>
+          <span className="label">{t.summaryUi.total}</span>
+          <div className="hud__v">{hours(s.total)}<small>h</small></div>
         </div>
-        <div className="hud__c">
-          <span className="label">{monthName}</span>
-          <div className="hud__v acc">{hours(month.total)}<small>h</small></div>
-          <div className="bar"><i style={{ width: month.total > 0 ? '100%' : '0%' }} /></div>
-        </div>
+        {settings.pay.hourlyRate !== null && s.shifts > 0 && (
+          <div className="hud__c">
+            <span className="label">{t.pay.earnings}</span>
+            <div className="hud__v acc">{formatMoney(pay.amount ?? 0, settings.pay.currency, locale)}</div>
+          </div>
+        )}
       </div>
+
       {s.total === 0 ? (
         <p className="summary__empty small">{t.summary.empty}</p>
       ) : (
@@ -72,21 +80,24 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
           </div>
         </div>
       )}
-      {settings.pay.hourlyRate !== null && s.shifts > 0 && (
-        <div className="hud">
-          <div className="hud__c">
-            <span className="label">{t.pay.earnings}</span>
-            <div className="hud__v acc">{formatMoney(pay.amount ?? 0, settings.pay.currency, locale)}</div>
-          </div>
-          <div className="hud__c">
-            <span className="label">{t.pay.overtime}</span>
-            <div className="hud__v">{hours(pay.overtimeMinutes)}<small>h</small></div>
-          </div>
-        </div>
-      )}
-      {s.breaks > 0 && (
-        <p className="note"><Icon name="info" />{fill(t.breaks.excluded, { minutes: s.breaks })}</p>
-      )}
+
+      <ReportCards period={period} />
+
+      <div className="summary__actions">
+        <button type="button" className="btn btn--wide" onClick={() => setAdding(true)}>
+          <Icon name="plus" /> {t.summaryUi.addReport}
+        </button>
+        {PDF_EXPORT_AVAILABLE ? (
+          <button type="button" className="btn btn--ghost btn--wide" onClick={() => setExporting(true)}>
+            <Icon name="upload" /> {t.summaryUi.exportPdf}
+          </button>
+        ) : (
+          <p className="note"><Icon name="info" />{t.summaryUi.pdfAndroid}</p>
+        )}
+      </div>
+
+      <AddReportSheet open={adding} onClose={() => setAdding(false)} />
+      {exporting && <PdfExportSheet period={period} onClose={() => setExporting(false)} />}
     </section>
   );
 }

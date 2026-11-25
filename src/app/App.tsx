@@ -40,6 +40,16 @@ export function App() {
   // Reminders, the new-version notice and taps on them; reschedules after every change.
   useEffect(() => startNotifications(() => setTab('settings')), []);
 
+  // Other screens ask for a tab with a 'slate:navigate' event (see goToTab in SummaryPanel).
+  useEffect(() => {
+    const onNavigate = (e: Event) => {
+      const tab = (e as CustomEvent<{ tab: Tab }>).detail?.tab;
+      if (tab) setTab(tab);
+    };
+    window.addEventListener('slate:navigate', onNavigate);
+    return () => window.removeEventListener('slate:navigate', onNavigate);
+  }, []);
+
   useEffect(() => {
     hideSplash(() => syncStatusBar(document.documentElement.dataset.theme !== 'light'));
     if (repo.loadProblem) toast(t.settings.loadProblem, 'warn');

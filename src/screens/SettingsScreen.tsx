@@ -20,10 +20,11 @@ import { leadLabel, permission, requestPermission, type PermissionState } from '
 import type { NotificationSettings } from '../data/schema';
 import { AccountScreen } from './AccountScreen';
 import { AppIconPicker } from './AppIconPicker';
+import { SummaryRangePage } from './SummaryRangePage';
 
 /** The pages of Settings: the main list, one page per section, and the two full pages. */
-type Page = 'main' | 'appearance' | 'pay' | 'phone' | 'backup' | 'updates' | 'about' | 'calendars' | 'account' | 'notifications';
-const SECTION_PAGES: Page[] = ['appearance', 'pay', 'phone', 'notifications', 'backup', 'updates', 'about'];
+type Page = 'main' | 'appearance' | 'pay' | 'phone' | 'backup' | 'updates' | 'about' | 'calendars' | 'account' | 'notifications' | 'summary';
+const SECTION_PAGES: Page[] = ['appearance', 'pay', 'phone', 'notifications', 'summary', 'backup', 'updates', 'about'];
 
 export function SettingsScreen() {
   const { t, locale } = useI18n();
@@ -98,6 +99,7 @@ export function SettingsScreen() {
   const sectionText: Record<Exclude<Page, 'main' | 'calendars' | 'account'>, { title: string; lede: string }> = {
     appearance: { title: t.settingsPages.appearance.title, lede: t.settingsPages.appearance.lede },
     notifications: { title: t.settingsPages.notifications.title, lede: t.settingsPages.notifications.lede },
+    summary: { title: t.settingsPages.summary.title, lede: t.settingsPages.summary.lede },
     pay: { title: t.settingsPages.pay.title, lede: t.settingsPages.pay.lede },
     phone: { title: t.settingsPages.phone.title, lede: t.settingsPages.phone.lede },
     backup: { title: t.settingsPages.backup.title, lede: t.settingsPages.backup.lede },
@@ -121,7 +123,8 @@ export function SettingsScreen() {
             </Group>
             <Group>
               <Row icon="calendar" name={t.settingsPages.phone.title} chevron onClick={() => setPage('phone')} />
-              <Row icon="layout" name={t.settingsPages.pay.title} chevron onClick={() => setPage('pay')} />
+              <Row icon="chart" name={t.settingsPages.summary.title} chevron onClick={() => setPage('summary')} />
+            <Row icon="layout" name={t.settingsPages.pay.title} chevron onClick={() => setPage('pay')} />
             </Group>
             <Group>
               <Row icon="upload" name={t.settingsPages.backup.title} chevron onClick={() => setPage('backup')} />
@@ -330,19 +333,25 @@ export function SettingsScreen() {
         <NotificationsPage settings={settings.notifications} setNotify={setNotify} />
       )}
 
+      {page === 'summary' && <SummaryRangePage />}
+
       {page === 'updates' && update.status.kind !== 'unsupported' && (
         <Group label={t.update.title} footer={t.update.footer}>
           <Row
             icon={update.status.kind === 'upToDate' ? 'check' : 'refresh'}
             name={
-              update.status.kind === 'upToDate' ? fill(t.update.upToDate, { version: update.status.version })
+              update.status.kind === 'upToDate' ? t.update.latest
               : update.status.kind === 'available' || update.status.kind === 'needsPermission' ? fill(t.update.available, { version: update.status.update.version })
               : update.status.kind === 'installing' ? fill(t.update.installing, { percent: update.status.total ? Math.round((update.status.received / update.status.total) * 100) : 0 })
               : update.status.kind === 'checking' || update.status.kind === 'idle' ? t.update.checking
               : update.status.kind === 'error' ? fill(t.update.error, { message: update.status.message })
               : t.update.checking
             }
-            hint={update.status.kind === 'needsPermission' ? t.update.needsPermission : undefined}
+            hint={
+              update.status.kind === 'upToDate' ? `v${update.status.version.split(' ')[0]}`
+              : update.status.kind === 'needsPermission' ? t.update.needsPermission
+              : undefined
+            }
           >
             {(update.status.kind === 'available' || update.status.kind === 'needsPermission') && (
               <button type="button" className="btn" onClick={() => void update.install()}>{t.update.install}</button>

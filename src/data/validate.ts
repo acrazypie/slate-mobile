@@ -5,6 +5,8 @@
 import type { Block, BlockCategory, Rotation, Shift, ShiftAssignment } from '../lib/types';
 import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_MIN_DAYS, shiftDurationMinutes } from '../lib/types';
 import { isLocale } from '../i18n/config';
+import { REPORT_KINDS, type Report, type ReportKind } from '../lib/reportTypes';
+import type { RangeKind, SummaryRange } from '../lib/summaryRange';
 import { APP_ICON_KEYS, DEFAULT_SETTINGS, type AppIconKey, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
 
 export class ValidationError extends Error {
@@ -216,9 +218,26 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
     newVersion: bool(n.newVersion, baseN.newVersion),
     donate: bool(n.donate, baseN.donate),
   };
+  const sr = isObj(s.summaryRange) ? s.summaryRange : {};
+  const baseR = base.summaryRange;
+  const RANGE_KINDS: RangeKind[] = ['week', 'twoWeeks', 'month', 'year', 'custom'];
+  const whole = (v: unknown, lo: number, hi: number, fallback: number) =>
+    typeof v === 'number' && Number.isInteger(v) && v >= lo && v <= hi ? v : fallback;
+  const day = (v: unknown, fallback: string | null) => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : fallback);
+  const summaryRange: SummaryRange = {
+    kind: RANGE_KINDS.includes(sr.kind as RangeKind) ? (sr.kind as RangeKind) : baseR.kind,
+    weekday: whole(sr.weekday, 0, 6, baseR.weekday),
+    fortnightWeek: sr.fortnightWeek === 2 ? 2 : sr.fortnightWeek === 1 ? 1 : baseR.fortnightWeek,
+    monthDay: whole(sr.monthDay, 1, 31, baseR.monthDay),
+    yearMonth: whole(sr.yearMonth, 1, 12, baseR.yearMonth),
+    yearDay: whole(sr.yearDay, 1, 31, baseR.yearDay),
+    customStart: day(sr.customStart, baseR.customStart),
+    customEnd: day(sr.customEnd, baseR.customEnd),
+  };
   return {
     theme: s.theme === 'light' || s.theme === 'dark' || s.theme === 'system' ? s.theme : base.theme,
     appIcon: APP_ICON_KEYS.includes(s.appIcon as AppIconKey) ? (s.appIcon as AppIconKey) : base.appIcon,
+    summaryRange,
     mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
     pay: payOut,
     notifications,
@@ -238,11 +257,20 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
  * assignment must point at an existing shift, and a shift can be placed on a
  * day only once. Throws on the first problem.
  */
+export function validateReport(raw: unknown, path: string): Report {
+  if (!isObj(raw)) throw new ValidationError(path, 'expected an object');
+  if (typeof raw.kind !== 'string' || !REPORT_KINDS.includes(raw.kind as ReportKind)) {
+    throw new ValidationError(`${path}.kind`, 'expected hours, counts, overtime or pay');
+  }
+  return { id: id(raw, path), kind: raw.kind as ReportKind, created_at: stamp(raw, 'created_at') };
+}
+
 export function validateCollections(raw: Obj): {
   blocks: Block[];
   shifts: Shift[];
   assignments: ShiftAssignment[];
   rotations: Rotation[];
+  reports: Report[];
 } {
   for (const key of ['blocks', 'shifts', 'assignments']) {
     if (!Array.isArray(raw[key])) throw new ValidationError(key, 'expected a list');
@@ -263,6 +291,9 @@ export function validateCollections(raw: Obj): {
   unique(blocks, 'blocks');
   unique(shifts, 'shifts');
   unique(assignments, 'assignments');
+  if (raw.reports !== undefined && !Array.isArray(raw.reports)) throw new ValidationError('reports', 'expected a list');
+  const reports = ((raw.reports as unknown[] | undefined) ?? []).map((r, i) => validateReport(r, `reports[${i}]`));
+  unique(reports, 'reports');
   unique(rotations, 'rotations');
 
   const shiftIds = new Set(shifts.map((s) => s.id));
@@ -280,5 +311,5 @@ export function validateCollections(raw: Obj): {
     if (placed.has(key)) throw new ValidationError(`assignments[${i}]`, 'the same shift is placed twice on one day');
     placed.add(key);
   });
-  return { blocks, shifts, assignments, rotations };
+  return { blocks, shifts, assignments, rotations, reports };
 }

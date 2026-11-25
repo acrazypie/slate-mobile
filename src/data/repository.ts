@@ -21,6 +21,8 @@ import { migrate, TooNewError } from './migrations';
 import { sanitizeSettings, validateCollections, ValidationError } from './validate';
 import type { KeyValueStore } from './storage';
 
+import type { Report, ReportKind } from '../lib/reportTypes';
+
 export const DATA_KEY = 'slate:data';
 
 export type DeleteScope = 'current' | 'this-and-following' | 'all';
@@ -391,6 +393,19 @@ export class SlateRepository {
   // ---------------------------------------------------------------------------
   // Settings
 
+  // ---------------------------------------------------------------------------
+  // Reports (added to the summary)
+
+  async addReport(kind: ReportKind): Promise<Report> {
+    const report: Report = { id: newId(), kind, created_at: this.stamp() };
+    await this.commit({ reports: [...this.data.reports, report] }, { blocks: false, shifts: false, settings: false });
+    return report;
+  }
+
+  async removeReport(id: string): Promise<void> {
+    await this.commit({ reports: this.data.reports.filter((r) => r.id !== id) }, { blocks: false, shifts: false, settings: false });
+  }
+
   async updateSettings(patch: Partial<Settings>): Promise<void> {
     const settings = sanitizeSettings({ ...this.data.settings, ...patch, calendar: { ...this.data.settings.calendar, ...patch.calendar } }, this.data.settings);
     await this.commit({ settings }, { blocks: false, shifts: false, settings: true });
@@ -415,6 +430,7 @@ export class SlateRepository {
         shifts: this.data.shifts,
         assignments: this.data.assignments,
         rotations: this.data.rotations,
+        reports: this.data.reports,
         settings: portable,
       },
     };
@@ -458,7 +474,7 @@ export class SlateRepository {
 
   /** Deletes every block, shift and placement; keeps settings. */
   async eraseAll(): Promise<void> {
-    await this.commit({ blocks: [], shifts: [], assignments: [], rotations: [] }, { blocks: true, shifts: true, settings: false });
+    await this.commit({ blocks: [], shifts: [], assignments: [], rotations: [], reports: [] }, { blocks: true, shifts: true, settings: false });
   }
 }
 
@@ -466,13 +482,14 @@ export class SlateRepository {
 export function parseDocument(raw: unknown, baseSettings?: Settings): SlateData {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) throw new ValidationError('data', 'expected an object');
   const migrated = migrate(raw as Record<string, unknown>);
-  const { blocks, shifts, assignments, rotations } = validateCollections(migrated);
+  const { blocks, shifts, assignments, rotations, reports } = validateCollections(migrated);
   return {
     schemaVersion: SCHEMA_VERSION,
     blocks,
     shifts: shifts.sort(shiftOrder),
     assignments,
     rotations,
+    reports,
     settings: sanitizeSettings(migrated.settings, baseSettings),
   };
 }

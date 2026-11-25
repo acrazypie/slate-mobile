@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit -p . && vite build",
     "typecheck": "tsc --noEmit -p .",
-    "test": "tsx scripts/test-recurrence.ts && tsx scripts/test-data.ts && tsx scripts/test-pay-rotations.ts && tsx scripts/test-google.ts && tsx scripts/test-update.ts && tsx scripts/test-donate.ts && tsx scripts/test-notify.ts",
+    "test": "tsx scripts/test-recurrence.ts && tsx scripts/test-data.ts && tsx scripts/test-pay-rotations.ts && tsx scripts/test-google.ts && tsx scripts/test-update.ts && tsx scripts/test-donate.ts && tsx scripts/test-notify.ts && tsx scripts/test-summary.ts",
     "preview": "vite preview",
     "sync": "npm run build && npx cap sync",
     "android": "npm run sync && npx cap open android",
@@ -30,6 +30,7 @@
     "@capgo/capacitor-social-login": "^8.7.13",
     "@ebarooni/capacitor-calendar": "^8.11.0",
     "date-fns": "^4.4.0",
+    "jspdf": "^4.2.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

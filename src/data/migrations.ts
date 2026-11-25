@@ -24,6 +24,9 @@ export const MIGRATIONS: Record<number, (data: Raw) => Raw> = {
   // 3: events and shifts may carry their own reminder (undefined = the default lead
   // time); settings get a notifications block, which the settings loader fills in.
   3: (data) => data,
+  // 4: reports added to the summary, and the summary range in settings (the settings
+  // loader fills in the range; an older file just gets an empty list of reports).
+  4: (data) => ({ ...data, reports: Array.isArray(data.reports) ? data.reports : [] }),
 };
 
 export class TooNewError extends Error {

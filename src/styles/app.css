@@ -462,10 +462,19 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .donate__check { display: flex; align-items: center; gap: 8px; margin-top: 16px; font: 400 13px/1.4 var(--mono); color: var(--mid); cursor: pointer; }
 
 /* App icon choice (Settings › Appearance) */
-.icon-picker { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; padding: 4px 0 2px; }
+.irow .icon-picker.icon-picker { margin: 0 16px; width: auto; box-sizing: border-box; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 4px 0 2px; }
 .icon-pick { display: grid; justify-items: center; gap: 6px; background: none; border: 0; padding: 4px 0; color: var(--text); font: 400 11.5px/1.2 var(--mono); cursor: pointer; }
 .icon-pick img { width: 100%; max-width: 64px; aspect-ratio: 1; border-radius: 22%; }
 .icon-pick.sel img { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* Updates: the check mark shown when this is the latest version */
 .update-latest { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }
+
+/* Summary: period line, actions, and the report cards */
+.summary__head { justify-content: space-between; }
+.summary__range { font: 400 12px/1.3 var(--mono); color: var(--mid); }
+.summary__change { font: 400 12px/1 var(--mono); color: var(--accent); background: none; border: 0; padding: 6px 0; cursor: pointer; }
+.summary__actions { display: grid; gap: 10px; margin-top: 18px; }
+.reports { display: grid; gap: 14px; margin-top: 18px; }
+.report { background: var(--group-bg, #151517); border-radius: 16px; padding: 12px 14px 8px; }
+.report__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }

@@ -24,7 +24,7 @@ function check(label: string, actual: unknown, expected: unknown) {
 const pay = { ...DEFAULT_SETTINGS.pay, hourlyRate: 10, overtimeAfterHours: 40, overtimeMultiplier: 1.5 };
 
 console.log('\n=== Pay rules ===');
-check('schema is version 3', SCHEMA_VERSION, 3);
+check('schema is version 4', SCHEMA_VERSION, 4);
 check('no overtime limit: every hour is regular', computePay([{ weekStart: '2026-11-23', minutes: 60 * 50 }], { ...pay, overtimeAfterHours: null }), { regularMinutes: 3000, overtimeMinutes: 0, amount: 500 });
 check('40h week at 10/h, no overtime', computePay([{ weekStart: '2026-11-23', minutes: 40 * 60 }], pay), { regularMinutes: 2400, overtimeMinutes: 0, amount: 400 });
 check('45h week: 5h overtime at 1.5x', computePay([{ weekStart: '2026-11-23', minutes: 45 * 60 }], pay), { regularMinutes: 2400, overtimeMinutes: 300, amount: 475 });
@@ -81,7 +81,7 @@ check('deleting a shift clears its slots in rotations', repo.rotations[0].patter
 console.log('\n=== Migration and validation ===');
 const v1 = { schemaVersion: 1, blocks: [], shifts: [{ id: 's1', title: 'A', start_hour: 8, start_minute: 0, end_hour: 12, end_minute: 0, color: '#6BB6A3', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' }], assignments: [], settings: {} };
 const migrated = migrate(JSON.parse(JSON.stringify(v1))) as any;
-check('v1 shifts get no break and rotations is empty', [migrated.schemaVersion, migrated.shifts[0].break_minutes, migrated.rotations], [3, 0, []]);
+check('v1 shifts get no break and rotations is empty', [migrated.schemaVersion, migrated.shifts[0].break_minutes, migrated.rotations], [4, 0, []]);
 
 const fresh = new SlateRepository(memoryStore());
 await fresh.load();
