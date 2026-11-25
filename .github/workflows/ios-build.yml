@@ -30,8 +30,11 @@ jobs:
       - name: Build the app (unsigned)
         working-directory: ios/App
         run: |
+          # SWIFT_ENABLE_EXPLICIT_MODULES=NO: Xcode 26 cannot resolve the
+          # IONFilesystemLib module of @capacitor/filesystem with explicit modules.
           xcodebuild -project App.xcodeproj -target App -configuration Release \
-            -sdk iphoneos -arch arm64 CODE_SIGNING_ALLOWED=NO build
+            -sdk iphoneos -arch arm64 CODE_SIGNING_ALLOWED=NO \
+            SWIFT_ENABLE_EXPLICIT_MODULES=NO build
 
       - name: Package an unsigned IPA
         run: |
