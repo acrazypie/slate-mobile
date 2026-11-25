@@ -21,6 +21,9 @@ export const MIGRATIONS: Record<number, (data: Raw) => Raw> = {
       : data.shifts,
     rotations: Array.isArray(data.rotations) ? data.rotations : [],
   }),
+  // 3: events and shifts may carry their own reminder (undefined = the default lead
+  // time); settings get a notifications block, which the settings loader fills in.
+  3: (data) => data,
 };
 
 export class TooNewError extends Error {

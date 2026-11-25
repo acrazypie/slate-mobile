@@ -31,6 +31,8 @@ export interface Block {
   recurrence_group_id?: string;
   /** Week offsets of deleted occurrences ("only this one"). */
   skipped_weeks?: number[];
+  /** Minutes before the start for this event's reminder. undefined = the default, null = no reminder. */
+  reminder_minutes?: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -46,6 +48,8 @@ export interface Shift {
   /** Unpaid break inside the shift, in minutes. Not paid, not counted as hours worked. */
   break_minutes: number;
   color: string;
+  /** Minutes before each placed shift starts. undefined = the default, null = no reminder. */
+  reminder_minutes?: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -58,6 +62,7 @@ export interface ShiftFormData {
   end_minute: number;
   break_minutes: number;
   color: string;
+  reminder_minutes?: number | null;
 }
 
 /**
@@ -107,6 +112,7 @@ export interface BlockFormData {
   is_recurring?: boolean;
   recurrence_type?: RecurrenceType;
   recurrence_end_date?: string;
+  reminder_minutes?: number | null;
 }
 
 /** An occurrence as the views draw it: the series id, the week being shown. */

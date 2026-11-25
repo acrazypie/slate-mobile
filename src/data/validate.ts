@@ -5,7 +5,7 @@
 import type { Block, BlockCategory, Rotation, Shift, ShiftAssignment } from '../lib/types';
 import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_MIN_DAYS, shiftDurationMinutes } from '../lib/types';
 import { isLocale } from '../i18n/config';
-import { DEFAULT_SETTINGS, type CalendarSettings, type PaySettings, type Settings } from './schema';
+import { DEFAULT_SETTINGS, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
 
 export class ValidationError extends Error {
   constructor(public readonly path: string, message: string) {
@@ -54,6 +54,13 @@ function id(o: Obj, path: string): string {
   return str(o, 'id', path, { max: 100 });
 }
 
+/** A reminder: absent = default (undefined), null = off, else minutes before the start. */
+function reminder(o: Obj, path: string): number | null | undefined {
+  if (o.reminder_minutes === undefined) return undefined;
+  if (o.reminder_minutes === null) return null;
+  return int(o, 'reminder_minutes', path, 0, 10080);
+}
+
 export function validateBlock(raw: unknown, path: string): Block {
   if (!isObj(raw)) throw new ValidationError(path, 'expected an object');
   const blockId = id(raw, path);
@@ -77,6 +84,8 @@ export function validateBlock(raw: unknown, path: string): Block {
     created_at: stamp(raw, 'created_at'),
     updated_at: stamp(raw, 'updated_at'),
   };
+  const blockReminder = reminder(raw, path);
+  if (blockReminder !== undefined) block.reminder_minutes = blockReminder;
   if (isRecurring) {
     if (raw.recurrence_type !== 'weekly' && raw.recurrence_type !== 'monthly') {
       throw new ValidationError(`${path}.recurrence_type`, 'expected weekly or monthly');
@@ -110,6 +119,8 @@ export function validateShift(raw: unknown, path: string): Shift {
     created_at: stamp(raw, 'created_at'),
     updated_at: stamp(raw, 'updated_at'),
   };
+  const shiftReminder = reminder(raw, path);
+  if (shiftReminder !== undefined) shift.reminder_minutes = shiftReminder;
   if (shift.start_hour === shift.end_hour && shift.start_minute === shift.end_minute) {
     throw new ValidationError(path, 'a shift cannot start and end at the same time');
   }
@@ -194,10 +205,22 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
         ? pay.overtimeMultiplier
         : basePay.overtimeMultiplier,
   };
+  const n = isObj(s.notifications) ? s.notifications : {};
+  const baseN = base.notifications;
+  const bool = (v: unknown, fallback: boolean) => (typeof v === 'boolean' ? v : fallback);
+  const notifications: NotificationSettings = {
+    enabled: bool(n.enabled, baseN.enabled),
+    leadMinutes: typeof n.leadMinutes === 'number' && Number.isInteger(n.leadMinutes) && n.leadMinutes >= 0 && n.leadMinutes <= 10080 ? n.leadMinutes : baseN.leadMinutes,
+    events: bool(n.events, baseN.events),
+    shifts: bool(n.shifts, baseN.shifts),
+    newVersion: bool(n.newVersion, baseN.newVersion),
+    donate: bool(n.donate, baseN.donate),
+  };
   return {
     theme: s.theme === 'light' || s.theme === 'dark' || s.theme === 'system' ? s.theme : base.theme,
     mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
     pay: payOut,
+    notifications,
     google,
     accent: typeof s.accent === 'string' && HEX_COLOR.test(s.accent) ? s.accent.toUpperCase() : base.accent,
     locale: s.locale === null ? null : isLocale(s.locale) ? s.locale : base.locale,

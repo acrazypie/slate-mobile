@@ -3,7 +3,7 @@
 // places the new shift there once saved.
 
 import { useEffect, useState } from 'react';
-import { repo } from '../app/store';
+import { repo, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
 import { fill, formatDate } from '../i18n/format';
 import { haptics } from '../native/platform';
@@ -13,6 +13,7 @@ import { BREAK_MAX_MINUTES, COLOR_PALETTE, SHIFT_DEFAULT_COLOR, colorKey, format
 import { Dialog, Sheet } from '../ui/Sheet';
 import { Swatches } from '../ui/controls';
 import { Icon } from '../ui/icons';
+import { ReminderField } from './ReminderField';
 
 export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
   open: boolean;
@@ -22,6 +23,7 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
   onClose: () => void;
 }) {
   const { t, locale } = useI18n();
+  const settings = useSettings();
   const [title, setTitle] = useState('');
   const [start, setStart] = useState('09:00');
   const [end, setEnd] = useState('13:00');
@@ -29,6 +31,7 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
   const [breakMin, setBreakMin] = useState('0');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
+  const [reminder, setReminder] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
     if (!open) return;
@@ -39,6 +42,7 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
     setEnd(shift ? formatTime(shift.end_hour, shift.end_minute) : '13:00');
     setColor(shift?.color ?? SHIFT_DEFAULT_COLOR);
     setBreakMin(String(shift?.break_minutes ?? 0));
+    setReminder(shift?.reminder_minutes);
   }, [open, shift]);
 
   if (!open) return null;
@@ -66,7 +70,7 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
       haptics.warning();
       return;
     }
-    const form = { title, color, break_minutes: brk, ...times };
+    const form = { title, color, break_minutes: brk, reminder_minutes: reminder, ...times };
     if (shift) await repo.updateShift(shift.id, form);
     else {
       const created = await repo.createShift(form);
@@ -123,6 +127,10 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
         {breakTooLong ? t.breaks.tooLong : t.breaks.hint}
         {!breakTooLong && brk > 0 && <> {fill(t.breaks.withBreak, { minutes: brk })}: {formatDuration(paidShiftMinutes({ ...times, break_minutes: brk }))}</>}
       </p>
+
+      <div className="form-grp">
+        <ReminderField value={reminder} onChange={setReminder} defaultLead={settings.notifications.leadMinutes} />
+      </div>
 
       <span className="flabel label">{t.common.color}</span>
       <div className="pad-x">

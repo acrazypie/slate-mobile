@@ -14,6 +14,7 @@ import { Dialog, Sheet } from '../ui/Sheet';
 import { Swatches } from '../ui/controls';
 import { Icon } from '../ui/icons';
 import type { DeleteScope } from '../data/repository';
+import { ReminderField } from './ReminderField';
 
 export interface BlockTarget {
   /** Editing: the occurrence that was tapped (series id, shown week). */
@@ -41,6 +42,7 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
   const [notes, setNotes] = useState('');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState<'plain' | 'series' | null>(null);
+  const [reminder, setReminder] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
     if (!target) return;
@@ -58,6 +60,7 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
       setRepeat(b.is_recurring && b.recurrence_type ? b.recurrence_type : 'none');
       setRepeatEnd(b.recurrence_end_date ?? '');
       setNotes(b.notes ?? '');
+      setReminder(b.reminder_minutes);
     } else {
       setTitle('');
       setCategory('studio');
@@ -69,6 +72,7 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
       setRepeat('none');
       setRepeatEnd('');
       setNotes('');
+      setReminder(undefined);
     }
   }, [target]);
 
@@ -98,6 +102,7 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
       is_recurring: repeat !== 'none',
       recurrence_type: repeat === 'none' ? undefined : repeat,
       recurrence_end_date: repeat !== 'none' && repeatEnd ? repeatEnd : undefined,
+      reminder_minutes: reminder,
     };
     if (editing) await repo.updateBlock(editing.id, form, editingSeries ? undefined : weekOffsetForDate(day));
     else await repo.createBlock(form, weekOffsetForDate(day));
@@ -171,6 +176,10 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
           <span className="fld__l">{t.common.endTime}</span>
           <span className="fld__v">{formatTime(end.hour, end.minute)}</span>
         </div>
+      </div>
+
+      <div className="form-grp">
+        <ReminderField value={reminder} onChange={setReminder} defaultLead={settings.notifications.leadMinutes} />
       </div>
 
       <div className="form-grp">

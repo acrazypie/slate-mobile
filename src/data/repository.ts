@@ -165,6 +165,7 @@ export class SlateRepository {
       created_at: stamp,
       updated_at: stamp,
     };
+    if ('reminder_minutes' in form) block.reminder_minutes = form.reminder_minutes;
     if (isRecurring) {
       block.recurrence_type = form.recurrence_type;
       if (form.recurrence_end_date) block.recurrence_end_date = form.recurrence_end_date;
@@ -197,6 +198,7 @@ export class SlateRepository {
       is_recurring: isRecurring,
       updated_at: this.stamp(),
     };
+    if ('reminder_minutes' in form) next.reminder_minutes = form.reminder_minutes;
     if (weekOffset !== undefined && !existing.is_recurring) next.week_offset = weekOffset;
     if (isRecurring) {
       next.recurrence_type = form.recurrence_type;

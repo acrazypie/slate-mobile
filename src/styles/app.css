@@ -135,6 +135,9 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 
 /* grouped settings */
 .grp-wrap { margin-top: 8px; }
+/* Settings main page: clear space between the groups, and room inside each row. */
+.settings-groups { display: grid; gap: 26px; margin-top: 18px; }
+.settings-groups .irow__head { min-height: 60px; padding: 12px 16px; }
 .grp-h { padding: 22px calc(var(--pad) + 16px) 9px; }
 .grp-f { padding: 8px calc(var(--pad) + 16px) 0; font: 400 11.5px/1.55 var(--mono); color: var(--mid); }
 .grp { margin: 0 var(--pad); overflow: hidden; }

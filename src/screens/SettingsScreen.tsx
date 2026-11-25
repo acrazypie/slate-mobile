@@ -15,11 +15,14 @@ import { Dialog, useBackHandler } from '../ui/Sheet';
 import { Icon } from '../ui/icons';
 import { CalendarPicker } from './CalendarPicker';
 import { useUpdate } from '../update/useUpdate';
+import { LEAD_OPTIONS } from '../notify/plan';
+import { leadLabel, permission, requestPermission, type PermissionState } from '../notify/notifications';
+import type { NotificationSettings } from '../data/schema';
 import { AccountScreen } from './AccountScreen';
 
 /** The pages of Settings: the main list, one page per section, and the two full pages. */
-type Page = 'main' | 'appearance' | 'pay' | 'phone' | 'backup' | 'updates' | 'about' | 'calendars' | 'account';
-const SECTION_PAGES: Page[] = ['appearance', 'pay', 'phone', 'backup', 'updates', 'about'];
+type Page = 'main' | 'appearance' | 'pay' | 'phone' | 'backup' | 'updates' | 'about' | 'calendars' | 'account' | 'notifications';
+const SECTION_PAGES: Page[] = ['appearance', 'pay', 'phone', 'notifications', 'backup', 'updates', 'about'];
 
 export function SettingsScreen() {
   const { t, locale } = useI18n();
@@ -48,6 +51,7 @@ export function SettingsScreen() {
 
   const set = (patch: Parameters<typeof repo.updateSettings>[0]) => void repo.updateSettings(patch);
   const setCal = (patch: Partial<typeof settings.calendar>) => set({ calendar: { ...settings.calendar, ...patch } });
+  const setNotify = (patch: Partial<NotificationSettings>) => set({ notifications: { ...settings.notifications, ...patch } });
 
   const importMessage = (e: ImportError) =>
     e.kind === 'notJson' ? t.settings.errNotJson : e.kind === 'notSlate' ? t.settings.errNotSlate : e.kind === 'tooNew' ? t.settings.errTooNew : fill(t.settings.errInvalid, { detail: e.detail });
@@ -87,6 +91,7 @@ export function SettingsScreen() {
 
   const sectionText: Record<Exclude<Page, 'main' | 'calendars' | 'account'>, { title: string; lede: string }> = {
     appearance: { title: t.settingsPages.appearance.title, lede: t.settingsPages.appearance.lede },
+    notifications: { title: t.settingsPages.notifications.title, lede: t.settingsPages.notifications.lede },
     pay: { title: t.settingsPages.pay.title, lede: t.settingsPages.pay.lede },
     phone: { title: t.settingsPages.phone.title, lede: t.settingsPages.phone.lede },
     backup: { title: t.settingsPages.backup.title, lede: t.settingsPages.backup.lede },
@@ -101,15 +106,23 @@ export function SettingsScreen() {
           <header className="page__head">
             <h1 className="h-page">{t.settings.title}<span className="acc">.</span></h1>
           </header>
-          <Group>
-            <Row icon="moon" name={t.settingsPages.appearance.title} hint={t.settingsPages.appearance.short} chevron onClick={() => setPage('appearance')} />
-            <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
-            <Row icon="calendar" name={t.settingsPages.phone.title} hint={t.settingsPages.phone.short} chevron onClick={() => setPage('phone')} />
-            <Row icon="layout" name={t.settingsPages.pay.title} hint={t.settingsPages.pay.short} chevron onClick={() => setPage('pay')} />
-            <Row icon="upload" name={t.settingsPages.backup.title} hint={t.settingsPages.backup.short} chevron onClick={() => setPage('backup')} />
-            <Row icon="refresh" name={t.settingsPages.updates.title} hint={t.settingsPages.updates.short} chevron onClick={() => setPage('updates')} />
-            <Row icon="info" name={t.settingsPages.about.title} hint={t.settingsPages.about.short} chevron onClick={() => setPage('about')} />
-          </Group>
+          {/* Three short groups with space between them, instead of one long list of two-line rows. */}
+          <div className="settings-groups">
+            <Group>
+              <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
+              <Row icon="bell" name={t.settingsPages.notifications.title} chevron onClick={() => setPage('notifications')} />
+              <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
+            </Group>
+            <Group>
+              <Row icon="calendar" name={t.settingsPages.phone.title} chevron onClick={() => setPage('phone')} />
+              <Row icon="layout" name={t.settingsPages.pay.title} chevron onClick={() => setPage('pay')} />
+            </Group>
+            <Group>
+              <Row icon="upload" name={t.settingsPages.backup.title} chevron onClick={() => setPage('backup')} />
+              <Row icon="refresh" name={t.settingsPages.updates.title} chevron onClick={() => setPage('updates')} />
+              <Row icon="info" name={t.settingsPages.about.title} chevron onClick={() => setPage('about')} />
+            </Group>
+          </div>
         </>
       )}
       {SECTION_PAGES.includes(page) && page !== 'main' && (
@@ -304,6 +317,10 @@ export function SettingsScreen() {
       )}
       <input ref={fileInput} type="file" accept="application/json,.json,text/plain" hidden onChange={(e) => void onFile(e.target.files?.[0])} />
 
+      {page === 'notifications' && (
+        <NotificationsPage settings={settings.notifications} setNotify={setNotify} />
+      )}
+
       {page === 'updates' && update.status.kind !== 'unsupported' && (
         <Group label={t.update.title} footer={t.update.footer}>
           <Row
@@ -373,5 +390,66 @@ export function SettingsScreen() {
         actions={[{ label: t.common.delete, kind: 'danger', onClick: async () => { setConfirmRemove(false); await repo.updateSettings({ calendar: { ...settings.calendar, push: false } }); await cal.removePushed(); toast(t.calendarSync.removed); } }]}
       />
     </div>
+  );
+}
+
+/** Settings › Notifications: the master switch, the default lead time, and what sends notices. */
+function NotificationsPage({ settings, setNotify }: { settings: NotificationSettings; setNotify: (patch: Partial<NotificationSettings>) => void }) {
+  const { t } = useI18n();
+  const [perm, setPerm] = useState<PermissionState>('unsupported');
+  const refresh = () => void permission().then(setPerm);
+  useEffect(refresh, [settings.enabled]);
+  const permText = perm === 'granted' ? t.notify.granted : perm === 'denied' ? t.notify.denied : t.notify.ask;
+  return (
+    <>
+      <Group footer={t.notify.masterHint}>
+        <Row icon="bell" name={t.notify.master}>
+          <Switch
+            label={t.notify.master}
+            checked={settings.enabled}
+            onChange={async (enabled) => {
+              setNotify({ enabled });
+              if (enabled && perm === 'prompt') await requestPermission();
+              refresh();
+            }}
+          />
+        </Row>
+        {settings.enabled && perm !== 'unsupported' && (
+          <Row icon="info" name={perm === 'granted' ? t.notify.granted : t.notify.denied} hint={perm === 'granted' ? undefined : permText}>
+            {perm === 'prompt' && (
+              <button type="button" className="btn" onClick={async () => { await requestPermission(); refresh(); }}>{t.notify.allow}</button>
+            )}
+          </Row>
+        )}
+      </Group>
+
+      {settings.enabled && (
+        <>
+          <Group footer={t.notify.leadHint}>
+            <Row icon="clock" name={t.notify.lead} stack>
+              <select className="row-select" value={settings.leadMinutes} onChange={(e) => setNotify({ leadMinutes: Number(e.target.value) })} aria-label={t.notify.lead}>
+                {LEAD_OPTIONS.map((m) => <option key={m} value={m}>{leadLabel(m, t)}</option>)}
+              </select>
+            </Row>
+          </Group>
+          <Group>
+            <Row icon="calendar" name={t.notify.events}>
+              <Switch label={t.notify.events} checked={settings.events} onChange={(events) => setNotify({ events })} />
+            </Row>
+            <Row icon="layout" name={t.notify.shifts}>
+              <Switch label={t.notify.shifts} checked={settings.shifts} onChange={(shifts) => setNotify({ shifts })} />
+            </Row>
+          </Group>
+          <Group>
+            <Row icon="refresh" name={t.notify.newVersion}>
+              <Switch label={t.notify.newVersion} checked={settings.newVersion} onChange={(newVersion) => setNotify({ newVersion })} />
+            </Row>
+            <Row icon="info" name={t.notify.donate} hint={t.notify.donateHint}>
+              <Switch label={t.notify.donate} checked={settings.donate} onChange={(donate) => setNotify({ donate })} />
+            </Row>
+          </Group>
+        </>
+      )}
+    </>
   );
 }

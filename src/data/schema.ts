@@ -7,7 +7,7 @@
 import type { Block, Rotation, Shift, ShiftAssignment, ViewMode } from '../lib/types';
 import type { Locale } from '../i18n/config';
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export type ThemeSetting = 'system' | 'light' | 'dark';
 
@@ -62,8 +62,28 @@ export interface GoogleSettings {
  */
 export type AppMode = 'local' | 'hosted';
 
+/**
+ * Notifications. Reminders are scheduled on the phone (no server). Each event
+ * and shift can override the default lead time or turn its own reminder off.
+ */
+export interface NotificationSettings {
+  /** Master switch: off removes every scheduled reminder and sends nothing. */
+  enabled: boolean;
+  /** Minutes before the start, unless an item says otherwise. 0 = at the start. */
+  leadMinutes: number;
+  /** Reminders for events (Slate blocks). */
+  events: boolean;
+  /** Reminders for placed shifts. */
+  shifts: boolean;
+  /** A notice when a newer version is on GitHub (Android). */
+  newVersion: boolean;
+  /** An occasional Ko-fi reminder, the same schedule as the support prompt used to have. */
+  donate: boolean;
+}
+
 export interface Settings {
   theme: ThemeSetting;
+  notifications: NotificationSettings;
   mode: AppMode;
   pay: PaySettings;
   google: GoogleSettings;
@@ -95,6 +115,7 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
   mode: 'local',
   pay: { hourlyRate: null, currency: '', overtimeAfterHours: null, overtimeMultiplier: 1.5 },
+  notifications: { enabled: true, leadMinutes: 10, events: true, shifts: true, newVersion: true, donate: true },
   google: { enabled: false, push: false, pushShifts: true, showEvents: false },
   accent: DEFAULT_ACCENT,
   locale: null,
