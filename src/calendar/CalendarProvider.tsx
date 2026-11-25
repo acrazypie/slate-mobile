@@ -7,7 +7,9 @@ import { kv, repo, useSettings } from '../app/store';
 import { onResume } from '../native/platform';
 import type { DeviceEvent } from '../lib/types';
 import * as device from './device';
-import { loadPushState, pushedEventIds, removeAllPushed, syncToDevice } from './push';
+import { loadPushState, pushedEventIds, PUSH_KEY, removeAllPushed, syncCalendar } from './push';
+import { deviceBackend } from './backend';
+import { useGoogle } from '../google/GoogleProvider';
 
 interface SyncStatus {
   syncing: boolean;
@@ -82,7 +84,7 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
     const run = (async () => {
       setStatus((st) => ({ ...st, syncing: true, error: null }));
       try {
-        const report = await syncToDevice(repo.getSnapshot(), kv, s.targetCalendarId, s.pushShifts);
+        const report = await syncCalendar(repo.getSnapshot(), kv, deviceBackend, PUSH_KEY, s.targetCalendarId, s.pushShifts);
         const state = await loadPushState(kv);
         setPushedIds(pushedEventIds(state));
         setSlateCalendarId(state.calendarId);
@@ -107,7 +109,7 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const removePushed = useCallback(async () => {
-    await removeAllPushed(kv);
+    await removeAllPushed(kv, deviceBackend, PUSH_KEY);
     await refresh();
   }, [refresh]);
 
@@ -165,6 +167,7 @@ export function useVisibleCalendars(): device.DeviceCalendar[] {
 /** Device events overlapping [start, end] (calendar days, inclusive). */
 export function useDeviceEvents(start: Date, end: Date): DeviceEvent[] {
   const { access, version, pushedIds } = useDeviceCalendar();
+  const google = useGoogle();
   const visible = useVisibleCalendars();
   const [events, setEvents] = useState<DeviceEvent[]>([]);
   const from = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
@@ -172,25 +175,25 @@ export function useDeviceEvents(start: Date, end: Date): DeviceEvent[] {
   const ids = visible.map((c) => c.id).join(',');
 
   useEffect(() => {
-    if (access !== 'full' || visible.length === 0) {
-      setEvents([]);
-      return;
-    }
     let cancelled = false;
-    device
-      .listEvents(new Date(from), new Date(to), visible)
-      .then((list) => {
-        if (!cancelled) setEvents(list.filter((e) => !pushedIds.has(device.rawEventId(e.id))));
-      })
-      .catch((err) => {
-        console.warn('[calendar] listEvents failed', err);
-        if (!cancelled) setEvents([]);
-      });
+    const onDevice = access === 'full' && visible.length > 0
+      ? device
+          .listEvents(new Date(from), new Date(to), visible)
+          .then((list) => list.filter((e) => !pushedIds.has(device.rawEventId(e.id))))
+          .catch((err) => {
+            console.warn('[calendar] listEvents failed', err);
+            return [] as DeviceEvent[];
+          })
+      : Promise.resolve([] as DeviceEvent[]);
+    const onGoogle = google.events(new Date(from), new Date(to));
+    void Promise.all([onDevice, onGoogle]).then(([a, b]) => {
+      if (!cancelled) setEvents([...a, ...b]);
+    });
     return () => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [access, from, to, ids, version, pushedIds]);
+  }, [access, from, to, ids, version, pushedIds, google.version, google.events]);
 
   return events;
 }

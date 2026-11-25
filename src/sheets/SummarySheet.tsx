@@ -4,16 +4,19 @@
 
 import { useMemo, useState } from 'react';
 import { endOfMonth, startOfMonth } from 'date-fns';
-import { useData } from '../app/store';
+import { useData, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
-import { capitalize, formatDate } from '../i18n/format';
+import { capitalize, fill, formatDate } from '../i18n/format';
+import { computePay, formatMoney } from '../lib/pay';
 import { CATEGORIES, CATEGORY_COLORS, SHIFT_DEFAULT_COLOR, formatDuration } from '../lib/types';
 import { dayContents, daysFrom, summarize, weekStart } from '../lib/days';
 import { Sheet } from '../ui/Sheet';
+import { Icon } from '../ui/icons';
 
 export function SummaryPanel({ anchor }: { anchor: Date }) {
   const { t, locale } = useI18n();
   const data = useData();
+  const settings = useSettings();
   const [scope, setScope] = useState<'week' | 'month'>('week');
   const week = useMemo(() => summarize(dayContents(data, daysFrom(weekStart(anchor), 7))), [data, anchor]);
   const month = useMemo(() => {
@@ -24,6 +27,10 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
   const max = Math.max(1, ...CATEGORIES.map((c) => s.byCategory[c]), s.shifts);
   const hours = (m: number) => Math.round((m / 60) * 10) / 10;
   const monthName = capitalize(formatDate(locale, anchor, 'monthYear').replace(String(anchor.getFullYear()), '').trim());
+  const pay = useMemo(
+    () => computePay(Object.entries(s.shiftsByWeek).map(([weekStart, minutes]) => ({ weekStart, minutes })), settings.pay),
+    [s, settings.pay],
+  );
 
   return (
     <section className="summary">
@@ -65,6 +72,21 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
             <span className="v">{s.shifts ? formatDuration(s.shifts) : '–'}</span>
           </div>
         </div>
+      )}
+      {settings.pay.hourlyRate !== null && s.shifts > 0 && (
+        <div className="hud">
+          <div className="hud__c">
+            <span className="label">{t.pay.earnings}</span>
+            <div className="hud__v acc">{formatMoney(pay.amount ?? 0, settings.pay.currency, locale)}</div>
+          </div>
+          <div className="hud__c">
+            <span className="label">{t.pay.overtime}</span>
+            <div className="hud__v">{hours(pay.overtimeMinutes)}<small>h</small></div>
+          </div>
+        </div>
+      )}
+      {s.breaks > 0 && (
+        <p className="note"><Icon name="info" />{fill(t.breaks.excluded, { minutes: s.breaks })}</p>
       )}
     </section>
   );

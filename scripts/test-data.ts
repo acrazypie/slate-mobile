@@ -99,8 +99,8 @@ check('turning a series into a plain event', [repo.getBlock(m.id)?.is_recurring,
 await repo.deleteBlock(m.id);
 
 console.log('\n=== Shifts ===');
-const night = await repo.createShift({ title: 'Notte', start_hour: 22, start_minute: 0, end_hour: 6, end_minute: 0, color: '#7AA7D9' });
-const morning = await repo.createShift({ title: 'Mattina', start_hour: 9, start_minute: 0, end_hour: 13, end_minute: 0, color: '#6BB6A3' });
+const night = await repo.createShift({ break_minutes: 0, title: 'Notte', start_hour: 22, start_minute: 0, end_hour: 6, end_minute: 0, color: '#7AA7D9' });
+const morning = await repo.createShift({ break_minutes: 0, title: 'Mattina', start_hour: 9, start_minute: 0, end_hour: 13, end_minute: 0, color: '#6BB6A3' });
 check('sorted by start time', repo.shifts.map((s) => s.title), ['Mattina', 'Notte']);
 check('overnight', [isOvernightShift(night), shiftDurationMinutes(night)], [true, 480]);
 await repo.assignShift(night.id, '2026-11-20');

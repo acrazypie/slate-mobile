@@ -2,10 +2,10 @@
 // being imported, or whatever is in storage at launch. Every entity is checked
 // field by field; nothing is trusted because it parsed as JSON.
 
-import type { Block, BlockCategory, Shift, ShiftAssignment } from '../lib/types';
-import { CATEGORIES, HEX_COLOR } from '../lib/types';
+import type { Block, BlockCategory, Rotation, Shift, ShiftAssignment } from '../lib/types';
+import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_MIN_DAYS, shiftDurationMinutes } from '../lib/types';
 import { isLocale } from '../i18n/config';
-import { DEFAULT_SETTINGS, type CalendarSettings, type Settings } from './schema';
+import { DEFAULT_SETTINGS, type CalendarSettings, type PaySettings, type Settings } from './schema';
 
 export class ValidationError extends Error {
   constructor(public readonly path: string, message: string) {
@@ -104,6 +104,8 @@ export function validateShift(raw: unknown, path: string): Shift {
     start_minute: int(raw, 'start_minute', path, 0, 59),
     end_hour: int(raw, 'end_hour', path, 0, 23),
     end_minute: int(raw, 'end_minute', path, 0, 59),
+    // Shifts stored before schema 2 have no break.
+    break_minutes: raw.break_minutes === undefined ? 0 : int(raw, 'break_minutes', path, 0, BREAK_MAX_MINUTES),
     color: color(raw, 'color', path),
     created_at: stamp(raw, 'created_at'),
     updated_at: stamp(raw, 'updated_at'),
@@ -111,7 +113,31 @@ export function validateShift(raw: unknown, path: string): Shift {
   if (shift.start_hour === shift.end_hour && shift.start_minute === shift.end_minute) {
     throw new ValidationError(path, 'a shift cannot start and end at the same time');
   }
+  if (shift.break_minutes > 0 && shift.break_minutes >= shiftDurationMinutes(shift)) {
+    throw new ValidationError(`${path}.break_minutes`, 'the break must be shorter than the shift');
+  }
   return shift;
+}
+
+export function validateRotation(raw: unknown, path: string): Rotation {
+  if (!isObj(raw)) throw new ValidationError(path, 'expected an object');
+  const pattern = raw.pattern;
+  if (!Array.isArray(pattern) || pattern.length < ROTATION_MIN_DAYS || pattern.length > ROTATION_MAX_DAYS) {
+    throw new ValidationError(`${path}.pattern`, `expected ${ROTATION_MIN_DAYS} to ${ROTATION_MAX_DAYS} days`);
+  }
+  return {
+    id: id(raw, path),
+    title: str(raw, 'title', path, { max: 100 }),
+    pattern: pattern.map((entry, i) => {
+      if (entry === null) return null;
+      if (typeof entry !== 'string' || entry.length === 0 || entry.length > 100) {
+        throw new ValidationError(`${path}.pattern[${i}]`, 'expected a shift id or null');
+      }
+      return entry;
+    }),
+    created_at: stamp(raw, 'created_at'),
+    updated_at: stamp(raw, 'updated_at'),
+  };
 }
 
 export function validateAssignment(raw: unknown, path: string): ShiftAssignment {
@@ -144,8 +170,35 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
         ? (cal.targetCalendarId as string | null)
         : baseCal.targetCalendarId,
   };
+  const g = isObj(s.google) ? s.google : {};
+  const baseG = base.google;
+  const google = {
+    enabled: typeof g.enabled === 'boolean' ? g.enabled : baseG.enabled,
+    push: typeof g.push === 'boolean' ? g.push : baseG.push,
+    pushShifts: typeof g.pushShifts === 'boolean' ? g.pushShifts : baseG.pushShifts,
+    showEvents: typeof g.showEvents === 'boolean' ? g.showEvents : baseG.showEvents,
+  };
+  const pay = isObj(s.pay) ? s.pay : {};
+  const basePay = base.pay;
+  const payOut: PaySettings = {
+    hourlyRate: pay.hourlyRate === null ? null : typeof pay.hourlyRate === 'number' && pay.hourlyRate >= 0 && pay.hourlyRate < 1e6 ? pay.hourlyRate : basePay.hourlyRate,
+    currency: typeof pay.currency === 'string' ? pay.currency.slice(0, 4) : basePay.currency,
+    overtimeAfterHours:
+      pay.overtimeAfterHours === null
+        ? null
+        : typeof pay.overtimeAfterHours === 'number' && pay.overtimeAfterHours >= 1 && pay.overtimeAfterHours <= 168
+          ? pay.overtimeAfterHours
+          : basePay.overtimeAfterHours,
+    overtimeMultiplier:
+      typeof pay.overtimeMultiplier === 'number' && pay.overtimeMultiplier >= 1 && pay.overtimeMultiplier <= 3
+        ? pay.overtimeMultiplier
+        : basePay.overtimeMultiplier,
+  };
   return {
     theme: s.theme === 'light' || s.theme === 'dark' || s.theme === 'system' ? s.theme : base.theme,
+    mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
+    pay: payOut,
+    google,
     accent: typeof s.accent === 'string' && HEX_COLOR.test(s.accent) ? s.accent.toUpperCase() : base.accent,
     locale: s.locale === null ? null : isLocale(s.locale) ? s.locale : base.locale,
     defaultView: s.defaultView === 'day' || s.defaultView === 'week' || s.defaultView === 'month' ? s.defaultView : base.defaultView,
@@ -161,13 +214,20 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
  * assignment must point at an existing shift, and a shift can be placed on a
  * day only once. Throws on the first problem.
  */
-export function validateCollections(raw: Obj): { blocks: Block[]; shifts: Shift[]; assignments: ShiftAssignment[] } {
+export function validateCollections(raw: Obj): {
+  blocks: Block[];
+  shifts: Shift[];
+  assignments: ShiftAssignment[];
+  rotations: Rotation[];
+} {
   for (const key of ['blocks', 'shifts', 'assignments']) {
     if (!Array.isArray(raw[key])) throw new ValidationError(key, 'expected a list');
   }
+  if (raw.rotations !== undefined && !Array.isArray(raw.rotations)) throw new ValidationError('rotations', 'expected a list');
   const blocks = (raw.blocks as unknown[]).map((b, i) => validateBlock(b, `blocks[${i}]`));
   const shifts = (raw.shifts as unknown[]).map((s, i) => validateShift(s, `shifts[${i}]`));
   const assignments = (raw.assignments as unknown[]).map((a, i) => validateAssignment(a, `assignments[${i}]`));
+  const rotations = ((raw.rotations as unknown[] | undefined) ?? []).map((r, i) => validateRotation(r, `rotations[${i}]`));
 
   const unique = (items: { id: string }[], name: string) => {
     const seen = new Set<string>();
@@ -179,8 +239,16 @@ export function validateCollections(raw: Obj): { blocks: Block[]; shifts: Shift[
   unique(blocks, 'blocks');
   unique(shifts, 'shifts');
   unique(assignments, 'assignments');
+  unique(rotations, 'rotations');
 
   const shiftIds = new Set(shifts.map((s) => s.id));
+  rotations.forEach((r, i) => {
+    r.pattern.forEach((shiftId, j) => {
+      if (shiftId !== null && !shiftIds.has(shiftId)) {
+        throw new ValidationError(`rotations[${i}].pattern[${j}]`, 'refers to a shift that does not exist');
+      }
+    });
+  });
   const placed = new Set<string>();
   assignments.forEach((a, i) => {
     if (!shiftIds.has(a.shift_id)) throw new ValidationError(`assignments[${i}].shift_id`, 'refers to a shift that does not exist');
@@ -188,5 +256,5 @@ export function validateCollections(raw: Obj): { blocks: Block[]; shifts: Shift[
     if (placed.has(key)) throw new ValidationError(`assignments[${i}]`, 'the same shift is placed twice on one day');
     placed.add(key);
   });
-  return { blocks, shifts, assignments };
+  return { blocks, shifts, assignments, rotations };
 }

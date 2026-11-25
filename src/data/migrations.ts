@@ -13,6 +13,14 @@ export const MIGRATIONS: Record<number, (data: Raw) => Raw> = {
   // 1: first local schema. Version 0 (missing) means a hand-made file shaped
   // like version 1 without the field, so there is nothing to change.
   1: (data) => data,
+  // 2: shifts get an unpaid break (none before), and rotations appear.
+  2: (data) => ({
+    ...data,
+    shifts: Array.isArray(data.shifts)
+      ? data.shifts.map((s) => (typeof s === 'object' && s !== null ? { break_minutes: 0, ...s } : s))
+      : data.shifts,
+    rotations: Array.isArray(data.rotations) ? data.rotations : [],
+  }),
 };
 
 export class TooNewError extends Error {

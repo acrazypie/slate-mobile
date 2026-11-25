@@ -43,6 +43,8 @@ export interface Shift {
   start_minute: number;
   end_hour: number;
   end_minute: number;
+  /** Unpaid break inside the shift, in minutes. Not paid, not counted as hours worked. */
+  break_minutes: number;
   color: string;
   created_at: string;
   updated_at: string;
@@ -54,8 +56,31 @@ export interface ShiftFormData {
   start_minute: number;
   end_hour: number;
   end_minute: number;
+  break_minutes: number;
   color: string;
 }
+
+/**
+ * A repeating pattern of shifts, e.g. "2 mornings, 2 nights, 4 off". Entry i
+ * is the shift worked on day i of the cycle (null = day off). Applying it
+ * places the shifts on the calendar from a chosen day, cycle after cycle.
+ */
+export interface Rotation {
+  id: string;
+  title: string;
+  pattern: (string | null)[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RotationFormData {
+  title: string;
+  pattern: (string | null)[];
+}
+
+export const ROTATION_MIN_DAYS = 2;
+export const ROTATION_MAX_DAYS = 28;
+export const BREAK_MAX_MINUTES = 240;
 
 /** A shift placed on one calendar day. Unique on (shift_id, shift_date). */
 export interface ShiftAssignment {
@@ -94,6 +119,10 @@ export type BlockOccurrence = Block;
  */
 export interface DeviceEvent {
   id: string;
+  /** Where it lives: the phone's calendars, or the user's Google account (shown read-only). */
+  source: 'device' | 'google';
+  /** Can be edited from Slate (a writable phone calendar). Google events are read-only here. */
+  writable: boolean;
   calendarId: string;
   calendarName: string;
   title: string;
@@ -232,6 +261,12 @@ export function shiftDurationMinutes(shift: ShiftTimes): number {
   const start = shift.start_hour * 60 + shift.start_minute;
   const end = shift.end_hour * 60 + shift.end_minute;
   return end > start ? end - start : end + 24 * 60 - start;
+}
+
+/** Hours that count as worked: the shift minus its unpaid break. */
+export function paidShiftMinutes(shift: ShiftTimes & { break_minutes?: number }): number {
+  const total = shiftDurationMinutes(shift);
+  return Math.max(0, total - Math.min(Math.max(shift.break_minutes ?? 0, 0), total));
 }
 
 /** Dark or light text, whichever reads better on the colour. */

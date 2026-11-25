@@ -14,6 +14,7 @@ import { Group, Row, Segmented, Swatches, Switch, useToast } from '../ui/control
 import { Dialog, useBackHandler } from '../ui/Sheet';
 import { Icon } from '../ui/icons';
 import { CalendarPicker } from './CalendarPicker';
+import { AccountScreen } from './AccountScreen';
 
 export function SettingsScreen() {
   const { t, locale } = useI18n();
@@ -21,7 +22,7 @@ export function SettingsScreen() {
   const data = useData();
   const toast = useToast();
   const cal = useDeviceCalendar();
-  const [page, setPage] = useState<'main' | 'calendars'>('main');
+  const [page, setPage] = useState<'main' | 'calendars' | 'account'>('main');
   const [version, setVersion] = useState('');
   const [lastExport, setLastExport] = useState<string | null>(null);
   const [pendingImport, setPendingImport] = useState<SlateData | null>(null);
@@ -37,6 +38,7 @@ export function SettingsScreen() {
   }, []);
 
   if (page === 'calendars') return <CalendarPicker onBack={() => setPage('main')} />;
+  if (page === 'account') return <AccountScreen onBack={() => setPage('main')} />;
 
   const set = (patch: Parameters<typeof repo.updateSettings>[0]) => void repo.updateSettings(patch);
   const setCal = (patch: Partial<typeof settings.calendar>) => set({ calendar: { ...settings.calendar, ...patch } });
@@ -124,6 +126,58 @@ export function SettingsScreen() {
             <Switch checked={settings.haptics} onChange={(haptics) => set({ haptics })} label={t.settings.haptics} />
           </Row>
         )}
+      </Group>
+
+      <Group label={t.pay.title} footer={t.pay.hint}>
+        <Row icon="globe" name={t.pay.rate}>
+          <input
+            className="row-select"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            step={0.5}
+            placeholder="—"
+            aria-label={t.pay.rate}
+            value={settings.pay.hourlyRate ?? ''}
+            onChange={(e) => set({ pay: { ...settings.pay, hourlyRate: e.target.value === '' ? null : Math.max(0, Number(e.target.value)) } })}
+          />
+        </Row>
+        <Row icon="globe" name={t.pay.currency}>
+          <input
+            className="row-select"
+            type="text"
+            maxLength={4}
+            placeholder="€"
+            aria-label={t.pay.currency}
+            value={settings.pay.currency}
+            onChange={(e) => set({ pay: { ...settings.pay, currency: e.target.value } })}
+          />
+        </Row>
+        <Row icon="clock" name={t.pay.overtimeAfter}>
+          <select
+            className="row-select"
+            value={settings.pay.overtimeAfterHours ?? ''}
+            onChange={(e) => set({ pay: { ...settings.pay, overtimeAfterHours: e.target.value === '' ? null : Number(e.target.value) } })}
+            aria-label={t.pay.overtimeAfter}
+          >
+            <option value="">{t.pay.overtimeOff}</option>
+            {[35, 38, 40, 42, 48].map((h) => <option key={h} value={h}>{h}</option>)}
+          </select>
+        </Row>
+        <Row icon="layout" name={t.pay.multiplier}>
+          <select
+            className="row-select"
+            value={settings.pay.overtimeMultiplier}
+            onChange={(e) => set({ pay: { ...settings.pay, overtimeMultiplier: Number(e.target.value) } })}
+            aria-label={t.pay.multiplier}
+          >
+            {[1.25, 1.5, 2, 2.5].map((m) => <option key={m} value={m}>×{m}</option>)}
+          </select>
+        </Row>
+      </Group>
+
+      <Group footer={t.account.entryFooter}>
+        <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
       </Group>
 
       <Group label={t.calendarSync.title} footer={cal.access === 'unavailable' ? t.calendarSync.unavailable : cal.access === 'full' ? <>{t.calendarSync.pushHint}<br /><br />{t.calendarSync.footer}</> : t.calendarSync.footer}>

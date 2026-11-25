@@ -5,6 +5,7 @@ import type { CSSProperties } from 'react';
 import type { Block, DeviceEvent, OverlapSlot } from '../lib/types';
 import { blockEndTime, formatCompactRange, formatTime, overlapPosition } from '../lib/types';
 import type { ShiftSegment } from '../lib/days';
+import { useI18n } from '../i18n/I18n';
 
 export const MIN_CARD_MINUTES = 30;
 
@@ -47,9 +48,11 @@ export function ShiftCard({ seg, p, onClick }: { seg: ShiftSegment; p: Placement
 }
 
 export function DeviceCard({ event, p, onClick }: { event: DeviceEvent; p: Placement; onClick: () => void }) {
+  const { t } = useI18n();
   return (
     <button type="button" className={cls('ev ev--device', p)} style={style(p, event.color)} onClick={(e) => { e.stopPropagation(); onClick(); }}>
       <span className="ev__patch">
+        {p.height > 40 && <em className="ev__tag">{event.source === 'google' ? t.eventTags.google : t.eventTags.device}</em>}
         <b>{event.title}</b>
         {p.height > 52 && <small>{formatCompactRange(event.start_hour, event.start_minute, event.end_hour, event.end_minute)}</small>}
       </span>

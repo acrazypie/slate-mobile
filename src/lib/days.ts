@@ -4,7 +4,7 @@
 
 import { addDays, startOfWeek } from 'date-fns';
 import type { Block, BlockCategory, PlacedShift } from './types';
-import { shiftDurationMinutes } from './types';
+import { paidShiftMinutes, shiftDurationMinutes } from './types';
 import { keyFromDate, weekOffsetForDate } from './recurrence';
 import { blocksForWeek, placedShifts } from '../data/repository';
 import type { SlateData } from '../data/schema';
@@ -62,20 +62,35 @@ export function dayContents(data: SlateData, days: Date[]): DayContent[] {
 }
 
 export interface Summary {
+  /** Hours counted: blocks plus shifts without their unpaid breaks. */
   total: number;
   byCategory: Record<BlockCategory, number>;
+  /** Paid shift minutes (duration minus breaks). */
   shifts: number;
+  /** Unpaid break minutes across the shifts in the period. */
+  breaks: number;
+  /** Paid shift minutes per Monday-to-Sunday week, keyed by that Monday ('yyyy-MM-dd'). */
+  shiftsByWeek: Record<string, number>;
 }
 
 export function summarize(contents: DayContent[]): Summary {
   const byCategory: Record<BlockCategory, number> = { studio: 0, lavoro: 0, lezione: 0, altro: 0 };
   let shifts = 0;
+  let breaks = 0;
+  const shiftsByWeek: Record<string, number> = {};
   for (const d of contents) {
     for (const b of d.blocks) byCategory[b.category] += b.duration_minutes;
-    for (const s of d.shifts) if (!s.continued) shifts += shiftDurationMinutes(s.placed.shift);
+    for (const s of d.shifts) {
+      if (s.continued) continue;
+      const paid = paidShiftMinutes(s.placed.shift);
+      shifts += paid;
+      breaks += Math.min(s.placed.shift.break_minutes, shiftDurationMinutes(s.placed.shift));
+      const week = keyFromDate(weekStart(d.date));
+      shiftsByWeek[week] = (shiftsByWeek[week] ?? 0) + paid;
+    }
   }
   const total = Object.values(byCategory).reduce((a, b) => a + b, 0) + shifts;
-  return { total, byCategory, shifts };
+  return { total, byCategory, shifts, breaks, shiftsByWeek };
 }
 
 /** "4h", "4h30", "45m" — compact, for day headers. */

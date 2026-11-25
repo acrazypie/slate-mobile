@@ -24,10 +24,11 @@
 
 import type { SlateData } from '../data/schema';
 import type { KeyValueStore } from '../data/storage';
-import * as device from './device';
+import type { CalendarBackend } from './backend';
 import { wantedItems } from './plan';
 
 export const PUSH_KEY = 'slate:calendar-push';
+export const GOOGLE_PUSH_KEY = 'slate:google-push';
 
 interface PushedItem {
   hash: string;
@@ -44,9 +45,9 @@ export interface PushState {
   lastSync: string | null;
 }
 
-export async function loadPushState(store: KeyValueStore): Promise<PushState> {
+export async function loadPushState(store: KeyValueStore, key: string = PUSH_KEY): Promise<PushState> {
   try {
-    const raw = await store.get(PUSH_KEY);
+    const raw = await store.get(key);
     if (raw) {
       const parsed = JSON.parse(raw) as PushState;
       if (parsed && typeof parsed.items === 'object') return parsed;
@@ -73,37 +74,39 @@ export interface SyncReport {
  * Slate's own calendar (created when missing). Saves the map after each item
  * so an interrupted sync never forgets an event it created.
  */
-export async function syncToDevice(
+export async function syncCalendar(
   data: SlateData,
   store: KeyValueStore,
+  backend: CalendarBackend,
+  key: string,
   targetCalendarId: string | null,
   pushShifts: boolean,
 ): Promise<SyncReport> {
-  const state = await loadPushState(store);
-  const calendars = await device.listCalendars();
+  const state = await loadPushState(store, key);
+  const calendars = await backend.listCalendars();
   let calendarId = targetCalendarId;
   if (!calendarId || !calendars.some((c) => c.id === calendarId && c.writable)) {
-    calendarId = await device.ensureSlateCalendar(data.settings.accent);
+    calendarId = await backend.ensureSlateCalendar(data.settings.accent);
   }
 
   // Target changed, or the calendar we pushed to is gone (deleted by the user,
   // account removed): what we pushed there is moot, start a fresh map.
   if (state.calendarId && state.calendarId !== calendarId) {
     if (calendars.some((c) => c.id === state.calendarId)) {
-      await device.deleteEvents(Object.values(state.items).flatMap((i) => i.events));
+      await backend.deleteEvents(Object.values(state.items).flatMap((i) => i.events));
     }
     state.items = {};
   }
   state.calendarId = calendarId;
 
-  const save = () => store.set(PUSH_KEY, JSON.stringify(state));
+  const save = () => store.set(key, JSON.stringify(state));
   const wanted = wantedItems(data, calendarId, pushShifts);
   const wantedKeys = new Set(wanted.map((w) => w.key));
   let changed = 0;
 
   for (const [key, item] of Object.entries(state.items)) {
     if (wantedKeys.has(key)) continue;
-    await device.deleteEvents(item.events);
+    await backend.deleteEvents(item.events);
     delete state.items[key];
     changed++;
     await save();
@@ -116,7 +119,7 @@ export async function syncToDevice(
 
     if (prev && prev.single && w.single && Array.isArray(built) && built.length === 1) {
       try {
-        await device.modifyEvent(prev.events[0], built[0]);
+        await backend.modifyEvent(prev.events[0], built[0]);
         state.items[w.key] = { ...prev, hash: w.hash };
         changed++;
         await save();
@@ -125,17 +128,17 @@ export async function syncToDevice(
         // deleted in the calendar app: create it again below
       }
     }
-    if (prev) await device.deleteEvents(prev.events);
+    if (prev) await backend.deleteEvents(prev.events);
 
     const events: string[] = [];
     if (Array.isArray(built)) {
-      for (const ev of built) events.push(await device.createEvent(ev));
+      for (const ev of built) events.push(await backend.createEvent(ev));
     } else {
-      const id = await device.createEvent(built.recurring);
+      const id = await backend.createEvent(built.recurring);
       events.push(id);
       for (const instance of built.skip) {
         try {
-          await device.skipOccurrence(id, instance);
+          await backend.skipOccurrence(id, instance);
         } catch (err) {
           console.warn('[push] could not cancel occurrence', err);
         }
@@ -152,8 +155,9 @@ export async function syncToDevice(
 }
 
 /** Deletes every event Slate pushed and forgets them. */
-export async function removeAllPushed(store: KeyValueStore): Promise<void> {
-  const state = await loadPushState(store);
-  await device.deleteEvents(Object.values(state.items).flatMap((i) => i.events));
-  await store.set(PUSH_KEY, JSON.stringify({ calendarId: state.calendarId, items: {}, lastSync: state.lastSync }));
+export async function removeAllPushed(store: KeyValueStore, backend: CalendarBackend, key: string): Promise<void> {
+  const state = await loadPushState(store, key);
+  await backend.deleteEvents(Object.values(state.items).flatMap((i) => i.events));
+  await store.set(key, JSON.stringify({ calendarId: state.calendarId, items: {}, lastSync: state.lastSync }));
 }
+

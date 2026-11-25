@@ -7,9 +7,11 @@
 // shifts are placed per day and may run past midnight.
 
 import { addDays } from 'date-fns';
-import type { Block, BlockFormData, PlacedShift, Shift, ShiftAssignment, ShiftFormData } from '../lib/types';
+import type { Block, BlockFormData, PlacedShift, Rotation, RotationFormData, Shift, ShiftAssignment, ShiftFormData } from '../lib/types';
+import { ROTATION_MAX_DAYS, ROTATION_MIN_DAYS } from '../lib/types';
 import {
   dateForWeekOffset,
+  dateFromKey,
   getSeriesOccurrenceWeekOffsets,
   isWeekOffsetInSeries,
   keyFromDate,
@@ -290,12 +292,16 @@ export class SlateRepository {
     );
   }
 
-  /** Deletes the definition and every day it is placed on (the web app's FK cascade). */
+  /** Deletes the definition, every day it is placed on, and its slot in any rotation (the web app's FK cascade). */
   async deleteShift(id: string): Promise<void> {
     await this.commit(
       {
         shifts: this.data.shifts.filter((s) => s.id !== id),
         assignments: this.data.assignments.filter((a) => a.shift_id !== id),
+        rotations: this.data.rotations.map((r) => ({
+          ...r,
+          pattern: r.pattern.map((entry) => (entry === id ? null : entry)),
+        })),
       },
       { blocks: false, shifts: true, settings: false },
     );
@@ -319,6 +325,62 @@ export class SlateRepository {
     );
   }
 
+  // ---------------------------------------------------------------------------
+  // Rotations
+
+  get rotations(): Rotation[] {
+    return this.data.rotations;
+  }
+
+  async createRotation(form: RotationFormData): Promise<Rotation> {
+    const stamp = this.stamp();
+    const rotation: Rotation = { id: newId(), title: form.title.trim(), pattern: [...form.pattern], created_at: stamp, updated_at: stamp };
+    await this.commit({ rotations: [...this.data.rotations, rotation] }, { blocks: false, shifts: false, settings: false });
+    return rotation;
+  }
+
+  async updateRotation(id: string, form: RotationFormData): Promise<void> {
+    await this.commit(
+      {
+        rotations: this.data.rotations.map((r) =>
+          r.id === id ? { ...r, title: form.title.trim(), pattern: [...form.pattern], updated_at: this.stamp() } : r,
+        ),
+      },
+      { blocks: false, shifts: false, settings: false },
+    );
+  }
+
+  /** Deletes the rotation only; shifts it already placed stay on the calendar. */
+  async deleteRotation(id: string): Promise<void> {
+    await this.commit({ rotations: this.data.rotations.filter((r) => r.id !== id) }, { blocks: false, shifts: false, settings: false });
+  }
+
+  /**
+   * Places a rotation's shifts on the calendar: day 0 of the cycle is
+   * `fromKey`, and the pattern repeats for `days` days. Days already holding
+   * that shift are skipped. Returns how many placements were added.
+   */
+  async applyRotation(id: string, fromKey: string, days: number): Promise<number> {
+    const rotation = this.data.rotations.find((r) => r.id === id);
+    if (!rotation || days < 1 || rotation.pattern.length < ROTATION_MIN_DAYS || rotation.pattern.length > ROTATION_MAX_DAYS) return 0;
+    const shiftIds = new Set(this.data.shifts.map((s) => s.id));
+    const taken = new Set(this.data.assignments.map((a) => `${a.shift_id}@${a.shift_date}`));
+    const from = dateFromKey(fromKey);
+    const added: ShiftAssignment[] = [];
+    for (let i = 0; i < Math.min(days, 366); i++) {
+      const shiftId = rotation.pattern[i % rotation.pattern.length];
+      if (shiftId === null || !shiftIds.has(shiftId)) continue;
+      const key = keyFromDate(addDays(from, i));
+      if (taken.has(`${shiftId}@${key}`)) continue;
+      taken.add(`${shiftId}@${key}`);
+      added.push({ id: newId(), shift_id: shiftId, shift_date: key, created_at: this.stamp() });
+    }
+    if (added.length > 0) {
+      await this.commit({ assignments: [...this.data.assignments, ...added] }, { blocks: false, shifts: true, settings: false });
+    }
+    return added.length;
+  }
+
   /** Placed shifts with shift_date in [startKey, endKey], joined with their definition. */
   shiftsInRange(startKey: string, endKey: string): PlacedShift[] {
     return placedShifts(this.data, startKey, endKey);
@@ -337,8 +399,10 @@ export class SlateRepository {
 
   /** Everything except device-specific calendar settings. */
   exportBackup(): BackupFile {
-    const { calendar: _calendar, ...portable } = this.data.settings;
+    const { calendar: _calendar, google: _google, mode: _mode, ...portable } = this.data.settings;
     void _calendar;
+    void _google;
+    void _mode;
     return {
       app: 'slate',
       format: 1,
@@ -348,6 +412,7 @@ export class SlateRepository {
         blocks: this.data.blocks,
         shifts: this.data.shifts,
         assignments: this.data.assignments,
+        rotations: this.data.rotations,
         settings: portable,
       },
     };
@@ -370,7 +435,7 @@ export class SlateRepository {
       const data = parseDocument(file.data as Record<string, unknown>, current);
       // Calendar ids belong to this device: keep the current ones, never the
       // file's. The language also stays as it is on this phone.
-      data.settings = { ...data.settings, calendar: current.calendar, locale: current.locale, onboarded: true };
+      data.settings = { ...data.settings, calendar: current.calendar, google: current.google, mode: current.mode, locale: current.locale, onboarded: true };
       return { ok: true, data };
     } catch (err) {
       if (err instanceof TooNewError) return { ok: false, error: { kind: 'tooNew', version: err.version } };
@@ -391,7 +456,7 @@ export class SlateRepository {
 
   /** Deletes every block, shift and placement; keeps settings. */
   async eraseAll(): Promise<void> {
-    await this.commit({ blocks: [], shifts: [], assignments: [] }, { blocks: true, shifts: true, settings: false });
+    await this.commit({ blocks: [], shifts: [], assignments: [], rotations: [] }, { blocks: true, shifts: true, settings: false });
   }
 }
 
@@ -399,12 +464,13 @@ export class SlateRepository {
 export function parseDocument(raw: unknown, baseSettings?: Settings): SlateData {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) throw new ValidationError('data', 'expected an object');
   const migrated = migrate(raw as Record<string, unknown>);
-  const { blocks, shifts, assignments } = validateCollections(migrated);
+  const { blocks, shifts, assignments, rotations } = validateCollections(migrated);
   return {
     schemaVersion: SCHEMA_VERSION,
     blocks,
     shifts: shifts.sort(shiftOrder),
     assignments,
+    rotations,
     settings: sanitizeSettings(migrated.settings, baseSettings),
   };
 }

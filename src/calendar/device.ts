@@ -104,6 +104,8 @@ function toDeviceEvent(e: CalendarEvent, cal: DeviceCalendar): DeviceEvent {
   const base = {
     // occurrences of one series share the event id; the start keeps keys unique
     id: `${e.id}@${e.startDate}`,
+    source: 'device' as const,
+    writable: cal.writable,
     calendarId: cal.id,
     calendarName: cal.name,
     title: e.title || '',
@@ -175,6 +177,40 @@ export async function modifyEvent(id: string, ev: NewEvent): Promise<void> {
     description: ev.notes ?? '',
     calendarId: ev.calendarId,
   });
+}
+
+/** Start of a device event as epoch ms (its first day, or the occurrence's start). */
+export function deviceEventStart(e: DeviceEvent): number {
+  const [y, m, d] = e.startDate.split('-').map(Number);
+  return new Date(y, m - 1, d, e.start_hour, e.start_minute).getTime();
+}
+
+/**
+ * Writes a change to an event in a phone calendar. Only title, notes and the
+ * times of a timed event on one day are changed. For a recurring event the
+ * plugin changes the series, so the sheet says so before this is called.
+ */
+export async function updateDeviceEvent(
+  e: DeviceEvent,
+  change: { title: string; notes: string; start?: number; end?: number },
+): Promise<void> {
+  if (!e.writable) throw new Error('this calendar is read-only');
+  const start = change.start ?? deviceEventStart(e);
+  const end = change.end ?? start + Math.max(60_000, (e.end_hour * 60 + e.end_minute - (e.start_hour * 60 + e.start_minute)) * 60_000);
+  await CapacitorCalendar.modifyEvent({
+    id: rawEventId(e.id),
+    title: change.title,
+    startDate: start,
+    endDate: end,
+    description: change.notes,
+    calendarId: e.calendarId,
+  });
+}
+
+/** Deletes one event (or one occurrence of a series) from a phone calendar. */
+export async function deleteDeviceEvent(e: DeviceEvent): Promise<void> {
+  if (!e.writable) throw new Error('this calendar is read-only');
+  await CapacitorCalendar.deleteEvent({ id: rawEventId(e.id), instanceDate: deviceEventStart(e), span: EventSpan.THIS_EVENT });
 }
 
 /** Cancels one occurrence of a recurring event. */

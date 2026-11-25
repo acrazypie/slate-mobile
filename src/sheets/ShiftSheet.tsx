@@ -9,7 +9,7 @@ import { fill, formatDate } from '../i18n/format';
 import { haptics } from '../native/platform';
 import { dateFromKey } from '../lib/recurrence';
 import type { PlacedShift, Shift } from '../lib/types';
-import { COLOR_PALETTE, SHIFT_DEFAULT_COLOR, colorKey, formatDuration, formatTime, isOvernightShift, shiftDurationMinutes } from '../lib/types';
+import { BREAK_MAX_MINUTES, COLOR_PALETTE, SHIFT_DEFAULT_COLOR, colorKey, formatDuration, formatTime, isOvernightShift, paidShiftMinutes, shiftDurationMinutes } from '../lib/types';
 import { Dialog, Sheet } from '../ui/Sheet';
 import { Swatches } from '../ui/controls';
 import { Icon } from '../ui/icons';
@@ -26,6 +26,7 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
   const [start, setStart] = useState('09:00');
   const [end, setEnd] = useState('13:00');
   const [color, setColor] = useState(SHIFT_DEFAULT_COLOR);
+  const [breakMin, setBreakMin] = useState('0');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
 
@@ -37,6 +38,7 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
     setStart(shift ? formatTime(shift.start_hour, shift.start_minute) : '09:00');
     setEnd(shift ? formatTime(shift.end_hour, shift.end_minute) : '13:00');
     setColor(shift?.color ?? SHIFT_DEFAULT_COLOR);
+    setBreakMin(String(shift?.break_minutes ?? 0));
   }, [open, shift]);
 
   if (!open) return null;
@@ -44,6 +46,9 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
   const [eh, em] = end.split(':').map(Number);
   const times = { start_hour: sh || 0, start_minute: sm || 0, end_hour: eh || 0, end_minute: em || 0 };
   const same = times.start_hour === times.end_hour && times.start_minute === times.end_minute;
+  const brk = Math.min(BREAK_MAX_MINUTES, Math.max(0, Math.round(Number(breakMin) || 0)));
+  const duration = same ? 0 : shiftDurationMinutes(times);
+  const breakTooLong = brk > 0 && brk >= duration;
 
   const save = async () => {
     if (!title.trim()) {
@@ -56,7 +61,12 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
       haptics.warning();
       return;
     }
-    const form = { title, color, ...times };
+    if (breakTooLong) {
+      setError(t.breaks.tooLong);
+      haptics.warning();
+      return;
+    }
+    const form = { title, color, break_minutes: brk, ...times };
     if (shift) await repo.updateShift(shift.id, form);
     else {
       const created = await repo.createShift(form);
@@ -91,7 +101,27 @@ export function ShiftSheet({ open, shift, placed, placeOn, onClose }: {
       </div>
       <p className="note pad-x">
         <Icon name="clock" />
-        {same ? t.shiftModal.sameTimeError : `${formatDuration(shiftDurationMinutes(times))}${isOvernightShift(times) ? `. ${t.shiftModal.overnight}` : ''}`}
+        {same ? t.shiftModal.sameTimeError : `${formatDuration(duration)}${isOvernightShift(times) ? `. ${t.shiftModal.overnight}` : ''}`}
+      </p>
+
+      <div className="form-grp">
+        <label className="fld">
+          <span className="fld__l">{t.breaks.label}</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={BREAK_MAX_MINUTES}
+            step={5}
+            value={breakMin}
+            onChange={(e) => { setBreakMin(e.target.value); setError(''); }}
+            aria-describedby="break-hint"
+          />
+        </label>
+      </div>
+      <p className={breakTooLong ? 'fld__err pad-x' : 'note pad-x'} id="break-hint">
+        {breakTooLong ? t.breaks.tooLong : t.breaks.hint}
+        {!breakTooLong && brk > 0 && <> {fill(t.breaks.withBreak, { minutes: brk })}: {formatDuration(paidShiftMinutes({ ...times, break_minutes: brk }))}</>}
       </p>
 
       <span className="flabel label">{t.common.color}</span>
