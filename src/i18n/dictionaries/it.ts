@@ -292,6 +292,19 @@ export const it = {
     "versionBody": "Apri Impostazioni › Aggiornamenti per installarla.",
     "donateBody": "Slate è gratis e senza pubblicità. Se ti è utile, offri un caffè allo sviluppatore su Ko-fi."
   },
+  "appIcon": {
+    "label": "Icona dell’app",
+    "hint": "Cambia l’icona nella schermata Home. I tuoi dati non cambiano.",
+    "warnTitle": "Cambiare l’icona?",
+    "warnBody": "L’icona nella schermata Home cambia subito. Su Android alcuni launcher la spostano o eliminano le scorciatoie fissate a Slate; su iPhone iOS chiede di confermare.",
+    "change": "Cambia icona",
+    "keep": "Mantieni",
+    "failed": "Non è stato possibile cambiare l’icona.",
+    "teal": "Verde acqua",
+    "lime": "Lime",
+    "violet": "Viola",
+    "apricot": "Albicocca"
+  },
   "donate": {
     "title": "Sostieni Slate",
     "message": "Slate è gratuito e senza pubblicità. Se ti aiuta nella settimana, puoi offrire un caffè allo sviluppatore su Ko-fi.",

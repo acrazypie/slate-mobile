@@ -291,6 +291,19 @@ export const fr: Dictionary = {
     "versionBody": "Ouvrez Réglages › Mises à jour pour l’installer.",
     "donateBody": "Slate est gratuit et sans publicité. Si l’app vous aide, vous pouvez offrir un café au développeur sur Ko-fi."
   },
+  "appIcon": {
+    "label": "Icône de l’app",
+    "hint": "Change l’icône de l’écran d’accueil. Vos données ne changent pas.",
+    "warnTitle": "Changer l’icône de l’app ?",
+    "warnBody": "L’icône de l’écran d’accueil change tout de suite. Sur Android, certains lanceurs la déplacent ou suppriment les raccourcis épinglés vers Slate ; sur iPhone, iOS demande confirmation.",
+    "change": "Changer l’icône",
+    "keep": "Garder",
+    "failed": "L’icône n’a pas pu être changée.",
+    "teal": "Sarcelle",
+    "lime": "Citron vert",
+    "violet": "Violet",
+    "apricot": "Abricot"
+  },
   "donate": {
     "title": "Soutenez Slate",
     "message": "Slate est gratuit et sans publicité. S’il vous aide dans la semaine, vous pouvez offrir un café au développeur sur Ko-fi.",

@@ -19,6 +19,7 @@ import { LEAD_OPTIONS } from '../notify/plan';
 import { leadLabel, permission, requestPermission, type PermissionState } from '../notify/notifications';
 import type { NotificationSettings } from '../data/schema';
 import { AccountScreen } from './AccountScreen';
+import { AppIconPicker } from './AppIconPicker';
 
 /** The pages of Settings: the main list, one page per section, and the two full pages. */
 type Page = 'main' | 'appearance' | 'pay' | 'phone' | 'backup' | 'updates' | 'about' | 'calendars' | 'account' | 'notifications';
@@ -141,6 +142,9 @@ export function SettingsScreen() {
 
       {page === 'appearance' && (
       <Group label={t.settings.appearance}>
+        <Row icon="palette" name={t.appIcon.label} hint={t.appIcon.hint} stack>
+          <AppIconPicker value={settings.appIcon} />
+        </Row>
         <Row icon="moon" name={t.settings.theme} stack>
           <Segmented<ThemeSetting>
             label={t.settings.theme}

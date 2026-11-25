@@ -291,6 +291,19 @@ export const nl: Dictionary = {
     "versionBody": "Open Instellingen › Updates om het te installeren.",
     "donateBody": "Slate is gratis en heeft geen advertenties. Als het helpt, kun je de ontwikkelaar trakteren op Ko-fi."
   },
+  "appIcon": {
+    "label": "App-icoon",
+    "hint": "Wijzigt het icoon op het beginscherm. Je gegevens blijven hetzelfde.",
+    "warnTitle": "App-icoon wijzigen?",
+    "warnBody": "Het icoon op het beginscherm verandert meteen. Op Android verplaatsen sommige launchers het of verwijderen ze vastgezette snelkoppelingen naar Slate; op de iPhone vraagt iOS om bevestiging.",
+    "change": "Icoon wijzigen",
+    "keep": "Behouden",
+    "failed": "Het icoon kon niet worden gewijzigd.",
+    "teal": "Blauwgroen",
+    "lime": "Limoen",
+    "violet": "Violet",
+    "apricot": "Abrikoos"
+  },
   "donate": {
     "title": "Steun Slate",
     "message": "Slate is gratis en heeft geen advertenties. Als het je week helpt, kun je de ontwikkelaar trakteren op een koffie via Ko-fi.",

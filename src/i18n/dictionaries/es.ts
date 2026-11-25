@@ -291,6 +291,19 @@ export const es: Dictionary = {
     "versionBody": "Abre Ajustes › Actualizaciones para instalarla.",
     "donateBody": "Slate es gratis y no tiene anuncios. Si te ayuda, puedes invitar al desarrollador a un café en Ko-fi."
   },
+  "appIcon": {
+    "label": "Icono de la app",
+    "hint": "Cambia el icono de la pantalla de inicio. Tus datos no cambian.",
+    "warnTitle": "¿Cambiar el icono de la app?",
+    "warnBody": "El icono de la pantalla de inicio cambia al momento. En Android algunos launchers lo mueven o quitan los accesos fijados a Slate; en iPhone, iOS pide confirmación.",
+    "change": "Cambiar icono",
+    "keep": "Mantener",
+    "failed": "No se pudo cambiar el icono.",
+    "teal": "Verde azulado",
+    "lime": "Lima",
+    "violet": "Violeta",
+    "apricot": "Albaricoque"
+  },
   "donate": {
     "title": "Apoya a Slate",
     "message": "Slate es gratis y no tiene anuncios. Si te ayuda en la semana, puedes invitar al desarrollador a un café en Ko-fi.",

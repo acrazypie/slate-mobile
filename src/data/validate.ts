@@ -5,7 +5,7 @@
 import type { Block, BlockCategory, Rotation, Shift, ShiftAssignment } from '../lib/types';
 import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_MIN_DAYS, shiftDurationMinutes } from '../lib/types';
 import { isLocale } from '../i18n/config';
-import { DEFAULT_SETTINGS, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
+import { APP_ICON_KEYS, DEFAULT_SETTINGS, type AppIconKey, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
 
 export class ValidationError extends Error {
   constructor(public readonly path: string, message: string) {
@@ -218,6 +218,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
   };
   return {
     theme: s.theme === 'light' || s.theme === 'dark' || s.theme === 'system' ? s.theme : base.theme,
+    appIcon: APP_ICON_KEYS.includes(s.appIcon as AppIconKey) ? (s.appIcon as AppIconKey) : base.appIcon,
     mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
     pay: payOut,
     notifications,

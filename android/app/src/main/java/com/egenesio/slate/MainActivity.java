@@ -18,6 +18,7 @@ public class MainActivity extends BridgeActivity implements ModifiedMainActivity
         // local plugins must be registered before super.onCreate
         registerPlugin(WindowBackgroundPlugin.class);
         registerPlugin(ApkInstallerPlugin.class);
+        registerPlugin(AppIconPlugin.class);
         super.onCreate(savedInstanceState);
     }
 

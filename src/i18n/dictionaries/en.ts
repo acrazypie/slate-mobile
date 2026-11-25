@@ -291,6 +291,19 @@ export const en: Dictionary = {
     "versionBody": "Open Settings › Updates to install it.",
     "donateBody": "Slate is free and has no ads. If it helps, you can buy the developer a coffee on Ko-fi."
   },
+  "appIcon": {
+    "label": "App icon",
+    "hint": "Changes the home-screen icon. Your data is not affected.",
+    "warnTitle": "Change the app icon?",
+    "warnBody": "The home-screen icon changes straight away. On Android some launchers move it or drop pinned shortcuts to Slate; on iPhone, iOS asks you to confirm.",
+    "change": "Change icon",
+    "keep": "Keep current",
+    "failed": "The icon could not be changed.",
+    "teal": "Teal",
+    "lime": "Lime",
+    "violet": "Violet",
+    "apricot": "Apricot"
+  },
   "donate": {
     "title": "Support Slate",
     "message": "Slate is free and has no ads. If it helps your week, you can buy the developer a coffee on Ko-fi.",

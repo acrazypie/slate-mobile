@@ -9,6 +9,7 @@ import { ShiftsScreen } from '../screens/ShiftsScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { Onboarding } from '../screens/Onboarding';
 import { startNotifications } from '../notify/notifications';
+import { syncAppIconOnStart } from '../native/appIcon';
 import { Icon, type IconName } from '../ui/icons';
 import { useToast } from '../ui/controls';
 
@@ -32,6 +33,9 @@ export function App() {
   }, [settings.theme, settings.accent]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => setHapticsEnabled(settings.haptics), [settings.haptics]);
+
+  // The launcher icon follows the saved choice (Android; see syncAppIconOnStart).
+  useEffect(() => syncAppIconOnStart(repo.getSnapshot().settings.appIcon), []);
 
   // Reminders, the new-version notice and taps on them; reschedules after every change.
   useEffect(() => startNotifications(() => setTab('settings')), []);

@@ -81,8 +81,13 @@ export interface NotificationSettings {
   donate: boolean;
 }
 
+/** The home-screen icon colour. Teal is the default; it matches the default accent. */
+export type AppIconKey = 'teal' | 'lime' | 'violet' | 'apricot';
+export const APP_ICON_KEYS: AppIconKey[] = ['teal', 'lime', 'violet', 'apricot'];
+
 export interface Settings {
   theme: ThemeSetting;
+  appIcon: AppIconKey;
   notifications: NotificationSettings;
   mode: AppMode;
   pay: PaySettings;
@@ -108,11 +113,13 @@ export interface SlateData {
   settings: Settings;
 }
 
-// "Gesso" (chalk citron), the accent chosen in docs/design-notes.md / the mockups.
-export const DEFAULT_ACCENT = '#D4EE5E';
+// The default accent is teal (#6BB6A3), the same colour as the default app icon.
+// The earlier default, "Gesso" (#D4EE5E), is still one of the choices in Appearance.
+export const DEFAULT_ACCENT = '#6BB6A3';
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
+  appIcon: 'teal',
   mode: 'local',
   pay: { hourlyRate: null, currency: '', overtimeAfterHours: null, overtimeMultiplier: 1.5 },
   notifications: { enabled: true, leadMinutes: 10, events: true, shifts: true, newVersion: true, donate: true },

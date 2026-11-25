@@ -14,6 +14,7 @@ import type { ColorKey } from '../lib/types';
  * deeper shade used on the light theme (>= 4.5:1 on #fafafa).
  */
 export const ACCENT_OPTIONS: { value: string; light: string; name: ColorKey | 'gesso' }[] = [
+  { value: '#6BB6A3', light: '#2E7266', name: 'teal' },
   { value: '#D4EE5E', light: '#5A7000', name: 'gesso' },
   { value: '#E0B84C', light: '#7F5D00', name: 'amber' },
   { value: '#8BC48A', light: '#2F7A34', name: 'sage' },

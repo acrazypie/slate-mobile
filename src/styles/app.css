@@ -460,3 +460,9 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 
 /* Donation prompt: the "don't show again" checkbox sits under the message. */
 .donate__check { display: flex; align-items: center; gap: 8px; margin-top: 16px; font: 400 13px/1.4 var(--mono); color: var(--mid); cursor: pointer; }
+
+/* App icon choice (Settings › Appearance) */
+.icon-picker { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; padding: 4px 0 2px; }
+.icon-pick { display: grid; justify-items: center; gap: 6px; background: none; border: 0; padding: 4px 0; color: var(--text); font: 400 11.5px/1.2 var(--mono); cursor: pointer; }
+.icon-pick img { width: 100%; max-width: 64px; aspect-ratio: 1; border-radius: 22%; }
+.icon-pick.sel img { outline: 2px solid var(--accent); outline-offset: 3px; }
