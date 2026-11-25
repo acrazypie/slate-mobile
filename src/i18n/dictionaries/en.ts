@@ -243,6 +243,33 @@ export const en: Dictionary = {
     "phoneShow": "Show phone calendar events",
     "phoneShowHint": "Events are shown only on this phone, never sent to a server."
   },
+  "update": {
+    "title": "Updates",
+    "upToDate": "Up to date ({version})",
+    "available": "Version {version} is available",
+    "checking": "Checking for updates…",
+    "install": "Install update",
+    "installing": "Downloading… {percent}%",
+    "needsPermission": "Allow installs from Slate in the settings that just opened, then tap Install update again.",
+    "error": "Update failed: {message}",
+    "check": "Check now",
+    "footer": "Updates come from the Slate releases on GitHub. The download is checked against the published SHA-256 before Android asks you to confirm the install. Your data is kept."
+  },
+  "settingsPages": {
+    "appearance": {"title": "Appearance", "short": "Theme, colour, default view and language", "lede": "Theme, accent colour, the view Slate opens on, and the language of the app. Stored on this device."},
+    "pay": {"title": "Pay", "short": "Hourly rate and overtime", "lede": "Used by the summary to show what your shifts are worth. Earnings count shifts only, minus their breaks."},
+    "phone": {"title": "Phone calendar", "short": "Show and copy to the phone", "lede": "Choose which phone calendars show next to Slate, and copy blocks and shifts into a calendar on this phone."},
+    "backup": {"title": "Backup", "short": "Export, import or erase your data", "lede": "Save everything to a file you keep, load a file on a new phone, or erase all data on this phone."},
+    "updates": {"title": "Updates", "short": "New versions of the app", "lede": "Slate checks the latest release on GitHub. The new version is downloaded, checked and handed to Android to install."},
+    "about": {"title": "About", "short": "Version, privacy and the project", "lede": "What Slate is, the version you have, and the privacy notes."}
+  },
+  "donate": {
+    "title": "Support Slate",
+    "message": "Slate is free and has no ads. If it helps your week, you can buy the developer a coffee on Ko-fi.",
+    "support": "Open Ko-fi",
+    "later": "Not now",
+    "dontShow": "Don’t show this again"
+  },
   "shiftsView": {
     "intro": "Create your shifts here, then put them on days from the calendar.",
     "loadError": "Couldn't load or save shifts: {error}",

@@ -454,3 +454,6 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 *::-webkit-scrollbar { display: none; }
 .irow--stack.irow--noicon .irow__nm { font-size: 13px; line-height: 1.55; color: var(--mid); }
 .irow__head > .irow__nm { min-width: 42%; }
+
+/* Donation prompt: the "don't show again" checkbox sits under the message. */
+.donate__check { display: flex; align-items: center; gap: 8px; margin-top: 16px; font: 400 13px/1.4 var(--mono); color: var(--mid); cursor: pointer; }

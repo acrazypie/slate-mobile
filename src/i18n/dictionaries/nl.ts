@@ -243,6 +243,33 @@ export const nl: Dictionary = {
     "phoneShow": "Afspraken uit de telefoonagenda tonen",
     "phoneShowHint": "Afspraken zijn alleen op deze telefoon zichtbaar, nooit naar een server gestuurd."
   },
+  "update": {
+    "title": "Updates",
+    "upToDate": "Up-to-date ({version})",
+    "available": "Versie {version} is beschikbaar",
+    "checking": "Controleren op updates…",
+    "install": "Update installeren",
+    "installing": "Downloaden… {percent}%",
+    "needsPermission": "Sta installaties van Slate toe in de instellingen die net zijn geopend en tik daarna opnieuw op Update installeren.",
+    "error": "Update mislukt: {message}",
+    "check": "Nu controleren",
+    "footer": "Updates komen van de Slate-releases op GitHub. Het bestand wordt gecontroleerd met de gepubliceerde SHA-256 voordat Android om bevestiging vraagt. Je gegevens blijven bewaard."
+  },
+  "settingsPages": {
+    "appearance": {"title": "Uiterlijk", "short": "Thema, kleur, standaardweergave en taal", "lede": "Thema, accentkleur, de weergave waarmee Slate opent en de taal van de app. Wordt op dit apparaat bewaard."},
+    "pay": {"title": "Loon", "short": "Uurtarief en overwerk", "lede": "Het overzicht gebruikt dit om te tonen wat je diensten waard zijn. Verdiensten tellen alleen diensten, zonder pauzes."},
+    "phone": {"title": "Telefoonagenda", "short": "Tonen en kopiëren naar de telefoon", "lede": "Kies welke telefoonagenda’s naast Slate verschijnen, en kopieer blokken en diensten naar een agenda op deze telefoon."},
+    "backup": {"title": "Back-up", "short": "Exporteren, importeren of wissen", "lede": "Bewaar alles in een bestand, laad een bestand op een nieuwe telefoon, of wis alle gegevens op deze telefoon."},
+    "updates": {"title": "Updates", "short": "Nieuwe versies van de app", "lede": "Slate controleert de nieuwste release op GitHub. De nieuwe versie wordt gedownload, gecontroleerd en aan Android gegeven om te installeren."},
+    "about": {"title": "Over", "short": "Versie, privacy en project", "lede": "Wat Slate is, de versie die je hebt en de privacyinformatie."}
+  },
+  "donate": {
+    "title": "Steun Slate",
+    "message": "Slate is gratis en heeft geen advertenties. Als het je week helpt, kun je de ontwikkelaar trakteren op een koffie via Ko-fi.",
+    "support": "Ko-fi openen",
+    "later": "Niet nu",
+    "dontShow": "Niet meer tonen"
+  },
   "shiftsView": {
     "intro": "Maak hier je diensten en zet ze daarna vanuit de agenda op dagen.",
     "loadError": "De diensten konden niet worden geladen of opgeslagen: {error}",

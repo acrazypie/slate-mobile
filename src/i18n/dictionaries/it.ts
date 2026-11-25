@@ -244,6 +244,33 @@ export const it = {
     "phoneShow": "Mostra eventi del calendario del telefono",
     "phoneShowHint": "Gli eventi si vedono solo su questo telefono, non vengono mai inviati a un server."
   },
+  "update": {
+    "title": "Aggiornamenti",
+    "upToDate": "Aggiornato ({version})",
+    "available": "È disponibile la versione {version}",
+    "checking": "Controllo degli aggiornamenti…",
+    "install": "Installa aggiornamento",
+    "installing": "Download in corso… {percent}%",
+    "needsPermission": "Consenti le installazioni da Slate nelle impostazioni appena aperte, poi tocca di nuovo Installa aggiornamento.",
+    "error": "Aggiornamento non riuscito: {message}",
+    "check": "Controlla ora",
+    "footer": "Gli aggiornamenti arrivano dalle release di Slate su GitHub. Il file scaricato viene verificato con il SHA-256 pubblicato prima che Android ti chieda conferma. I tuoi dati restano."
+  },
+  "settingsPages": {
+    "appearance": {"title": "Aspetto", "short": "Tema, colore, vista predefinita e lingua", "lede": "Tema, colore d’accento, la vista con cui si apre Slate e la lingua dell’app. Salvato su questo dispositivo."},
+    "pay": {"title": "Paga", "short": "Tariffa oraria e straordinari", "lede": "Serve al riepilogo per mostrare quanto valgono i tuoi turni. Il guadagno conta solo i turni, meno le pause."},
+    "phone": {"title": "Calendario del telefono", "short": "Mostra e copia sul telefono", "lede": "Scegli quali calendari del telefono appaiono accanto a Slate, e copia blocchi e turni in un calendario di questo telefono."},
+    "backup": {"title": "Backup", "short": "Esporta, importa o cancella i dati", "lede": "Salva tutto in un file da tenere, carica un file su un nuovo telefono, o cancella tutti i dati di questo telefono."},
+    "updates": {"title": "Aggiornamenti", "short": "Nuove versioni dell’app", "lede": "Slate controlla l’ultima release su GitHub. La nuova versione viene scaricata, verificata e passata ad Android per l’installazione."},
+    "about": {"title": "Info", "short": "Versione, privacy e progetto", "lede": "Che cos’è Slate, la versione che hai e le note sulla privacy."}
+  },
+  "donate": {
+    "title": "Sostieni Slate",
+    "message": "Slate è gratuito e senza pubblicità. Se ti aiuta nella settimana, puoi offrire un caffè allo sviluppatore su Ko-fi.",
+    "support": "Apri Ko-fi",
+    "later": "Non ora",
+    "dontShow": "Non mostrare più"
+  },
   "shiftsView": {
     "intro": "Crea qui i tuoi turni, poi inseriscili nei giorni dal calendario.",
     "loadError": "Non è stato possibile caricare o salvare i turni: {error}",

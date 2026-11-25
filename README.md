@@ -163,5 +163,8 @@ npm run sync
 cd android && ./gradlew assembleRelease     # android/app/build/outputs/apk/release/app-release.apk
 ```
 
-Check the signature with `apksigner verify --print-certs` from the build-tools folder. The SHA-1
+Check the signature with `apksigner verify --print-certs` from the build-tools folder.
+
+Every release must also include the APK as `slate.apk` (same file, second asset). The website's
+download link points at `releases/latest/download/slate.apk`, so it always gets the newest release. The SHA-1
 of the signing certificate is the one to register on the Android OAuth client for Google sign-in.

@@ -14,7 +14,12 @@ import { Group, Row, Segmented, Swatches, Switch, useToast } from '../ui/control
 import { Dialog, useBackHandler } from '../ui/Sheet';
 import { Icon } from '../ui/icons';
 import { CalendarPicker } from './CalendarPicker';
+import { useUpdate } from '../update/useUpdate';
 import { AccountScreen } from './AccountScreen';
+
+/** The pages of Settings: the main list, one page per section, and the two full pages. */
+type Page = 'main' | 'appearance' | 'pay' | 'phone' | 'backup' | 'updates' | 'about' | 'calendars' | 'account';
+const SECTION_PAGES: Page[] = ['appearance', 'pay', 'phone', 'backup', 'updates', 'about'];
 
 export function SettingsScreen() {
   const { t, locale } = useI18n();
@@ -22,22 +27,23 @@ export function SettingsScreen() {
   const data = useData();
   const toast = useToast();
   const cal = useDeviceCalendar();
-  const [page, setPage] = useState<'main' | 'calendars' | 'account'>('main');
+  const [page, setPage] = useState<Page>('main');
   const [version, setVersion] = useState('');
   const [lastExport, setLastExport] = useState<string | null>(null);
   const [pendingImport, setPendingImport] = useState<SlateData | null>(null);
   const [importText, setImportText] = useState('');
   const [confirmErase, setConfirmErase] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
+  const update = useUpdate();
   const fileInput = useRef<HTMLInputElement>(null);
 
-  useBackHandler(page !== 'main', () => setPage('main'));
+  useBackHandler(page !== 'main', () => setPage(page === 'calendars' ? 'phone' : 'main'));
   useEffect(() => {
     void appVersion().then(setVersion);
     void kv.get(LAST_EXPORT_KEY).then(setLastExport);
   }, []);
 
-  if (page === 'calendars') return <CalendarPicker onBack={() => setPage('main')} />;
+  if (page === 'calendars') return <CalendarPicker onBack={() => setPage('phone')} />;
   if (page === 'account') return <AccountScreen onBack={() => setPage('main')} />;
 
   const set = (patch: Parameters<typeof repo.updateSettings>[0]) => void repo.updateSettings(patch);
@@ -79,12 +85,48 @@ export function SettingsScreen() {
     return o ? t.colors[o.name] : t.settings.customColor;
   };
 
+  const sectionText: Record<Exclude<Page, 'main' | 'calendars' | 'account'>, { title: string; lede: string }> = {
+    appearance: { title: t.settingsPages.appearance.title, lede: t.settingsPages.appearance.lede },
+    pay: { title: t.settingsPages.pay.title, lede: t.settingsPages.pay.lede },
+    phone: { title: t.settingsPages.phone.title, lede: t.settingsPages.phone.lede },
+    backup: { title: t.settingsPages.backup.title, lede: t.settingsPages.backup.lede },
+    updates: { title: t.settingsPages.updates.title, lede: t.settingsPages.updates.lede },
+    about: { title: t.settingsPages.about.title, lede: t.settingsPages.about.lede },
+  };
+
   return (
     <div className="screen page page--grouped">
-      <header className="page__head">
-        <h1 className="h-page">{t.settings.title}<span className="acc">.</span></h1>
-      </header>
+      {page === 'main' && (
+        <>
+          <header className="page__head">
+            <h1 className="h-page">{t.settings.title}<span className="acc">.</span></h1>
+          </header>
+          <Group>
+            <Row icon="moon" name={t.settingsPages.appearance.title} hint={t.settingsPages.appearance.short} chevron onClick={() => setPage('appearance')} />
+            <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
+            <Row icon="calendar" name={t.settingsPages.phone.title} hint={t.settingsPages.phone.short} chevron onClick={() => setPage('phone')} />
+            <Row icon="layout" name={t.settingsPages.pay.title} hint={t.settingsPages.pay.short} chevron onClick={() => setPage('pay')} />
+            <Row icon="upload" name={t.settingsPages.backup.title} hint={t.settingsPages.backup.short} chevron onClick={() => setPage('backup')} />
+            <Row icon="refresh" name={t.settingsPages.updates.title} hint={t.settingsPages.updates.short} chevron onClick={() => setPage('updates')} />
+            <Row icon="info" name={t.settingsPages.about.title} hint={t.settingsPages.about.short} chevron onClick={() => setPage('about')} />
+          </Group>
+        </>
+      )}
+      {SECTION_PAGES.includes(page) && page !== 'main' && (
+        <>
+          <div className="page__bar page__bar--back">
+            <button type="button" className="gbtn back" onClick={() => setPage('main')}>
+              <Icon name="chevronLeft" /> <span>{t.settings.title}</span>
+            </button>
+          </div>
+          <header className="page__head">
+            <h1 className="h-page">{sectionText[page as keyof typeof sectionText].title}</h1>
+            <p className="lede">{sectionText[page as keyof typeof sectionText].lede}</p>
+          </header>
+        </>
+      )}
 
+      {page === 'appearance' && (
       <Group label={t.settings.appearance}>
         <Row icon="moon" name={t.settings.theme} stack>
           <Segmented<ThemeSetting>
@@ -127,7 +169,9 @@ export function SettingsScreen() {
           </Row>
         )}
       </Group>
+      )}
 
+      {page === 'pay' && (
       <Group label={t.pay.title} footer={t.pay.hint}>
         <Row icon="globe" name={t.pay.rate}>
           <input
@@ -175,11 +219,10 @@ export function SettingsScreen() {
           </select>
         </Row>
       </Group>
+      )}
 
-      <Group footer={t.account.entryFooter}>
-        <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
-      </Group>
 
+      {page === 'phone' && (
       <Group label={t.calendarSync.title} footer={cal.access === 'unavailable' ? t.calendarSync.unavailable : cal.access === 'full' ? <>{t.calendarSync.pushHint}<br /><br />{t.calendarSync.footer}</> : t.calendarSync.footer}>
         <Row icon="lock" name={t.calendarSync.accessRow} value={<><i className={`dot dot--${cal.access}`} />{accessLabel}</>} />
         {(cal.access === 'prompt' || cal.access === 'writeOnly' || cal.access === 'denied') && (
@@ -234,7 +277,9 @@ export function SettingsScreen() {
           </>
         )}
       </Group>
+      )}
 
+      {page === 'backup' && (
       <Group label={t.settings.backup} footer={t.settings.backupFooter}>
         <Row
           icon="upload"
@@ -256,15 +301,44 @@ export function SettingsScreen() {
         <Row icon="download" name={t.settings.import} hint={t.settings.importHint} chevron onClick={() => fileInput.current?.click()} />
         <Row icon="clock" name={t.settings.lastBackup} value={lastExport ? formatDate(locale, new Date(lastExport), 'dayMonth') + ' ' + new Date(lastExport).toTimeString().slice(0, 5) : '—'} />
       </Group>
+      )}
       <input ref={fileInput} type="file" accept="application/json,.json,text/plain" hidden onChange={(e) => void onFile(e.target.files?.[0])} />
 
+      {page === 'updates' && update.status.kind !== 'unsupported' && (
+        <Group label={t.update.title} footer={t.update.footer}>
+          <Row
+            icon="refresh"
+            name={
+              update.status.kind === 'upToDate' ? fill(t.update.upToDate, { version: update.status.version })
+              : update.status.kind === 'available' || update.status.kind === 'needsPermission' ? fill(t.update.available, { version: update.status.update.version })
+              : update.status.kind === 'installing' ? fill(t.update.installing, { percent: update.status.total ? Math.round((update.status.received / update.status.total) * 100) : 0 })
+              : update.status.kind === 'checking' || update.status.kind === 'idle' ? t.update.checking
+              : update.status.kind === 'error' ? fill(t.update.error, { message: update.status.message })
+              : t.update.checking
+            }
+            hint={update.status.kind === 'needsPermission' ? t.update.needsPermission : undefined}
+          >
+            {(update.status.kind === 'available' || update.status.kind === 'needsPermission') && (
+              <button type="button" className="btn" onClick={() => void update.install()}>{t.update.install}</button>
+            )}
+            {(update.status.kind === 'upToDate' || update.status.kind === 'error') && (
+              <button type="button" className="btn btn--ghost" onClick={() => void update.check()}>{t.update.check}</button>
+            )}
+          </Row>
+        </Group>
+      )}
+
+      {page === 'about' && (
       <Group label={t.settings.about} footer={t.settings.privacyNote}>
         <Row icon="info" name="Slate" hint={<>{t.settings.aboutText}<br />{t.settings.fonts}</>} value={version} />
       </Group>
+      )}
 
-      <Group>
-        <Row name={t.settings.erase} danger onClick={() => setConfirmErase(true)} />
-      </Group>
+      {page === 'backup' && (
+        <Group>
+          <Row name={t.settings.erase} danger onClick={() => setConfirmErase(true)} />
+        </Group>
+      )}
 
       <Dialog
         open={pendingImport !== null}

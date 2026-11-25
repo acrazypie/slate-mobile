@@ -243,6 +243,33 @@ export const fr: Dictionary = {
     "phoneShow": "Afficher les événements de l’agenda du téléphone",
     "phoneShowHint": "Les événements ne sont visibles que sur ce téléphone, jamais envoyés à un serveur."
   },
+  "update": {
+    "title": "Mises à jour",
+    "upToDate": "À jour ({version})",
+    "available": "La version {version} est disponible",
+    "checking": "Recherche de mises à jour…",
+    "install": "Installer la mise à jour",
+    "installing": "Téléchargement… {percent} %",
+    "needsPermission": "Autorisez les installations depuis Slate dans les réglages qui viennent de s’ouvrir, puis appuyez de nouveau sur Installer la mise à jour.",
+    "error": "Échec de la mise à jour : {message}",
+    "check": "Vérifier maintenant",
+    "footer": "Les mises à jour viennent des versions de Slate sur GitHub. Le téléchargement est vérifié avec le SHA-256 publié avant qu’Android vous demande de confirmer. Vos données sont conservées."
+  },
+  "settingsPages": {
+    "appearance": {"title": "Apparence", "short": "Thème, couleur, vue par défaut et langue", "lede": "Thème, couleur d’accent, la vue sur laquelle s’ouvre Slate et la langue de l’app. Enregistré sur cet appareil."},
+    "pay": {"title": "Paie", "short": "Taux horaire et heures supplémentaires", "lede": "Utilisé par le résumé pour afficher ce que valent vos services. Les gains ne comptent que les services, sans leurs pauses."},
+    "phone": {"title": "Agenda du téléphone", "short": "Afficher et copier sur le téléphone", "lede": "Choisissez les agendas du téléphone affichés à côté de Slate, et copiez blocs et services dans un agenda de ce téléphone."},
+    "backup": {"title": "Sauvegarde", "short": "Exporter, importer ou effacer vos données", "lede": "Enregistrez tout dans un fichier, chargez un fichier sur un nouveau téléphone, ou effacez toutes les données de ce téléphone."},
+    "updates": {"title": "Mises à jour", "short": "Nouvelles versions de l’app", "lede": "Slate vérifie la dernière version sur GitHub. La nouvelle version est téléchargée, vérifiée et remise à Android pour l’installation."},
+    "about": {"title": "À propos", "short": "Version, confidentialité et projet", "lede": "Ce qu’est Slate, la version que vous avez et les notes de confidentialité."}
+  },
+  "donate": {
+    "title": "Soutenez Slate",
+    "message": "Slate est gratuit et sans publicité. S’il vous aide dans la semaine, vous pouvez offrir un café au développeur sur Ko-fi.",
+    "support": "Ouvrir Ko-fi",
+    "later": "Pas maintenant",
+    "dontShow": "Ne plus afficher"
+  },
   "shiftsView": {
     "intro": "Crée ici tes services, puis place-les sur les jours depuis le calendrier.",
     "loadError": "Impossible de charger ou d’enregistrer les services : {error}",
