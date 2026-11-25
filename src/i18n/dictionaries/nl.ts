@@ -365,6 +365,8 @@ export const nl: Dictionary = {
     "version": "Versie",
     "aboutText": "Slate is een planner met tijdblokken. Het werkt zonder account en zonder verbinding.",
     "privacyNote": "Je gegevens blijven op deze telefoon. Ze gaan alleen weg als je een back-up exporteert of kopiëren naar een agenda aanzet.",
+    "legalTerms": "Gebruiksvoorwaarden",
+    "legalPrivacy": "Privacyverklaring",
     "fonts": "Lettertypen: Syne en DM Mono (SIL Open Font License)",
     "loadProblem": "De opgeslagen gegevens konden niet worden gelezen. Er is een kopie bewaard en de app is opnieuw begonnen.",
     "tag": "Op dit apparaat",

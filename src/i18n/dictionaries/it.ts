@@ -366,6 +366,8 @@ export const it = {
     "version": "Versione",
     "aboutText": "Slate è un pianificatore a blocchi orari. Funziona senza account e senza connessione.",
     "privacyNote": "I tuoi dati restano su questo telefono. Escono solo se esporti un backup o attivi la copia nel calendario.",
+    "legalTerms": "Termini di servizio",
+    "legalPrivacy": "Informativa sulla privacy",
     "fonts": "Caratteri: Syne e DM Mono (SIL Open Font License)",
     "loadProblem": "I dati salvati non si potevano leggere. Ne è stata conservata una copia e l'app è ripartita da zero.",
     "tag": "Su questo dispositivo",

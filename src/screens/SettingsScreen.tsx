@@ -350,9 +350,15 @@ export function SettingsScreen() {
       )}
 
       {page === 'about' && (
+      <>
       <Group label={t.settings.about} footer={t.settings.privacyNote}>
         <Row icon="info" name="Slate" hint={<>{t.settings.aboutText}<br />{t.settings.fonts}</>} value={version} />
       </Group>
+      <Group>
+        <Row icon="info" name={t.settings.legalTerms} chevron onClick={() => openLegal('terms')} />
+        <Row icon="lock" name={t.settings.legalPrivacy} chevron onClick={() => openLegal('privacy')} />
+      </Group>
+      </>
       )}
 
       {page === 'backup' && (
@@ -395,6 +401,12 @@ export function SettingsScreen() {
       />
     </div>
   );
+}
+
+/** The website's Terms and Privacy pages, opened outside the app. */
+const LEGAL_URL = 'https://slate.egenesio.com';
+function openLegal(page: 'terms' | 'privacy') {
+  window.open(`${LEGAL_URL}/${page}`, '_blank', 'noopener');
 }
 
 /** Settings › Notifications: the master switch, the default lead time, and what sends notices. */

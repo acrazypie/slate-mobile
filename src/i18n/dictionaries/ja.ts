@@ -365,6 +365,8 @@ export const ja: Dictionary = {
     "version": "バージョン",
     "aboutText": "Slate は時間ブロック型のプランナーです。アカウントも接続も不要です。",
     "privacyNote": "データはこの端末に保存されます。バックアップを書き出すか、カレンダーへのコピーをオンにした場合のみ外に出ます。",
+    "legalTerms": "利用規約",
+    "legalPrivacy": "プライバシーポリシー",
     "fonts": "フォント：Syne、DM Mono（SIL Open Font License）",
     "loadProblem": "保存データを読み込めませんでした。コピーを残し、アプリを初期状態で起動しました。",
     "tag": "この端末",

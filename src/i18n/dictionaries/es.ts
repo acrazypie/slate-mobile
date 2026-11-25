@@ -365,6 +365,8 @@ export const es: Dictionary = {
     "version": "Versión",
     "aboutText": "Slate es un planificador por bloques horarios. Funciona sin cuenta y sin conexión.",
     "privacyNote": "Tus datos se quedan en este teléfono. Solo salen si exportas una copia o activas la copia al calendario.",
+    "legalTerms": "Términos del servicio",
+    "legalPrivacy": "Política de privacidad",
     "fonts": "Tipografías: Syne y DM Mono (SIL Open Font License)",
     "loadProblem": "No se pudieron leer los datos guardados. Se conservó una copia y la app empezó de cero.",
     "tag": "En este dispositivo",
