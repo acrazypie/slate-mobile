@@ -15,6 +15,7 @@ const out = join(root, 'assets');
 await mkdir(out, { recursive: true });
 
 const VIOLET = '#9D8CFF';
+const TEAL = '#6BB6A3';
 const INK = '#0E1320';
 const NOW = '#E0475E';
 
@@ -45,9 +46,9 @@ function svgDoc({ size, bg, body = '', scale = 1 }) {
 const render = (doc, file) => sharp(doc).png().toFile(file);
 
 // Full-bleed, opaque, no text: the OS applies the iOS squircle or the Android mask.
-await render(svgDoc({ size: 1024, bg: VIOLET, body: mark() }), join(out, 'icon-only.png'));
+await render(svgDoc({ size: 1024, bg: TEAL, body: mark() }), join(out, 'icon-only.png'));
 // Android adaptive layers: a solid violet background and the ticks as foreground.
-await render(svgDoc({ size: 1024, bg: VIOLET }), join(out, 'icon-background.png'));
+await render(svgDoc({ size: 1024, bg: TEAL }), join(out, 'icon-background.png'));
 await render(svgDoc({ size: 1024, body: mark() }), join(out, 'icon-foreground.png'));
 // Splash: the mark small in the middle, light and dark.
 await render(svgDoc({ size: 2732, bg: '#F4F6FA', body: mark('#5B4BC4', NOW), scale: 0.3 }), join(out, 'splash.png'));
@@ -126,4 +127,6 @@ for (const v of VARIANTS) {
   await sharp(full).png().toFile(join(ios, `AppIcon-${Name}.appiconset/AppIcon-${Name}-1024.png`));
   await sharp(full).resize(256, 256).png().toFile(join(pickerDir, `${v.key}.png`));
 }
+// The Teal option previews the default icon (teal tile, Ticks).
+await sharp(svgDoc({ size: 1024, bg: TEAL, body: mark() })).resize(256, 256).png().toFile(join(pickerDir, 'teal.png'));
 console.log('native: Android splash mark and splash colours; lime, violet, apricot icons');

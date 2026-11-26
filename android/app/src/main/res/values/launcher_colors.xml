@@ -2,7 +2,7 @@
 <resources>
     <!-- Behind the adaptive launcher icons: the same near-black as the icon tile, so the tile edge is invisible. -->
     <color name="launcher_background">#0A0A0A</color>
-    <color name="launcher_ticks_background">#9D8CFF</color>
+    <color name="launcher_teal_background">#6BB6A3</color>
     <color name="launcher_lime_background">#D4EE5E</color>
     <color name="launcher_violet_background">#BB86FC</color>
     <color name="launcher_apricot_background">#E49C69</color>
