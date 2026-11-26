@@ -22,6 +22,7 @@ import { CreateSheet } from '../sheets/CreateSheet';
 import { ShiftSheet } from '../sheets/ShiftSheet';
 import { DeviceEventSheet } from '../sheets/DeviceEventSheet';
 import { DaySheet } from '../sheets/DaySheet';
+import { goToTab } from './SummaryPanel';
 
 export interface CalendarActions {
   onSlot: (date: Date, hour: number) => void;
@@ -165,9 +166,16 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
               <Icon name="chevronRight" />
             </button>
           </div>
-          <button type="button" className="gbtn round accent ios-only" onClick={() => actions.onSlot(view === 'day' ? anchor : isSameDay(range.start, weekStart(today)) ? today : range.start, 9)} aria-label={t.calendar.add}>
-            <Icon name="plus" />
-          </button>
+          {/* iOS: one glass capsule with the summary and add buttons, split by a hairline (design/ios/dark/04-day.png). */}
+          <div className="cal-head__cap ios-only">
+            <button type="button" className="cal-head__cap-btn" onClick={() => goToTab('summary')} aria-label={t.summary.title}>
+              <Icon name="chart" />
+            </button>
+            <span className="cal-head__sep" aria-hidden="true" />
+            <button type="button" className="cal-head__cap-btn" onClick={() => actions.onSlot(view === 'day' ? anchor : isSameDay(range.start, weekStart(today)) ? today : range.start, 9)} aria-label={t.calendar.add}>
+              <Icon name="plus" />
+            </button>
+          </div>
         </div>
         <Segmented
           label={t.calendar.view}
