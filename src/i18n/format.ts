@@ -18,6 +18,10 @@ const DATE_STYLES = {
   dayShortMonth: { weekday: 'long', day: 'numeric', month: 'short' },
   /** "lun 3 novembre" (Android day title) */
   weekdayDayMonth: { weekday: 'short', day: 'numeric', month: 'long' },
+  /** "lunedì" (iOS day title) */
+  weekdayLong: { weekday: 'long' },
+  /** "3 novembre" (iOS day subtitle) */
+  dayMonthLong: { day: 'numeric', month: 'long' },
   /** "novembre 2026" */
   monthYear: { month: 'long', year: 'numeric' },
   /** "3 nov" */

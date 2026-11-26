@@ -72,8 +72,8 @@
 [data-look="android"] .page__bar { min-height: 8px; }
 [data-look="android"] .page__bar--back { min-height: 56px; padding-left: 4px; }
 [data-look="android"] .gbtn.back { width: auto; border-radius: 999px; padding: 0 12px 0 8px; }
-[data-look="android"] .grp-h, [data-look="android"] .flabel { font: 600 14px/1.3 var(--sys); color: var(--accent); }
-[data-look="android"] .grp-h { padding-left: calc(var(--pad) + 12px); }
+.grp-h, [data-look="android"] .flabel { font: 600 14px/1.3 var(--sys); color: var(--accent); }
+.grp-h { padding-left: calc(var(--pad) + 12px); }
 
 /* separated tonal list items */
 [data-look="android"] .grp { display: grid; gap: 2px; }
@@ -143,24 +143,24 @@
 [data-look="android"] .cal-head .acc { color: inherit; }
 
 /* Agenda (Timeline design, screen 07): the next seven days on a vertical spine. */
-[data-look="android"] .agenda { padding: 8px var(--pad) calc(var(--tab-space) + 72px); display: grid; gap: 4px; }
-[data-look="android"] .agenda__day { position: relative; padding-left: 20px; border-left: 2px solid var(--line-hi); margin-left: 6px; padding-bottom: 12px; }
-[data-look="android"] .agenda__day::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--mid); }
-[data-look="android"] .agenda__day.today::before { background: var(--accent); border-color: var(--accent); }
-[data-look="android"] .agenda__head { font: 600 14px/1.3 var(--sys); color: var(--mid); margin: 0 0 8px; }
-[data-look="android"] .agenda__day.today .agenda__head { color: var(--accent); }
-[data-look="android"] .agenda__items .rows { border: 0; }
+.agenda { padding: 8px var(--pad) calc(var(--tab-space) + 72px); display: grid; gap: 4px; }
+.agenda__day { position: relative; padding-left: 20px; border-left: 2px solid var(--line-hi); margin-left: 6px; padding-bottom: 12px; }
+.agenda__day::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--mid); }
+.agenda__day.today::before { background: var(--accent); border-color: var(--accent); }
+.agenda__head { font: 600 14px/1.3 var(--sys); color: var(--mid); margin: 0 0 8px; }
+.agenda__day.today .agenda__head { color: var(--accent); }
+.agenda__items .rows { border: 0; }
 
 /* Onboarding, Android (Timeline design, screens 01–03). */
-[data-look="android"] .onboarding--android { padding-top: calc(var(--st) + 16px); }
-[data-look="android"] .onboarding__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-[data-look="android"] .onboarding__dots { display: flex; gap: 6px; align-items: center; }
-[data-look="android"] .onboarding__dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--m3-outline); transition: width .2s var(--ease); }
-[data-look="android"] .onboarding__dots i.on { width: 24px; background: var(--accent); }
-[data-look="android"] .onboarding__icon { width: 56px; height: 56px; border-radius: 16px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; margin-bottom: 24px; }
-[data-look="android"] .onboarding__icon svg.i { width: 28px; height: 28px; }
-[data-look="android"] .onboarding--android .h-display .acc { color: var(--accent); }
-[data-look="android"] .onboarding--android .onboarding__acts { margin-top: auto; }
+.onboarding--android { padding-top: calc(var(--st) + 16px); }
+.onboarding__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+.onboarding__dots { display: flex; gap: 6px; align-items: center; }
+.onboarding__dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--m3-outline); transition: width .2s var(--ease); }
+.onboarding__dots i.on { width: 24px; background: var(--accent); }
+.onboarding__icon { width: 56px; height: 56px; border-radius: 16px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; margin-bottom: 24px; }
+.onboarding__icon svg.i { width: 28px; height: 28px; }
+.onboarding--android .h-display .acc { color: var(--accent); }
+.onboarding--android .onboarding__acts { margin-top: auto; }
 
 /* Settings group labels: quiet grey, as in design/android/dark/20-settings.png. */
-[data-look="android"] .grp-h { font: 500 13px/1.3 var(--sys); color: var(--mid); padding-left: calc(var(--pad) + 4px); }
+.grp-h { font: 500 13px/1.3 var(--sys); color: var(--mid); padding-left: calc(var(--pad) + 4px); }

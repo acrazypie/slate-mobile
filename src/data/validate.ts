@@ -2,7 +2,7 @@
 // being imported, or whatever is in storage at launch. Every entity is checked
 // field by field; nothing is trusted because it parsed as JSON.
 
-import type { Block, BlockCategory, Rotation, Shift, ShiftAssignment } from '../lib/types';
+import type { Block, BlockCategory, Rotation, Shift, ShiftAssignment, ViewMode } from '../lib/types';
 import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_MIN_DAYS, shiftDurationMinutes } from '../lib/types';
 import { isLocale } from '../i18n/config';
 import { REPORT_KINDS, type Report, type ReportKind } from '../lib/reportTypes';
@@ -244,7 +244,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
     google,
     accent: typeof s.accent === 'string' && HEX_COLOR.test(s.accent) ? s.accent.toUpperCase() : base.accent,
     locale: s.locale === null ? null : isLocale(s.locale) ? s.locale : base.locale,
-    defaultView: s.defaultView === 'day' || s.defaultView === 'week' || s.defaultView === 'month' || s.defaultView === 'agenda' ? s.defaultView : base.defaultView,
+    defaultView: (['day', 'week', 'month', 'agenda'] as unknown[]).includes(s.defaultView) ? (s.defaultView as ViewMode) : base.defaultView,
     monthStyle: s.monthStyle === 'compact' || s.monthStyle === 'detailed' ? s.monthStyle : base.monthStyle,
     haptics: typeof s.haptics === 'boolean' ? s.haptics : base.haptics,
     onboarded: typeof s.onboarded === 'boolean' ? s.onboarded : base.onboarded,

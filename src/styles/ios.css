@@ -89,3 +89,28 @@
 
 /* dialogs as iOS alerts */
 [data-look="ios"] .dialog { background: var(--sheet-bg); }
+
+/* Timeline design (design/docs/02-tokens.md) for iOS: navy ground, violet accent,
+   system type. A swatch picked in Settings still overrides the accent (theme.ts). */
+[data-look="ios"] {
+  --bg: #0e1320;  --bg-raise: #161d2e;  --nav-bg: rgba(14,19,32,.92);
+  --line: #1e2638;  --line-hi: #3a4560;
+  --text: #e8ecf5;  --mid: #8a94ab;  --dim: #5d6781;
+  --accent: #9d8cff;  --accent-ink: #0e1320;
+  --group-bg: #161d2e;  --group-line: #1e2638;
+  --syne: var(--sys);  --mono: var(--sys);
+  font-variant-numeric: tabular-nums;
+}
+[data-look="ios"][data-theme="light"] {
+  --bg: #f4f6fa;  --bg-raise: #ffffff;  --nav-bg: rgba(244,246,250,.92);
+  --line: #e3e8f1;  --line-hi: #c5ccdb;
+  --text: #14182a;  --mid: #5c6680;  --dim: #8a94ab;
+  --accent: #5b4bc4;  --accent-ink: #ffffff;
+  --group-bg: #ffffff;  --group-line: #e3e8f1;
+}
+/* Day title on iOS: the weekday large, the date under it (design/ios/dark/04-day.png). */
+[data-look="ios"] .cal-head__sub { font: 400 15px/1.3 var(--sys); color: var(--mid); margin: 2px 0 0; }
+/* Timeline now line: red with a dot, no time label (design/ios/dark/04-day.png). */
+[data-look="ios"] .now { border-top-color: #e0475e; }
+[data-look="ios"] .now__today, [data-look="ios"] .now__today::before { background: #e0475e; }
+[data-look="ios"] .now__lbl { display: none; }

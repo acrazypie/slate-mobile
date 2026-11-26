@@ -124,25 +124,23 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
   // header text
   const monthYear = formatDate(locale, anchor, 'monthYear');
   const year = String(anchor.getFullYear());
-  // Android (Timeline design): the day view's title is the day itself ("Wed 25 November"),
-  // with no eyebrow and no accent year. iOS keeps the month title and eyebrow.
-  const androidDay = platform === 'android' && view === 'day';
-  const titleMain = androidDay
-    ? capitalize(formatDate(locale, anchor, 'weekdayDayMonth'))
+  // Timeline design: the day view's title is the day. Android: "Wed 25 November" on one line.
+  // iOS: "Wednesday" with "25 November" under it. Week and month keep the month title.
+  const isAndroid = platform === 'android';
+  const dayView = view === 'day';
+  const titleMain = dayView
+    ? capitalize(formatDate(locale, anchor, isAndroid ? 'weekdayDayMonth' : 'weekdayLong'))
     : capitalize(monthYear.replace(year, '').trim());
-  // eyebrow only where it says something the title doesn't (design-notes §2)
+  const daySub = dayView && !isAndroid ? capitalize(formatDate(locale, anchor, 'dayMonthLong')) : null;
+  // eyebrow only where it says something the title doesn't (design-notes §2); iOS week only
   const tag =
-    platform === 'android'
-      ? null
-      : view === 'week'
-        ? fill(t.calendar.weekTag, { n: isoWeek(anchor), range: formatDayRange(locale, range.start, range.end) })
-        : view === 'day'
-          ? capitalize(formatDate(locale, anchor, 'fullDay'))
-          : null;
+    view === 'week' && !isAndroid
+      ? fill(t.calendar.weekTag, { n: isoWeek(anchor), range: formatDayRange(locale, range.start, range.end) })
+      : null;
 
   const weekEmpty = view === 'week' && contents.every((c) => c.blocks.length === 0 && c.shifts.length === 0);
   // Agenda is shown on Android only for now (the design's iOS screens are not built yet).
-  const viewOptions: ViewMode[] = platform === 'android' ? ['day', 'week', 'month', 'agenda'] : ['day', 'week', 'month'];
+  const viewOptions: ViewMode[] = ['day', 'week', 'month', 'agenda'];
 
   return (
     <div className="screen cal" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -155,8 +153,9 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
           <div className="cal-head__title">
             {tag && <span className="tag">{tag}</span>}
             <h1 className="h-page">
-              {androidDay ? titleMain : <>{titleMain} <span className="acc">{year}</span></>}
+              {dayView ? titleMain : <>{titleMain} <span className="acc">{year}</span></>}
             </h1>
+            {daySub && <p className="cal-head__sub">{daySub}</p>}
           </div>
           <div className="cal-head__nav">
             <button type="button" className="gbtn round" onClick={() => go(-1)} aria-label={t.calendar.previous}>

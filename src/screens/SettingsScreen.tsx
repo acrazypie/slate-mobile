@@ -114,8 +114,6 @@ export function SettingsScreen() {
           <header className="page__head">
             <h1 className="h-page">{t.settings.title}{platform !== 'android' && <span className="acc">.</span>}</h1>
           </header>
-          {platform === 'android' ? (
-            // Timeline design (screen 20): four labelled groups.
             <div className="settings-groups">
               <Group label={t.settings.appearance}>
                 <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
@@ -135,26 +133,6 @@ export function SettingsScreen() {
                 <Row icon="info" name={t.settingsPages.about.title} chevron onClick={() => setPage('about')} />
               </Group>
             </div>
-          ) : (
-          /* Three short groups with space between them, instead of one long list of two-line rows. */
-          <div className="settings-groups">
-            <Group>
-              <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
-              <Row icon="bell" name={t.settingsPages.notifications.title} chevron onClick={() => setPage('notifications')} />
-              <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
-            </Group>
-            <Group>
-              <Row icon="calendar" name={t.settingsPages.phone.title} chevron onClick={() => setPage('phone')} />
-              <Row icon="chart" name={t.settingsPages.summary.title} chevron onClick={() => setPage('summary')} />
-            <Row icon="layout" name={t.settingsPages.pay.title} chevron onClick={() => setPage('pay')} />
-            </Group>
-            <Group>
-              <Row icon="upload" name={t.settingsPages.backup.title} chevron onClick={() => setPage('backup')} />
-              <Row icon="refresh" name={t.settingsPages.updates.title} chevron onClick={() => setPage('updates')} />
-              <Row icon="info" name={t.settingsPages.about.title} chevron onClick={() => setPage('about')} />
-            </Group>
-          </div>
-          )}
         </>
       )}
       {SECTION_PAGES.includes(page) && page !== 'main' && (
@@ -193,7 +171,7 @@ export function SettingsScreen() {
         </Row>
         <Row icon="layout" name={t.settings.defaultView}>
           <select className="row-select" value={settings.defaultView} onChange={(e) => set({ defaultView: e.target.value as ViewMode })} aria-label={t.settings.defaultView}>
-            {(platform === 'android' ? ['day', 'week', 'month', 'agenda'] : ['day', 'week', 'month']).map((v) => <option key={v} value={v}>{t.views[v as ViewMode]}</option>)}
+            {(['day', 'week', 'month', 'agenda'] as const).map((v) => <option key={v} value={v}>{t.views[v]}</option>)}
           </select>
           <Icon name="chevronRight" className="irow__ch" />
         </Row>

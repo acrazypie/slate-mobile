@@ -133,7 +133,7 @@ export const DEFAULT_SETTINGS: Settings = {
   google: { enabled: false, push: false, pushShifts: true, showEvents: false },
   accent: DEFAULT_ACCENT,
   locale: null,
-  defaultView: 'week',
+  defaultView: 'day',
   monthStyle: 'compact',
   haptics: true,
   onboarded: false,
