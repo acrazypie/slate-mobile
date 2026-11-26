@@ -48,7 +48,8 @@ export const ja: Dictionary = {
   "views": {
     "day": "日",
     "week": "週",
-    "month": "月"
+    "month": "月",
+    "agenda": "予定"
   },
   "nav": {
     "summary": "集計",

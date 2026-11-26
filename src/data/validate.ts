@@ -244,7 +244,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
     google,
     accent: typeof s.accent === 'string' && HEX_COLOR.test(s.accent) ? s.accent.toUpperCase() : base.accent,
     locale: s.locale === null ? null : isLocale(s.locale) ? s.locale : base.locale,
-    defaultView: s.defaultView === 'day' || s.defaultView === 'week' || s.defaultView === 'month' ? s.defaultView : base.defaultView,
+    defaultView: s.defaultView === 'day' || s.defaultView === 'week' || s.defaultView === 'month' || s.defaultView === 'agenda' ? s.defaultView : base.defaultView,
     monthStyle: s.monthStyle === 'compact' || s.monthStyle === 'detailed' ? s.monthStyle : base.monthStyle,
     haptics: typeof s.haptics === 'boolean' ? s.haptics : base.haptics,
     onboarded: typeof s.onboarded === 'boolean' ? s.onboarded : base.onboarded,

@@ -5,7 +5,7 @@
 
 export type BlockCategory = 'studio' | 'lavoro' | 'lezione' | 'altro';
 export type RecurrenceType = 'weekly' | 'monthly';
-export type ViewMode = 'day' | 'week' | 'month';
+export type ViewMode = 'day' | 'week' | 'month' | 'agenda';
 
 /**
  * An event, or a whole recurring series. For a series, `week_offset` +

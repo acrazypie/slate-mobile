@@ -170,7 +170,7 @@ export function SettingsScreen() {
         </Row>
         <Row icon="layout" name={t.settings.defaultView}>
           <select className="row-select" value={settings.defaultView} onChange={(e) => set({ defaultView: e.target.value as ViewMode })} aria-label={t.settings.defaultView}>
-            {(['day', 'week', 'month'] as const).map((v) => <option key={v} value={v}>{t.views[v]}</option>)}
+            {(platform === 'android' ? ['day', 'week', 'month', 'agenda'] : ['day', 'week', 'month']).map((v) => <option key={v} value={v}>{t.views[v as ViewMode]}</option>)}
           </select>
           <Icon name="chevronRight" className="irow__ch" />
         </Row>

@@ -49,7 +49,8 @@ export const it = {
   "views": {
     "day": "Giorno",
     "week": "Settimana",
-    "month": "Mese"
+    "month": "Mese",
+    "agenda": "Agenda"
   },
   "nav": {
     "summary": "Riepilogo",

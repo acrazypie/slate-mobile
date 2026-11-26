@@ -141,3 +141,12 @@
 [data-look="android"] .now__today, [data-look="android"] .now__today::before { background: #e0475e; }
 [data-look="android"] .now__lbl { display: none; }
 [data-look="android"] .cal-head .acc { color: inherit; }
+
+/* Agenda (Timeline design, screen 07): the next seven days on a vertical spine. */
+[data-look="android"] .agenda { padding: 8px var(--pad) calc(var(--tab-space) + 72px); display: grid; gap: 4px; }
+[data-look="android"] .agenda__day { position: relative; padding-left: 20px; border-left: 2px solid var(--line-hi); margin-left: 6px; padding-bottom: 12px; }
+[data-look="android"] .agenda__day::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--mid); }
+[data-look="android"] .agenda__day.today::before { background: var(--accent); border-color: var(--accent); }
+[data-look="android"] .agenda__head { font: 600 14px/1.3 var(--sys); color: var(--mid); margin: 0 0 8px; }
+[data-look="android"] .agenda__day.today .agenda__head { color: var(--accent); }
+[data-look="android"] .agenda__items .rows { border: 0; }

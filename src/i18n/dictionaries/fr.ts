@@ -48,7 +48,8 @@ export const fr: Dictionary = {
   "views": {
     "day": "Jour",
     "week": "Semaine",
-    "month": "Mois"
+    "month": "Mois",
+    "agenda": "Agenda"
   },
   "nav": {
     "summary": "Résumé",
