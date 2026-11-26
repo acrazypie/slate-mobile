@@ -261,7 +261,7 @@ export const en: Dictionary = {
     "footer": "Updates come from the Slate releases on GitHub. The download is checked against the published SHA-256 before Android asks you to confirm the install. Your data is kept."
   },
   "settingsPages": {
-    "appearance": {"title": "Appearance", "short": "Theme, colour, default view and language", "lede": "Theme, accent colour, the view Slate opens on, and the language of the app. Stored on this device."},
+    "appearance": {"title": "Appearance", "short": "Theme, colour, icon and views", "lede": "Theme, accent colour, the app icon and the views Slate shows. Stored on this device."},
     "pay": {"title": "Pay", "short": "Hourly rate and overtime", "lede": "Used by the summary to show what your shifts are worth. Earnings count shifts only, minus their breaks."},
     "phone": {"title": "Phone calendar", "short": "Show and copy to the phone", "lede": "Choose which phone calendars show next to Slate, and copy blocks and shifts into a calendar on this phone."},
     "backup": {"title": "Backup", "short": "Export, import or erase your data", "lede": "Save everything to a file you keep, load a file on a new phone, or erase all data on this phone."},
@@ -420,6 +420,7 @@ export const en: Dictionary = {
     "oledHint": "Pure black background in the dark theme.",
     "widgets": "Widgets",
     "widgetsSoon": "Coming soon",
+    "viewSettings": "View settings",
     "accent": "Accent colour",
     "customColor": "Custom colour",
     "accentHint": "Used for buttons, selections and today across the app, on this device.",
@@ -478,6 +479,7 @@ export const en: Dictionary = {
   "settingsGroups": {
     "calendars": "Calendars and account",
     "syncNote": "Android and iOS sync only through Google.",
+    "permissions": "Permissions",
     "work": "Work",
     "data": "Data"
   },

@@ -525,4 +525,4 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .choice__ck { flex-shrink: 0; width: 20px; height: 20px; color: var(--accent); }
 
 /* OLED: the dark theme on a pure black background (Settings › Appearance). */
-:root[data-look][data-theme="dark"][data-oled="true"] { --bg: #000000; --bg-raise: #0c0c0e; --nav-bg: rgba(0,0,0,.92); }
+:root[data-look][data-theme="dark"][data-oled="true"] { --bg: #000000; --bg-raise: #0c0c0e; --nav-bg: rgba(0,0,0,.92); --m3-c: #000000; --m3-c-low: #000000; --m3-c-high: #0a0a0a; --m3-c-highest: #121212; }

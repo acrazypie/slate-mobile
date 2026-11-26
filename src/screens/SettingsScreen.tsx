@@ -121,15 +121,16 @@ export function SettingsScreen() {
               </Group>
               <Group label={t.settings.appearance}>
                 <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
-              </Group>
-              <Group>
-                <Row icon="bell" name={t.settingsPages.notifications.title} chevron onClick={() => setPage('notifications')} />
-              </Group>
-              <Group>
                 <Row icon="layout" name={t.settings.widgets} hint={t.settings.widgetsSoon} />
               </Group>
-              <Group label={t.settingsGroups.calendars}>
+              <Group label={t.settingsGroups.permissions}>
+                <Row icon="bell" name={t.settingsPages.notifications.title} chevron onClick={() => setPage('notifications')} />
                 <Row icon="calendar" name={t.settingsPages.phone.title} chevron onClick={() => setPage('phone')} />
+              </Group>
+              <Group>
+                <ChoiceRow icon="globe" name={t.settings.language} ariaLabel={t.settings.language} value={settings.locale ?? ''}
+                  onChange={(v) => set({ locale: isLocale(v) ? v : null })}
+                  options={[{ value: '', label: t.settings.languageSystem }, ...LOCALES.map((l) => ({ value: l, label: `${l.toUpperCase()} · ${LOCALE_NAMES[l]}` }))]} />
               </Group>
               <Group label={t.settingsGroups.work}>
                 <Row icon="chart" name={t.settingsPages.summary.title} chevron onClick={() => setPage('summary')} />
@@ -158,6 +159,7 @@ export function SettingsScreen() {
       )}
 
       {page === 'appearance' && (
+      <>
       <Group label={t.settings.appearance}>
         <Row icon="palette" name={t.appIcon.label} hint={t.appIcon.hint} stack>
           <AppIconPicker value={settings.appIcon} />
@@ -182,21 +184,21 @@ export function SettingsScreen() {
         <Row icon="palette" name={t.settings.accent} hint={accentName(settings.accent)} stack>
           <Swatches colors={ACCENT_OPTIONS.map((o) => o.value)} value={settings.accent} onChange={(accent) => set({ accent })} names={accentName} custom={t.settings.customColor} />
         </Row>
-        <ChoiceRow icon="layout" name={t.settings.defaultView} ariaLabel={t.settings.defaultView} value={settings.defaultView}
-          onChange={(v) => set({ defaultView: v as ViewMode })}
-          options={(['day', 'week', 'month', 'agenda'] as const).map((v) => ({ value: v, label: t.views[v] }))} />
-        <ChoiceRow icon="layout" name={t.settings.monthStyle} ariaLabel={t.settings.monthStyle} value={settings.monthStyle}
-          onChange={(v) => set({ monthStyle: v as MonthStyle })}
-          options={[{ value: 'compact', label: t.settings.monthCompact }, { value: 'detailed', label: t.settings.monthDetailed }]} />
-        <ChoiceRow icon="globe" name={t.settings.language} ariaLabel={t.settings.language} value={settings.locale ?? ''}
-          onChange={(v) => set({ locale: isLocale(v) ? v : null })}
-          options={[{ value: '', label: t.settings.languageSystem }, ...LOCALES.map((l) => ({ value: l, label: `${l.toUpperCase()} · ${LOCALE_NAMES[l]}` }))]} />
         {isNative && (
           <Row icon="vibrate" name={t.settings.haptics} hint={t.settings.hapticsHint}>
             <Switch checked={settings.haptics} onChange={(haptics) => set({ haptics })} label={t.settings.haptics} />
           </Row>
         )}
       </Group>
+      <Group label={t.settings.viewSettings}>
+        <ChoiceRow icon="layout" name={t.settings.defaultView} ariaLabel={t.settings.defaultView} value={settings.defaultView}
+          onChange={(v) => set({ defaultView: v as ViewMode })}
+          options={(['day', 'week', 'month', 'agenda'] as const).map((v) => ({ value: v, label: t.views[v] }))} />
+        <ChoiceRow icon="layout" name={t.settings.monthStyle} ariaLabel={t.settings.monthStyle} value={settings.monthStyle}
+          onChange={(v) => set({ monthStyle: v as MonthStyle })}
+          options={[{ value: 'compact', label: t.settings.monthCompact }, { value: 'detailed', label: t.settings.monthDetailed }]} />
+      </Group>
+      </>
       )}
 
       {page === 'pay' && (

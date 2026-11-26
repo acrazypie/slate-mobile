@@ -262,7 +262,7 @@ export const it = {
     "footer": "Gli aggiornamenti arrivano dalle release di Slate su GitHub. Il file scaricato viene verificato con il SHA-256 pubblicato prima che Android ti chieda conferma. I tuoi dati restano."
   },
   "settingsPages": {
-    "appearance": {"title": "Aspetto", "short": "Tema, colore, vista predefinita e lingua", "lede": "Tema, colore d’accento, la vista con cui si apre Slate e la lingua dell’app. Salvato su questo dispositivo."},
+    "appearance": {"title": "Aspetto", "short": "Tema, colore, icona e viste", "lede": "Tema, colore d’accento, icona e viste di Slate. Salvato su questo dispositivo."},
     "pay": {"title": "Paga", "short": "Tariffa oraria e straordinari", "lede": "Serve al riepilogo per mostrare quanto valgono i tuoi turni. Il guadagno conta solo i turni, meno le pause."},
     "phone": {"title": "Calendario del telefono", "short": "Mostra e copia sul telefono", "lede": "Scegli quali calendari del telefono appaiono accanto a Slate, e copia blocchi e turni in un calendario di questo telefono."},
     "backup": {"title": "Backup", "short": "Esporta, importa o cancella i dati", "lede": "Salva tutto in un file da tenere, carica un file su un nuovo telefono, o cancella tutti i dati di questo telefono."},
@@ -421,6 +421,7 @@ export const it = {
     "oledHint": "Sfondo nero puro nel tema scuro.",
     "widgets": "Widget",
     "widgetsSoon": "In arrivo",
+    "viewSettings": "Impostazioni vista",
     "accent": "Colore principale",
     "customColor": "Colore personalizzato",
     "accentHint": "Vale per pulsanti, selezioni e il giorno di oggi in tutta l'app, su questo dispositivo.",
@@ -479,6 +480,7 @@ export const it = {
   "settingsGroups": {
     "calendars": "Calendari e account",
     "syncNote": "Android e iOS si sincronizzano solo tramite Google.",
+    "permissions": "Permessi",
     "work": "Lavoro",
     "data": "Dati"
   },

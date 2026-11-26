@@ -261,7 +261,7 @@ export const es: Dictionary = {
     "footer": "Las actualizaciones vienen de las versiones de Slate en GitHub. La descarga se comprueba con el SHA-256 publicado antes de que Android pida confirmación. Tus datos se conservan."
   },
   "settingsPages": {
-    "appearance": {"title": "Apariencia", "short": "Tema, color, vista predeterminada e idioma", "lede": "Tema, color de acento, la vista con la que se abre Slate y el idioma de la app. Se guarda en este dispositivo."},
+    "appearance": {"title": "Apariencia", "short": "Tema, color, icono y vistas", "lede": "Tema, color de acento, icono y vistas de Slate. Se guarda en este dispositivo."},
     "pay": {"title": "Pago", "short": "Tarifa por hora y horas extra", "lede": "Lo usa el resumen para mostrar cuánto valen tus turnos. Las ganancias cuentan solo los turnos, menos sus pausas."},
     "phone": {"title": "Calendario del teléfono", "short": "Mostrar y copiar en el teléfono", "lede": "Elige qué calendarios del teléfono aparecen junto a Slate, y copia bloques y turnos a un calendario de este teléfono."},
     "backup": {"title": "Copia de seguridad", "short": "Exportar, importar o borrar tus datos", "lede": "Guarda todo en un archivo que conservas, carga un archivo en un teléfono nuevo, o borra todos los datos de este teléfono."},
@@ -420,6 +420,7 @@ export const es: Dictionary = {
     "oledHint": "Fondo negro puro en el tema oscuro.",
     "widgets": "Widgets",
     "widgetsSoon": "Próximamente",
+    "viewSettings": "Ajustes de vista",
     "accent": "Color principal",
     "customColor": "Color personalizado",
     "accentHint": "Se usa en botones, selecciones y el día de hoy en toda la app, en este dispositivo.",
@@ -478,6 +479,7 @@ export const es: Dictionary = {
   "settingsGroups": {
     "calendars": "Calendarios y cuenta",
     "syncNote": "Android e iOS se sincronizan solo a través de Google.",
+    "permissions": "Permisos",
     "work": "Trabajo",
     "data": "Datos"
   },

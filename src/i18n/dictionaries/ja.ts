@@ -261,7 +261,7 @@ export const ja: Dictionary = {
     "footer": "アップデートはGitHubのSlateリリースから配布されます。Androidが確認を求める前に、公開されたSHA-256でダウンロードを検証します。データは残ります。"
   },
   "settingsPages": {
-    "appearance": {"title": "外観", "short": "テーマ、色、初期表示、言語", "lede": "テーマ、アクセントカラー、Slateを開くときの表示、アプリの言語です。この端末に保存されます。"},
+    "appearance": {"title": "外観", "short": "テーマ、色、アイコン、表示", "lede": "テーマ、アクセントカラー、アイコン、Slateの表示です。この端末に保存されます。"},
     "pay": {"title": "給与", "short": "時給と残業", "lede": "集計で、シフトの価値を表示するために使います。収入はシフトのみで計算し、休憩は除きます。"},
     "phone": {"title": "端末のカレンダー", "short": "表示とコピー", "lede": "Slateの横に表示する端末のカレンダーを選び、ブロックとシフトをこの端末のカレンダーにコピーします。"},
     "backup": {"title": "バックアップ", "short": "データの書き出し、読み込み、削除", "lede": "すべてをファイルに保存したり、新しい端末にファイルを読み込んだり、この端末のデータをすべて削除したりします。"},
@@ -420,6 +420,7 @@ export const ja: Dictionary = {
     "oledHint": "ダークテーマの背景を純粋な黒にします。",
     "widgets": "ウィジェット",
     "widgetsSoon": "近日公開",
+    "viewSettings": "表示設定",
     "accent": "アクセントカラー",
     "customColor": "カスタムカラー",
     "accentHint": "このデバイスで、アプリ全体のボタン、選択項目、今日の日付に使われます。",
@@ -478,6 +479,7 @@ export const ja: Dictionary = {
   "settingsGroups": {
     "calendars": "カレンダーとアカウント",
     "syncNote": "AndroidとiOSの同期はGoogle経由のみです。",
+    "permissions": "権限",
     "work": "仕事",
     "data": "データ"
   },

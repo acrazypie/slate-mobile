@@ -261,7 +261,7 @@ export const nl: Dictionary = {
     "footer": "Updates komen van de Slate-releases op GitHub. Het bestand wordt gecontroleerd met de gepubliceerde SHA-256 voordat Android om bevestiging vraagt. Je gegevens blijven bewaard."
   },
   "settingsPages": {
-    "appearance": {"title": "Uiterlijk", "short": "Thema, kleur, standaardweergave en taal", "lede": "Thema, accentkleur, de weergave waarmee Slate opent en de taal van de app. Wordt op dit apparaat bewaard."},
+    "appearance": {"title": "Uiterlijk", "short": "Thema, kleur, pictogram en weergaven", "lede": "Thema, accentkleur, pictogram en weergaven van Slate. Wordt op dit apparaat bewaard."},
     "pay": {"title": "Loon", "short": "Uurtarief en overwerk", "lede": "Het overzicht gebruikt dit om te tonen wat je diensten waard zijn. Verdiensten tellen alleen diensten, zonder pauzes."},
     "phone": {"title": "Telefoonagenda", "short": "Tonen en kopiëren naar de telefoon", "lede": "Kies welke telefoonagenda’s naast Slate verschijnen, en kopieer blokken en diensten naar een agenda op deze telefoon."},
     "backup": {"title": "Back-up", "short": "Exporteren, importeren of wissen", "lede": "Bewaar alles in een bestand, laad een bestand op een nieuwe telefoon, of wis alle gegevens op deze telefoon."},
@@ -420,6 +420,7 @@ export const nl: Dictionary = {
     "oledHint": "Puur zwarte achtergrond in het donkere thema.",
     "widgets": "Widgets",
     "widgetsSoon": "Binnenkort",
+    "viewSettings": "Weergave-instellingen",
     "accent": "Accentkleur",
     "customColor": "Eigen kleur",
     "accentHint": "Geldt voor knoppen, selecties en de dag van vandaag in de hele app, op dit apparaat.",
@@ -478,6 +479,7 @@ export const nl: Dictionary = {
   "settingsGroups": {
     "calendars": "Agenda's en account",
     "syncNote": "Android en iOS synchroniseren alleen via Google.",
+    "permissions": "Rechten",
     "work": "Werk",
     "data": "Gegevens"
   },

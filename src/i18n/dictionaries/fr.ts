@@ -261,7 +261,7 @@ export const fr: Dictionary = {
     "footer": "Les mises à jour viennent des versions de Slate sur GitHub. Le téléchargement est vérifié avec le SHA-256 publié avant qu’Android vous demande de confirmer. Vos données sont conservées."
   },
   "settingsPages": {
-    "appearance": {"title": "Apparence", "short": "Thème, couleur, vue par défaut et langue", "lede": "Thème, couleur d’accent, la vue sur laquelle s’ouvre Slate et la langue de l’app. Enregistré sur cet appareil."},
+    "appearance": {"title": "Apparence", "short": "Thème, couleur, icône et vues", "lede": "Thème, couleur d’accent, icône et vues de Slate. Enregistré sur cet appareil."},
     "pay": {"title": "Paie", "short": "Taux horaire et heures supplémentaires", "lede": "Utilisé par le résumé pour afficher ce que valent vos services. Les gains ne comptent que les services, sans leurs pauses."},
     "phone": {"title": "Agenda du téléphone", "short": "Afficher et copier sur le téléphone", "lede": "Choisissez les agendas du téléphone affichés à côté de Slate, et copiez blocs et services dans un agenda de ce téléphone."},
     "backup": {"title": "Sauvegarde", "short": "Exporter, importer ou effacer vos données", "lede": "Enregistrez tout dans un fichier, chargez un fichier sur un nouveau téléphone, ou effacez toutes les données de ce téléphone."},
@@ -420,6 +420,7 @@ export const fr: Dictionary = {
     "oledHint": "Fond noir pur dans le thème sombre.",
     "widgets": "Widgets",
     "widgetsSoon": "Bientôt",
+    "viewSettings": "Réglages de vue",
     "accent": "Couleur principale",
     "customColor": "Couleur personnalisée",
     "accentHint": "S’applique aux boutons, aux sélections et au jour actuel dans toute l’app, sur cet appareil.",
@@ -478,6 +479,7 @@ export const fr: Dictionary = {
   "settingsGroups": {
     "calendars": "Agendas et compte",
     "syncNote": "Android et iOS ne se synchronisent que via Google.",
+    "permissions": "Autorisations",
     "work": "Travail",
     "data": "Données"
   },
