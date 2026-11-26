@@ -58,7 +58,7 @@ export const es: Dictionary = {
     "settings": "Ajustes"
   },
   "summary": {
-    "title": "resumen",
+    "title": "Resumen",
     "close": "Cerrar resumen",
     "thisWeek": "Esta semana",
     "thisMonth": "Este mes",

@@ -59,7 +59,7 @@ export const it = {
     "settings": "Impostazioni"
   },
   "summary": {
-    "title": "riepilogo",
+    "title": "Riepilogo",
     "close": "Chiudi riepilogo",
     "thisWeek": "Questa settimana",
     "thisMonth": "Questo mese",

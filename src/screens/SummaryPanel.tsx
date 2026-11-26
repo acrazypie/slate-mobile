@@ -3,7 +3,7 @@
 // user added, and the buttons to add a report and export a PDF.
 
 import { useMemo, useState } from 'react';
-import { useData, useSettings } from '../app/store';
+import { repo, useData, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
 import { formatDate } from '../i18n/format';
 import { computePay, formatMoney } from '../lib/pay';
@@ -39,7 +39,7 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
   );
   const label = `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
 
-  // The chip names the period kind the setting already has. Changing it stays in Settings › Summary.
+  // The chips set the period kind; other kinds (two weeks, year, custom) stay in Settings › Summary and show as a selected chip.
   const chipLabel = {
     week: t.summary.thisWeek,
     month: t.summary.thisMonth,
@@ -57,7 +57,22 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
   return (
     <section className="summary">
       <div className="summary__head">
-        <span className="chip sel summary__chip">{chipLabel}</span>
+        <div className="summary__chips" role="group" aria-label={t.summaryUi.range}>
+          {(['week', 'month'] as const).map((kind) => (
+            <button
+              key={kind}
+              type="button"
+              className={`chip summary__chip${settings.summaryRange.kind === kind ? ' sel' : ''}`}
+              aria-pressed={settings.summaryRange.kind === kind}
+              onClick={() => void repo.updateSettings({ summaryRange: { ...settings.summaryRange, kind } })}
+            >
+              {kind === 'week' ? t.summary.thisWeek : t.summary.thisMonth}
+            </button>
+          ))}
+          {settings.summaryRange.kind !== 'week' && settings.summaryRange.kind !== 'month' && (
+            <span className="chip sel summary__chip">{chipLabel}</span>
+          )}
+        </div>
         <span className="summary__range">{label}</span>
         <button type="button" className="summary__change" onClick={() => goToTab('settings')}>{t.summaryUi.change}</button>
       </div>

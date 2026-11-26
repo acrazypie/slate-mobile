@@ -58,7 +58,7 @@ export const nl: Dictionary = {
     "settings": "Instellingen"
   },
   "summary": {
-    "title": "overzicht",
+    "title": "Overzicht",
     "close": "Overzicht sluiten",
     "thisWeek": "Deze week",
     "thisMonth": "Deze maand",
