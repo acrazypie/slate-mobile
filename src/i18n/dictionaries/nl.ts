@@ -329,7 +329,8 @@ export const nl: Dictionary = {
     "total": "Totaal",
     "days": "dagen",
     "exportPdf": "PDF exporteren",
-    "pdfAndroid": "PDF-export is voorlopig beschikbaar op Android."
+    "pdfAndroid": "PDF-export is voorlopig beschikbaar op Android.",
+    "earningsHint": "Alleen diensten, minus de pauzes"
   },
   "pdf": {
     "title": "PDF exporteren",

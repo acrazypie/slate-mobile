@@ -329,7 +329,8 @@ export const ja: Dictionary = {
     "total": "合計",
     "days": "日",
     "exportPdf": "PDFを書き出す",
-    "pdfAndroid": "PDFの書き出しは現在Androidでのみ利用できます。"
+    "pdfAndroid": "PDFの書き出しは現在Androidでのみ利用できます。",
+    "earningsHint": "シフトのみ、休憩を除く"
   },
   "pdf": {
     "title": "PDFを書き出す",

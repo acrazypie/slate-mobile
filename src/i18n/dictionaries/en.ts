@@ -329,7 +329,8 @@ export const en: Dictionary = {
     "total": "Total",
     "days": "days",
     "exportPdf": "Export PDF",
-    "pdfAndroid": "PDF export is available on Android for now."
+    "pdfAndroid": "PDF export is available on Android for now.",
+    "earningsHint": "Shifts only, minus breaks"
   },
   "pdf": {
     "title": "Export PDF",

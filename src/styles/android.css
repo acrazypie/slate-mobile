@@ -127,13 +127,23 @@
 
 [data-look="android"] .dialog { background: var(--m3-c-high); border-radius: 28px; }
 [data-look="android"] .tile { border-radius: 16px; }
-[data-look="android"] .shift-rows.rows { border: 0; display: grid; gap: 2px; }
-[data-look="android"] .shift-rows .row { background: var(--m3-c); border: 0; border-radius: 4px; padding: 10px 16px; min-height: 72px; }
-[data-look="android"] .shift-rows .row:first-child { border-radius: 20px 20px 4px 4px; }
-[data-look="android"] .shift-rows .row:last-child { border-radius: 4px 4px 20px 20px; }
-[data-look="android"] .shift-rows .row:only-child { border-radius: 20px; }
+[data-look="android"] .shift-rows.rows, [data-look="android"] .rotations .rows { border: 0; display: grid; gap: 2px; }
+[data-look="android"] .rotations .rows { margin: 0 var(--pad); }
+[data-look="android"] .shift-rows .row, [data-look="android"] .rotations .row { background: var(--m3-c); border: 0; border-radius: 4px; padding: 10px 16px; min-height: 72px; }
+[data-look="android"] .shift-rows .row:first-child, [data-look="android"] .rotations .row:first-child { border-radius: 20px 20px 4px 4px; }
+[data-look="android"] .shift-rows .row:last-child, [data-look="android"] .rotations .row:last-child { border-radius: 4px 4px 20px 20px; }
+[data-look="android"] .shift-rows .row:only-child, [data-look="android"] .rotations .row:only-child { border-radius: 20px; }
 [data-look="android"] .shift-rows .row__idx { display: none; }
 [data-look="android"] .shift-rows .glyph--lg { width: 40px; height: 40px; border-radius: 12px; }
+[data-look="android"] .rotations .row--add { min-height: 64px; }
+[data-look="android"] .rotations .row--add .row__name { color: var(--accent); font-weight: 500; }
+[data-look="android"] .rotations .row--add .row__lead { color: var(--accent); }
+
+/* Tab screens with a top app bar title (Timeline design, screens 14 and 16). */
+[data-look="android"] .page__bar:has(.page__bar-title) { min-height: 64px; justify-content: flex-start; padding-left: 16px; }
+[data-look="android"] .page__bar-title { display: block; font: 500 22px/1.2 var(--sys); letter-spacing: 0; }
+[data-look="android"] .page:has(.page__bar-title) > .page__head .h-page { display: none; }
+[data-look="android"] .section-h { font: 500 13px/1.3 var(--sys); color: var(--mid); padding: 24px calc(var(--pad) + 4px) 8px; }
 
 /* Timeline (Android): the now line is red with a dot, and no time label
    (design/android/dark/04-day.png). The year in the title is not accented. */
@@ -164,3 +174,57 @@
 
 /* Settings group labels: quiet grey, as in design/android/dark/20-settings.png. */
 .grp-h { font: 500 13px/1.3 var(--sys); color: var(--mid); padding-left: calc(var(--pad) + 4px); }
+
+/* Summary (Timeline design, screen 16): a top app bar title, a period chip,
+   a total with no rules, one stacked bar, an earnings card, and tonal rows
+   for the reports and the actions. */
+[data-look="android"] .page--grouped > .page__head .h-page { font: 500 22px/1.2 var(--sys); letter-spacing: 0; text-transform: capitalize; }
+[data-look="android"] .page--grouped > .page__head .acc { display: none; }
+[data-look="android"] .summary__chip { height: 32px; border-radius: 8px; box-shadow: none; background: var(--m3-sec); color: var(--m3-on-sec); font: 500 13px/1 var(--sys); padding: 0 14px; }
+[data-look="android"] .summary__range { font: 400 13px/1.3 var(--sys); }
+[data-look="android"] .summary__change { font: 600 14px/1 var(--sys); padding: 10px 12px; min-height: 48px; display: inline-flex; align-items: center; }
+[data-look="android"] .summary .hud { border: 0; margin-top: 8px; }
+[data-look="android"] .summary .hud__c { padding: 0; }
+[data-look="android"] .summary .hud__c + .hud__c { border: 0; padding-left: 0; }
+[data-look="android"] .summary .hud__v { font: 500 48px/1 var(--sys); letter-spacing: -.02em; }
+[data-look="android"] .summary .hud__v small { font: 400 20px var(--sys); }
+[data-look="android"] .stackbar { height: 8px; border-radius: 4px; gap: 3px; }
+[data-look="android"] .stackbar__legend { font: 400 12px/1.3 var(--sys); }
+[data-look="android"] .stackbar__legend .n { color: var(--mid); }
+[data-look="android"] .earn { background: var(--m3-c); border-radius: 20px; padding: 16px 20px; min-height: 72px; gap: 16px; }
+[data-look="android"] .earn__ic { color: var(--text); }
+[data-look="android"] .earn__name { font: 500 16px/1.3 var(--sys); }
+[data-look="android"] .earn__hint { font: 400 14px/1.4 var(--sys); color: var(--mid); }
+[data-look="android"] .earn__v { font: 500 16px/1 var(--sys); }
+[data-look="android"] .summary__h { font: 500 13px/1.3 var(--sys); color: var(--mid); margin: 28px 0 10px 4px; }
+[data-look="android"] .reports { gap: 2px; margin-top: 0; }
+[data-look="android"] .report { background: var(--m3-c); border-radius: 4px; padding: 14px 20px 10px; }
+[data-look="android"] .report:first-child { border-radius: 20px 20px 4px 4px; }
+[data-look="android"] .report:last-child { border-radius: 4px 4px 20px 20px; }
+[data-look="android"] .report:only-child { border-radius: 20px; }
+[data-look="android"] .report__head .label { font: 500 16px/1.3 var(--sys); color: var(--text); }
+[data-look="android"] .summary__actions { gap: 2px; margin-top: 16px; }
+[data-look="android"] .summary__actions .btn { justify-content: flex-start; min-height: 64px; padding: 0 20px; gap: 16px; border-radius: 20px; background: var(--m3-c); color: var(--text); box-shadow: none; font: 500 16px/1.2 var(--sys); }
+[data-look="android"] .summary__actions .btn:first-child { border-radius: 20px 20px 4px 4px; }
+[data-look="android"] .summary__actions .btn:last-child { border-radius: 4px 4px 20px 20px; }
+[data-look="android"] .summary__actions .btn svg.i { color: var(--mid); width: 24px; height: 24px; }
+[data-look="android"] .summary__actions .btn::after { content: ""; margin-left: auto; width: 8px; height: 8px; border-right: 2px solid var(--dim); border-top: 2px solid var(--dim); transform: rotate(45deg); }
+[data-look="android"] .summary__actions .btn:active { background: var(--m3-c-highest); }
+[data-look="android"] .summary__actions .note { margin-top: 12px; }
+
+/* Sheets, Timeline design (screens 09–18): the title sits at the top left,
+   the one action is a full-width pill at the bottom, and the sheet closes by
+   the back gesture or the scrim (no ✕). */
+[data-look="android"] .sheet__close { display: none; }
+[data-look="android"] .sheet__bar { padding: 30px 16px 8px 8px; }
+[data-look="android"] .sheet__title { padding-left: 16px; font: 500 22px/1.2 var(--sys); letter-spacing: 0; }
+[data-look="android"] .sheet .row__name { font: 500 16px/1.3 var(--sys); letter-spacing: 0; }
+[data-look="android"] .sheet__ok { position: absolute; z-index: 1; left: 16px; right: 16px; bottom: calc(var(--sb) + 16px); width: auto; height: 48px; padding: 0; border-radius: 24px; display: flex; align-items: center; justify-content: center; font: 600 16px/1 var(--sys); }
+[data-look="android"] .sheet:has(.sheet__ok)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--sb) + 96px); background: linear-gradient(transparent, var(--m3-c-low) 40%); pointer-events: none; }
+[data-look="android"] .sheet:has(.sheet__ok) .sheet__body { padding-bottom: calc(var(--sb) + 88px); }
+[data-look="android"] .sheet .row__lead { color: var(--mid); }
+[data-look="android"] .radio { width: 24px; height: 24px; box-shadow: inset 0 0 0 2px var(--mid); }
+[data-look="android"] .radio.on { box-shadow: inset 0 0 0 2px var(--accent); }
+[data-look="android"] .radio.on::after { inset: 6px; }
+/* Destructive pill, filled red (design/android 13). */
+[data-look="android"] .btn--danger { background: #e0475e; color: #fff; box-shadow: none; }

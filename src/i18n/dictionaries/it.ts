@@ -330,7 +330,8 @@ export const it = {
     "total": "Totale",
     "days": "giorni",
     "exportPdf": "Esporta PDF",
-    "pdfAndroid": "L’esportazione PDF è disponibile per ora su Android."
+    "pdfAndroid": "L’esportazione PDF è disponibile per ora su Android.",
+    "earningsHint": "Solo turni, meno le pause"
   },
   "pdf": {
     "title": "Esporta PDF",

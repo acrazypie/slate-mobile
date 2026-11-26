@@ -37,13 +37,11 @@ export function SummaryRangePage() {
   return (
     <>
       <Group footer={t.settingsSummary.lede}>
-        <Row icon="chart" name={t.settingsSummary.kind}>
-          <select className="row-select" value={range.kind} onChange={(e) => setKind(e.target.value as RangeKind)} aria-label={t.settingsSummary.kind}>
-            {kindOptions.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-        </Row>
+        {kindOptions.map((o) => (
+          <Row key={o.value} name={o.label} onClick={() => setKind(o.value)}>
+            <span className={`radio${range.kind === o.value ? " on" : ""}`} aria-hidden="true" />
+          </Row>
+        ))}
       </Group>
 
       {(range.kind === 'week' || range.kind === 'twoWeeks') && (
