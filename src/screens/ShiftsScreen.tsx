@@ -55,6 +55,8 @@ export function ShiftsScreen() {
           <button type="button" className="btn" onClick={() => setEditing(null)}><Icon name="plus" /> {t.shiftsView.createFirst}</button>
         </div>
       ) : (
+        <>
+        <h2 className="section-h ios-only">{t.common.shifts}</h2>
         <div className="rows shift-rows">
           {data.shifts.map((s) => {
             const next = nextDate(s.id);
@@ -75,6 +77,7 @@ export function ShiftsScreen() {
             );
           })}
         </div>
+        </>
       )}
       {data.shifts.length > 0 && <p className="note pad-x"><Icon name="info" />{t.shiftsView.howToPlace}</p>}
 

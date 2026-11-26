@@ -63,6 +63,22 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
       {s.total === 0 ? (
         <p className="summary__empty small">{t.summary.empty}</p>
       ) : (
+        <>
+          {/* iOS: one stacked bar with its labels under it (design/ios/dark/16-summary.png). The list below is hidden there. */}
+          <div className="sumbar ios-only">
+            <div className="sumbar__bar">
+              {CATEGORIES.map((c) => (
+                <i key={c} style={{ flexGrow: s.byCategory[c], background: CATEGORY_COLORS[c] }} />
+              ))}
+              <i style={{ flexGrow: s.shifts, background: SHIFT_DEFAULT_COLOR }} />
+            </div>
+            <div className="sumbar__labels">
+              {CATEGORIES.filter((c) => s.byCategory[c] > 0).map((c) => (
+                <span key={c}>{t.categories[c]} {formatDuration(s.byCategory[c])}</span>
+              ))}
+              {s.shifts > 0 && <span>{t.common.shifts} {formatDuration(s.shifts)}</span>}
+            </div>
+          </div>
         <div className="srows">
           {CATEGORIES.map((c) => (
             <div key={c} className="srow" style={{ ['--c' as string]: CATEGORY_COLORS[c] }}>
@@ -79,8 +95,10 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
             <span className="v">{s.shifts ? formatDuration(s.shifts) : '–'}</span>
           </div>
         </div>
+        </>
       )}
 
+      <h2 className="section-h ios-only">{t.summaryUi.reports}</h2>
       <ReportCards period={period} />
 
       <div className="summary__actions">
