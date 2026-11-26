@@ -151,6 +151,7 @@ export const it = {
     "excluded": "Pause escluse: {minutes}"
   },
   "rotation": {
+    "pattern": "Schema dei giorni",
     "section": "Rotazioni",
     "intro": "Una rotazione ripete uno schema di turni, per esempio due mattine, due notti, quattro di riposo.",
     "add": "Nuova rotazione",
@@ -335,6 +336,8 @@ export const it = {
     "earningsHint": "Solo turni, meno le pause"
   },
   "pdf": {
+    "moreOptions": "Altre opzioni",
+    "lessOptions": "Meno opzioni",
     "title": "Esporta PDF",
     "view": "Vista",
     "list": "Elenco",
@@ -365,6 +368,8 @@ export const it = {
     "failed": "Non è stato possibile creare il PDF."
   },
   "settingsSummary": {
+      "periodKind": "Periodo",
+      "rangePeriod": "Il periodo che contiene oggi",
     "title": "Periodo del riepilogo",
     "short": "Quali giorni includere",
     "lede": "Il riepilogo mostra il periodo che contiene oggi, oppure le date che scegli.",

@@ -500,3 +500,17 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .report__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 
 .cal-empty { padding: 20px var(--pad) 0; text-align: center; }
+
+/* Rotation sheet (Timeline design, screen 15): rows with the value on the right; each
+   row's native control is laid over the whole row, so a tap opens the picker. */
+.rot { margin: 8px 0 0; border-top: 1px solid var(--line); }
+.rot-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 0 var(--pad); border-bottom: 1px solid var(--line); }
+.rot-row__name { font: 400 16px/1.3 var(--sys); color: var(--text); }
+.rot-row__value { font: 400 15px/1.3 var(--sys); color: var(--mid); white-space: nowrap; }
+.rot-hit { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; font-size: 16px; }
+.rot-pattern { padding: 14px var(--pad) 16px; border-bottom: 1px solid var(--line); }
+.rot-pattern__label { display: block; font: 500 13px/1.3 var(--sys); color: var(--mid); margin-bottom: 10px; }
+.rot-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rot-chip { position: relative; height: 36px; padding: 0 14px; }
+.rot-chip .rot-hit { inset: 0; }
+.btn--danger-text { color: var(--warn); }

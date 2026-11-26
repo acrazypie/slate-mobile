@@ -220,7 +220,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
   };
   const sr = isObj(s.summaryRange) ? s.summaryRange : {};
   const baseR = base.summaryRange;
-  const RANGE_KINDS: RangeKind[] = ['week', 'twoWeeks', 'month', 'year', 'custom'];
+  const RANGE_KINDS: RangeKind[] = ['week', 'month', 'custom'];
   const whole = (v: unknown, lo: number, hi: number, fallback: number) =>
     typeof v === 'number' && Number.isInteger(v) && v >= lo && v <= hi ? v : fallback;
   const day = (v: unknown, fallback: string | null) => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : fallback);

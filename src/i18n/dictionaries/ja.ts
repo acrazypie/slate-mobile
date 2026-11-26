@@ -150,6 +150,7 @@ export const ja: Dictionary = {
     "excluded": "除外した休憩: {minutes} 分"
   },
   "rotation": {
+    "pattern": "日のパターン",
     "section": "ローテーション",
     "intro": "ローテーションはシフトの繰り返しパターンです。例: 朝2日・夜2日・休み4日。",
     "add": "ローテーションを追加",
@@ -334,6 +335,8 @@ export const ja: Dictionary = {
     "earningsHint": "シフトのみ、休憩を除く"
   },
   "pdf": {
+    "moreOptions": "その他の設定",
+    "lessOptions": "設定を閉じる",
     "title": "PDFを書き出す",
     "view": "表示",
     "list": "リスト",
@@ -364,6 +367,8 @@ export const ja: Dictionary = {
     "failed": "PDFを作成できませんでした。"
   },
   "settingsSummary": {
+      "periodKind": "期間",
+      "rangePeriod": "今日を含む期間",
     "title": "まとめの期間",
     "short": "まとめに含める日",
     "lede": "まとめには、今日を含む期間か、選んだ日付の期間が表示されます。",

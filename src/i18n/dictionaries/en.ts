@@ -150,6 +150,7 @@ export const en: Dictionary = {
     "excluded": "Breaks not counted: {minutes}"
   },
   "rotation": {
+    "pattern": "Day pattern",
     "section": "Rotations",
     "intro": "A rotation repeats a pattern of shifts, like two mornings, two nights, four off.",
     "add": "New rotation",
@@ -334,6 +335,8 @@ export const en: Dictionary = {
     "earningsHint": "Shifts only, minus breaks"
   },
   "pdf": {
+    "moreOptions": "More options",
+    "lessOptions": "Fewer options",
     "title": "Export PDF",
     "view": "View",
     "list": "List",
@@ -364,6 +367,8 @@ export const en: Dictionary = {
     "failed": "The PDF could not be made."
   },
   "settingsSummary": {
+      "periodKind": "Period",
+      "rangePeriod": "The period that contains today",
     "title": "Summary range",
     "short": "Which days the summary covers",
     "lede": "The summary shows the period that contains today, or the dates you choose.",

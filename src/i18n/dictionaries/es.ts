@@ -150,6 +150,7 @@ export const es: Dictionary = {
     "excluded": "Pausas no contadas: {minutes}"
   },
   "rotation": {
+    "pattern": "Patrón de días",
     "section": "Rotaciones",
     "intro": "Una rotación repite un patrón de turnos, por ejemplo dos mañanas, dos noches, cuatro libres.",
     "add": "Nueva rotación",
@@ -334,6 +335,8 @@ export const es: Dictionary = {
     "earningsHint": "Solo turnos, menos las pausas"
   },
   "pdf": {
+    "moreOptions": "Más opciones",
+    "lessOptions": "Menos opciones",
     "title": "Exportar PDF",
     "view": "Vista",
     "list": "Lista",
@@ -364,6 +367,8 @@ export const es: Dictionary = {
     "failed": "No se pudo crear el PDF."
   },
   "settingsSummary": {
+      "periodKind": "Periodo",
+      "rangePeriod": "El periodo que contiene hoy",
     "title": "Periodo del resumen",
     "short": "Qué días incluye el resumen",
     "lede": "El resumen muestra el periodo que contiene hoy, o las fechas que elijas.",

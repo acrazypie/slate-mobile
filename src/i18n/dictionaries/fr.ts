@@ -150,6 +150,7 @@ export const fr: Dictionary = {
     "excluded": "Pauses non comptées : {minutes}"
   },
   "rotation": {
+    "pattern": "Schéma des jours",
     "section": "Rotations",
     "intro": "Une rotation répète un cycle de services, par exemple deux matins, deux nuits, quatre repos.",
     "add": "Nouvelle rotation",
@@ -334,6 +335,8 @@ export const fr: Dictionary = {
     "earningsHint": "Turns seulement, pauses déduites"
   },
   "pdf": {
+    "moreOptions": "Plus d’options",
+    "lessOptions": "Moins d’options",
     "title": "Exporter en PDF",
     "view": "Affichage",
     "list": "Liste",
@@ -364,6 +367,8 @@ export const fr: Dictionary = {
     "failed": "Le PDF n’a pas pu être créé."
   },
   "settingsSummary": {
+      "periodKind": "Période",
+      "rangePeriod": "La période qui contient aujourd’hui",
     "title": "Période du bilan",
     "short": "Les jours couverts par le bilan",
     "lede": "Le bilan affiche la période qui contient aujourd’hui, ou les dates que vous choisissez.",

@@ -150,6 +150,7 @@ export const nl: Dictionary = {
     "excluded": "Pauzes niet geteld: {minutes}"
   },
   "rotation": {
+    "pattern": "Dagpatroon",
     "section": "Roosters",
     "intro": "Een rooster herhaalt een patroon van diensten, bijvoorbeeld twee ochtenden, twee nachten, vier vrij.",
     "add": "Nieuw rooster",
@@ -334,6 +335,8 @@ export const nl: Dictionary = {
     "earningsHint": "Alleen diensten, minus de pauzes"
   },
   "pdf": {
+    "moreOptions": "Meer opties",
+    "lessOptions": "Minder opties",
     "title": "PDF exporteren",
     "view": "Weergave",
     "list": "Lijst",
@@ -364,6 +367,8 @@ export const nl: Dictionary = {
     "failed": "De PDF kon niet worden gemaakt."
   },
   "settingsSummary": {
+      "periodKind": "Periode",
+      "rangePeriod": "De periode waarin vandaag valt",
     "title": "Periode van het overzicht",
     "short": "Welke dagen het overzicht omvat",
     "lede": "Het overzicht toont de periode waarin vandaag valt, of de data die je kiest.",
