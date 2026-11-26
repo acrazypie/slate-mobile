@@ -240,7 +240,7 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .grid__hours { position: absolute; inset: 0; pointer-events: none; }
 .grid__h { position: absolute; left: 0; right: 0; border-top: 1px solid var(--line); }
 .grid__h:first-child { border-top: 0; }
-.grid__h span { position: absolute; left: 0; width: calc(var(--gutter) - 6px); top: -6px; text-align: right; font: 400 10px/1 var(--mono); color: var(--dim); background: var(--bg); padding-right: 2px; }
+.grid__h span { position: absolute; left: 4px; top: -6px; white-space: nowrap; text-align: left; font: 400 10px/1 var(--mono); color: var(--dim); background: var(--bg); padding-right: 2px; }
 .grid__cols { position: absolute; inset: 0 0 0 var(--gutter); display: grid; grid-template-columns: repeat(var(--cols), 1fr); }
 .grid__col { position: relative; border-left: 1px solid var(--line); }
 .grid__col.today { background: color-mix(in srgb, var(--accent) 3.5%, transparent); }
@@ -272,7 +272,7 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .now__lbl { position: absolute; left: calc(-1 * var(--gutter) - 4px); width: calc(var(--gutter) + 2px); top: -8px; height: 16px; border-radius: 4px; background: var(--accent); color: var(--accent-ink); font: 400 9px/16px var(--mono); text-align: center; }
 
 /* day view */
-.dayv { flex: 1; min-height: 0; display: flex; flex-direction: column; --gutter: 48px; }
+.dayv { flex: 1; min-height: 0; display: flex; flex-direction: column; --gutter: 56px; }
 .strip { display: grid; grid-template-columns: repeat(7, 1fr); padding: 2px 8px 6px; flex-shrink: 0; }
 .strip__d { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 7px 0 8px; border-radius: 22px; }
 .strip__wd { font: 400 10px/1 var(--mono); letter-spacing: .1em; color: var(--mid); }
@@ -290,7 +290,6 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .legend .lb { background: color-mix(in srgb, #BB86FC 30%, var(--bg)); box-shadow: inset 2px 0 0 #BB86FC; }
 .legend .ls { border: 1px dashed #6BB6A3; }
 .legend .ld { border: 1px solid color-mix(in srgb, #7AA7D9 60%, transparent); background: repeating-linear-gradient(135deg, rgba(122,167,217,.45) 0 1px, transparent 1px 4px); }
-.dayv .grid__h span { width: calc(var(--gutter) - 8px); }
 .dcard { position: absolute; left: 6px; right: 0; border-radius: 10px; padding: 8px 12px 8px 14px; overflow: hidden; display: flex; flex-direction: column; gap: 4px; text-align: left; pointer-events: auto; }
 .dcard .eb { display: flex; align-items: center; gap: 6px; font: 400 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mid); white-space: nowrap; overflow: hidden; }
 .dcard .eb svg.i { width: 13px; height: 13px; color: var(--c); }

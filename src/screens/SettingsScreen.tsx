@@ -455,7 +455,7 @@ function NotificationsPage({ settings, setNotify }: { settings: NotificationSett
           />
         </Row>
         {settings.enabled && perm !== 'unsupported' && (
-          <Row icon="info" name={perm === 'granted' ? t.notify.granted : t.notify.denied} hint={perm === 'granted' ? undefined : permText}>
+          <Row icon="info" name={permText}>
             {perm === 'prompt' && (
               <button type="button" className="btn" onClick={async () => { await requestPermission(); refresh(); }}>{t.notify.allow}</button>
             )}
