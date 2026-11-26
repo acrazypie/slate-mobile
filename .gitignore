@@ -34,3 +34,5 @@ keystore.properties
 .idea/
 .vscode/
 .claude/
+# Design: Timeline renders and docs (local only, not shipped)
+/design/
