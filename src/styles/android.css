@@ -1,25 +1,44 @@
 /* Android chrome: Material 3 adapted (design-notes §6, docs/mockups/src/android.css). */
 
+/* Timeline design (design/docs/02-tokens.md, Android): navy ground, violet
+   accent, system type. Android only; iOS keeps DESIGN.md tokens. The accent
+   applies only when the user has not picked a swatch (theme.ts sets an inline
+   --accent for a chosen one). */
 [data-look="android"] {
-  --tab-space: calc(80px + var(--sb));
-  --m3-c-low: #111214;
-  --m3-c: #161719;
-  --m3-c-high: #1c1d20;
-  --m3-c-highest: #25262a;
-  --m3-sec: color-mix(in srgb, var(--accent) 18%, #161719);
-  --m3-on-sec: color-mix(in srgb, var(--accent) 70%, #ffffff);
-  --m3-outline: #8d8d96;
-  --m3-outline-var: rgba(255,255,255,.16);
+  --bg: #0e1320;  --bg-raise: #161d2e;  --nav-bg: rgba(14,19,32,.92);
+  --line: #1e2638;  --line-hi: #3a4560;
+  --text: #e8ecf5;  --mid: #8a94ab;  --dim: #5d6781;
+  --accent: #9d8cff;  --accent-ink: #0e1320;
+  --syne: var(--sys);  --mono: var(--sys);
+  font-variant-numeric: tabular-nums;
 }
 [data-look="android"][data-theme="light"] {
-  --m3-c-low: #f4f4f6;
-  --m3-c: #efeff2;
-  --m3-c-high: #e9e9ed;
-  --m3-c-highest: #e2e2e7;
-  --m3-sec: color-mix(in srgb, var(--accent) 22%, #f4f4f6);
-  --m3-on-sec: color-mix(in srgb, var(--accent) 45%, #000000);
-  --m3-outline: #74747e;
-  --m3-outline-var: rgba(0,0,0,.14);
+  --bg: #f4f6fa;  --bg-raise: #ffffff;  --nav-bg: rgba(244,246,250,.92);
+  --line: #e3e8f1;  --line-hi: #c5ccdb;
+  --text: #14182a;  --mid: #5c6680;  --dim: #8a94ab;
+  --accent: #5b4bc4;  --accent-ink: #ffffff;
+}
+
+[data-look="android"] {
+  --tab-space: calc(80px + var(--sb));
+  --m3-c-low: #161d2e;
+  --m3-c: #161d2e;
+  --m3-c-high: #1e2638;
+  --m3-c-highest: #2a3349;
+  --m3-sec: color-mix(in srgb, var(--accent) 22%, #161d2e);
+  --m3-on-sec: #cfc6ff;
+  --m3-outline: #5d6781;
+  --m3-outline-var: #2a3349;
+}
+[data-look="android"][data-theme="light"] {
+  --m3-c-low: #ffffff;
+  --m3-c: #ffffff;
+  --m3-c-high: #f4f6fa;
+  --m3-c-highest: #e3e8f1;
+  --m3-sec: color-mix(in srgb, var(--accent) 13%, #ffffff);
+  --m3-on-sec: #4a3cb0;
+  --m3-outline: #c5ccdb;
+  --m3-outline-var: #e3e8f1;
 }
 
 /* top app bar: title left, icon buttons right */
@@ -115,3 +134,10 @@
 [data-look="android"] .shift-rows .row:only-child { border-radius: 20px; }
 [data-look="android"] .shift-rows .row__idx { display: none; }
 [data-look="android"] .shift-rows .glyph--lg { width: 40px; height: 40px; border-radius: 12px; }
+
+/* Timeline (Android): the now line is red with a dot, and no time label
+   (design/android/dark/04-day.png). The year in the title is not accented. */
+[data-look="android"] .now { border-top-color: #e0475e; }
+[data-look="android"] .now__today, [data-look="android"] .now__today::before { background: #e0475e; }
+[data-look="android"] .now__lbl { display: none; }
+[data-look="android"] .cal-head .acc { color: inherit; }

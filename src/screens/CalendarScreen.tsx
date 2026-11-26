@@ -8,7 +8,7 @@ import { useData, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
 import { capitalize, fill, formatDate, formatDayRange } from '../i18n/format';
 import { useDeviceEvents } from '../calendar/CalendarProvider';
-import { haptics } from '../native/platform';
+import { haptics, platform } from '../native/platform';
 import type { Block, DeviceEvent, PlacedShift, ViewMode } from '../lib/types';
 import { dayContents, daysFrom, isoWeek, weekStart } from '../lib/days';
 import { Icon } from '../ui/icons';
@@ -122,14 +122,21 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
   // header text
   const monthYear = formatDate(locale, anchor, 'monthYear');
   const year = String(anchor.getFullYear());
-  const titleMain = capitalize(monthYear.replace(year, '').trim());
+  // Android (Timeline design): the day view's title is the day itself ("Wed 25 November"),
+  // with no eyebrow and no accent year. iOS keeps the month title and eyebrow.
+  const androidDay = platform === 'android' && view === 'day';
+  const titleMain = androidDay
+    ? capitalize(formatDate(locale, anchor, 'weekdayDayMonth'))
+    : capitalize(monthYear.replace(year, '').trim());
   // eyebrow only where it says something the title doesn't (design-notes §2)
   const tag =
-    view === 'week'
-      ? fill(t.calendar.weekTag, { n: isoWeek(anchor), range: formatDayRange(locale, range.start, range.end) })
-      : view === 'day'
-        ? capitalize(formatDate(locale, anchor, 'fullDay'))
-        : null;
+    platform === 'android'
+      ? null
+      : view === 'week'
+        ? fill(t.calendar.weekTag, { n: isoWeek(anchor), range: formatDayRange(locale, range.start, range.end) })
+        : view === 'day'
+          ? capitalize(formatDate(locale, anchor, 'fullDay'))
+          : null;
 
   const weekEmpty = view === 'week' && contents.every((c) => c.blocks.length === 0 && c.shifts.length === 0);
 
@@ -144,7 +151,7 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
           <div className="cal-head__title">
             {tag && <span className="tag">{tag}</span>}
             <h1 className="h-page">
-              {titleMain} <span className="acc">{year}</span>
+              {androidDay ? titleMain : <>{titleMain} <span className="acc">{year}</span></>}
             </h1>
           </div>
           <div className="cal-head__nav">
