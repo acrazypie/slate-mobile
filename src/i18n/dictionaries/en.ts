@@ -75,6 +75,7 @@ export const en: Dictionary = {
     "openDay": "Open day",
     "more": "+{count} more",
     "emptyDay": "No shifts or blocks on this day.",
+    "emptyMonth": "No blocks or shifts this month. Tap a day to add one.",
     "recurring": "recurring",
     "allDay": "All day",
     "shiftLabel": "Shift {title}",

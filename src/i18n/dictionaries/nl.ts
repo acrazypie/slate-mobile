@@ -75,6 +75,7 @@ export const nl: Dictionary = {
     "openDay": "Dag openen",
     "more": "+{count} meer",
     "emptyDay": "Geen diensten of blokken op deze dag.",
+    "emptyMonth": "Deze maand geen blokken of diensten. Tik op een dag om er een toe te voegen.",
     "recurring": "terugkerend",
     "allDay": "Hele dag",
     "shiftLabel": "Dienst {title}",

@@ -75,6 +75,7 @@ export const es: Dictionary = {
     "openDay": "Abrir día",
     "more": "+{count} más",
     "emptyDay": "No hay turnos ni bloques este día.",
+    "emptyMonth": "No hay bloques ni turnos este mes. Toca un día para añadir uno.",
     "recurring": "periódico",
     "allDay": "Todo el día",
     "shiftLabel": "Turno {title}",

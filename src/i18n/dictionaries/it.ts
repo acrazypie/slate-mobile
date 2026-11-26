@@ -76,6 +76,7 @@ export const it = {
     "openDay": "Apri giorno",
     "more": "+{count} altri",
     "emptyDay": "Nessun turno o blocco in questo giorno.",
+    "emptyMonth": "Nessun blocco o turno questo mese. Tocca un giorno per aggiungerne uno.",
     "recurring": "ricorrente",
     "allDay": "Tutto il giorno",
     "shiftLabel": "Turno {title}",

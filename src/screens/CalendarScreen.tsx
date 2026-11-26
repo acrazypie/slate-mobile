@@ -11,10 +11,12 @@ import { useDeviceEvents } from '../calendar/CalendarProvider';
 import { haptics, platform } from '../native/platform';
 import type { Block, DeviceEvent, PlacedShift, ViewMode } from '../lib/types';
 import { dayContents, daysFrom, isoWeek, weekStart } from '../lib/days';
+import { keyFromDate } from '../lib/recurrence';
 import { Icon } from '../ui/icons';
 import { Segmented } from '../ui/controls';
 import { WeekView } from './WeekView';
 import { DayView } from './DayView';
+import { EmptyDay } from './EmptyDay';
 import { MonthView } from './MonthView';
 import { AgendaView } from './AgendaView';
 import { BlockSheet, type BlockTarget } from '../sheets/BlockSheet';
@@ -139,6 +141,9 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
       : null;
 
   const weekEmpty = view === 'week' && contents.every((c) => c.blocks.length === 0 && c.shifts.length === 0);
+  const dayContent = view === 'day' ? contents.find((c) => isSameDay(c.date, anchor)) : undefined;
+  const dayEmpty = !!dayContent && dayContent.blocks.length === 0 && dayContent.shifts.length === 0;
+  const monthEmpty = view === 'month' && contents.every((c) => c.blocks.length === 0 && c.shifts.length === 0);
   // Agenda is shown on Android only for now (the design's iOS screens are not built yet).
   const viewOptions: ViewMode[] = ['day', 'week', 'month', 'agenda'];
 
@@ -198,7 +203,9 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
             }}
           />
         )}
+        {dayEmpty && <EmptyDay onNewEvent={() => actions.onSlot(anchor, 9)} onNewShift={() => setShiftEdit({ placeOn: keyFromDate(anchor) })} />}
         {view === 'month' && <MonthView anchor={anchor} contents={contents} deviceEvents={deviceEvents} today={today} actions={actions} />}
+        {monthEmpty && <p className="lede cal-empty">{t.calendar.emptyMonth}</p>}
         {view === 'agenda' && <AgendaView contents={contents} deviceEvents={deviceEvents} today={today} actions={actions} />}
       </div>
 

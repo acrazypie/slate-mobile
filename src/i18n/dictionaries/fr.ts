@@ -75,6 +75,7 @@ export const fr: Dictionary = {
     "openDay": "Ouvrir le jour",
     "more": "+{count} autres",
     "emptyDay": "Aucun service ni bloc ce jour-là.",
+    "emptyMonth": "Aucun bloc ni service ce mois-ci. Touchez un jour pour en ajouter un.",
     "recurring": "récurrent",
     "allDay": "Toute la journée",
     "shiftLabel": "Service {title}",

@@ -498,3 +498,5 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .reports { display: grid; gap: 14px; margin-top: 18px; }
 .report { background: var(--group-bg, #151517); border-radius: 16px; padding: 12px 14px 8px; }
 .report__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+
+.cal-empty { padding: 20px var(--pad) 0; text-align: center; }

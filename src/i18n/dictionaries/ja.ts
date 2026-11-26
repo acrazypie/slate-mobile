@@ -75,6 +75,7 @@ export const ja: Dictionary = {
     "openDay": "日を開く",
     "more": "他{count}件",
     "emptyDay": "この日はシフトもブロックもありません。",
+    "emptyMonth": "今月はブロックもシフトもありません。日をタップして追加できます。",
     "recurring": "繰り返し",
     "allDay": "終日",
     "shiftLabel": "シフト {title}",
