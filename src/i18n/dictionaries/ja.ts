@@ -463,6 +463,11 @@ export const ja: Dictionary = {
     "readOnly": "端末のカレンダーの予定はカレンダーアプリで編集します。",
     "open": "カレンダーで開く"
   },
+  "settingsGroups": {
+    "calendars": "カレンダーとアカウント",
+    "work": "仕事",
+    "data": "データ"
+  },
   "onboarding": {
     "tag": "ようこそ",
     "titleBefore": "あなたの一週間を、",

@@ -112,9 +112,31 @@ export function SettingsScreen() {
       {page === 'main' && (
         <>
           <header className="page__head">
-            <h1 className="h-page">{t.settings.title}<span className="acc">.</span></h1>
+            <h1 className="h-page">{t.settings.title}{platform !== 'android' && <span className="acc">.</span>}</h1>
           </header>
-          {/* Three short groups with space between them, instead of one long list of two-line rows. */}
+          {platform === 'android' ? (
+            // Timeline design (screen 20): four labelled groups.
+            <div className="settings-groups">
+              <Group label={t.settings.appearance}>
+                <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
+                <Row icon="bell" name={t.settingsPages.notifications.title} chevron onClick={() => setPage('notifications')} />
+              </Group>
+              <Group label={t.settingsGroups.calendars}>
+                <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
+                <Row icon="calendar" name={t.settingsPages.phone.title} chevron onClick={() => setPage('phone')} />
+              </Group>
+              <Group label={t.settingsGroups.work}>
+                <Row icon="chart" name={t.settingsPages.summary.title} chevron onClick={() => setPage('summary')} />
+                <Row icon="layout" name={t.settingsPages.pay.title} chevron onClick={() => setPage('pay')} />
+              </Group>
+              <Group label={t.settingsGroups.data}>
+                <Row icon="upload" name={t.settingsPages.backup.title} chevron onClick={() => setPage('backup')} />
+                <Row icon="refresh" name={t.settingsPages.updates.title} chevron onClick={() => setPage('updates')} />
+                <Row icon="info" name={t.settingsPages.about.title} chevron onClick={() => setPage('about')} />
+              </Group>
+            </div>
+          ) : (
+          /* Three short groups with space between them, instead of one long list of two-line rows. */
           <div className="settings-groups">
             <Group>
               <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
@@ -132,6 +154,7 @@ export function SettingsScreen() {
               <Row icon="info" name={t.settingsPages.about.title} chevron onClick={() => setPage('about')} />
             </Group>
           </div>
+          )}
         </>
       )}
       {SECTION_PAGES.includes(page) && page !== 'main' && (

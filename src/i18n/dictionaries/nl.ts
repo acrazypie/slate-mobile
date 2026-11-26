@@ -463,6 +463,11 @@ export const nl: Dictionary = {
     "readOnly": "Afspraken uit de agenda’s van je telefoon bewerk je in de Agenda-app.",
     "open": "Openen in Agenda"
   },
+  "settingsGroups": {
+    "calendars": "Agenda's en account",
+    "work": "Werk",
+    "data": "Gegevens"
+  },
   "onboarding": {
     "tag": "Welkom",
     "titleBefore": "Je week,",

@@ -464,6 +464,11 @@ export const it = {
     "readOnly": "Gli eventi dei calendari del telefono si modificano nell'app Calendario.",
     "open": "Apri in Calendario"
   },
+  "settingsGroups": {
+    "calendars": "Calendari e account",
+    "work": "Lavoro",
+    "data": "Dati"
+  },
   "onboarding": {
     "tag": "Benvenuto",
     "titleBefore": "La tua settimana,",

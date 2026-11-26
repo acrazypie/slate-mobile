@@ -463,6 +463,11 @@ export const fr: Dictionary = {
     "readOnly": "Les événements des calendriers du téléphone se modifient dans l’app Calendrier.",
     "open": "Ouvrir dans Calendrier"
   },
+  "settingsGroups": {
+    "calendars": "Agendas et compte",
+    "work": "Travail",
+    "data": "Données"
+  },
   "onboarding": {
     "tag": "Bienvenue",
     "titleBefore": "Votre semaine,",

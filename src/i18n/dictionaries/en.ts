@@ -463,6 +463,11 @@ export const en: Dictionary = {
     "readOnly": "Events from your phone’s calendars are edited in the Calendar app.",
     "open": "Open in Calendar"
   },
+  "settingsGroups": {
+    "calendars": "Calendars and account",
+    "work": "Work",
+    "data": "Data"
+  },
   "onboarding": {
     "tag": "Welcome",
     "titleBefore": "Your week,",
