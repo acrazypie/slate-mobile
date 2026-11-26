@@ -7,6 +7,7 @@ import { weekdayNames } from '../i18n/format';
 import { dateFromKey, keyFromDate } from '../lib/recurrence';
 import { type SummaryRange } from '../lib/summaryRange';
 import { Group, Row } from '../ui/controls';
+import { ChoiceRow } from '../ui/ChoiceRow';
 
 export function SummaryRangePage() {
   const { t, locale } = useI18n();
@@ -44,37 +45,26 @@ export function SummaryRangePage() {
 
       {inPeriod && (
         <Group>
-          <Row icon="calendar" name={t.settingsSummary.periodKind}>
-            <select className="row-select" value={range.kind} onChange={(e) => set({ kind: e.target.value === 'week' ? 'week' : 'month' })} aria-label={t.settingsSummary.periodKind}>
-              <option value="week">{t.summary.thisWeek}</option>
-              <option value="month">{t.summary.thisMonth}</option>
-            </select>
-          </Row>
+          <ChoiceRow icon="calendar" name={t.settingsSummary.periodKind} ariaLabel={t.settingsSummary.periodKind} value={range.kind}
+            onChange={(v) => set({ kind: v === 'week' ? 'week' : 'month' })}
+            options={[{ value: 'week', label: t.summary.thisWeek }, { value: 'month', label: t.summary.thisMonth }]} />
         </Group>
       )}
 
       {range.kind === 'week' && (
         <Group>
-          <Row icon="calendar" name={t.settingsSummary.startsOn}>
-            <select className="row-select" value={range.weekday} onChange={(e) => set({ weekday: Number(e.target.value) })} aria-label={t.settingsSummary.startsOn}>
-              {weekdays.map((n, i) => (
-                <option key={i} value={i}>{n}</option>
-              ))}
-            </select>
-          </Row>
+          <ChoiceRow icon="calendar" name={t.settingsSummary.startsOn} ariaLabel={t.settingsSummary.startsOn} value={String(range.weekday)}
+            onChange={(v) => set({ weekday: Number(v) })}
+            options={weekdays.map((n, i) => ({ value: String(i), label: n }))} />
         </Group>
       )}
 
 
       {range.kind === 'month' && (
         <Group>
-          <Row icon="calendar" name={t.settingsSummary.startDay}>
-            <select className="row-select" value={range.monthDay} onChange={(e) => set({ monthDay: Number(e.target.value) })} aria-label={t.settingsSummary.startDay}>
-              {days.map((d) => (
-                <option key={d} value={d}>{d}</option>
-              ))}
-            </select>
-          </Row>
+          <ChoiceRow icon="calendar" name={t.settingsSummary.startDay} ariaLabel={t.settingsSummary.startDay} value={String(range.monthDay)}
+            onChange={(v) => set({ monthDay: Number(v) })}
+            options={days.map((d) => ({ value: String(d), label: String(d) }))} />
         </Group>
       )}
 

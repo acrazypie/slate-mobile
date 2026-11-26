@@ -11,6 +11,7 @@ import type { MonthStyle, SlateData, ThemeSetting } from '../data/schema';
 import type { ViewMode } from '../lib/types';
 import { useDeviceCalendar } from '../calendar/CalendarProvider';
 import { Group, Row, Segmented, Swatches, Switch, useToast } from '../ui/controls';
+import { ChoiceRow } from '../ui/ChoiceRow';
 import { Dialog, useBackHandler } from '../ui/Sheet';
 import { Icon } from '../ui/icons';
 import { CalendarPicker } from './CalendarPicker';
@@ -115,12 +116,19 @@ export function SettingsScreen() {
             <h1 className="h-page">{t.settings.title}{platform !== 'android' && <span className="acc">.</span>}</h1>
           </header>
             <div className="settings-groups">
+              <Group footer={t.settingsGroups.syncNote}>
+                <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
+              </Group>
               <Group label={t.settings.appearance}>
                 <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />
+              </Group>
+              <Group>
                 <Row icon="bell" name={t.settingsPages.notifications.title} chevron onClick={() => setPage('notifications')} />
               </Group>
+              <Group>
+                <Row icon="layout" name={t.settings.widgets} hint={t.settings.widgetsSoon} />
+              </Group>
               <Group label={t.settingsGroups.calendars}>
-                <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
                 <Row icon="calendar" name={t.settingsPages.phone.title} chevron onClick={() => setPage('phone')} />
               </Group>
               <Group label={t.settingsGroups.work}>
@@ -166,29 +174,23 @@ export function SettingsScreen() {
             ]}
           />
         </Row>
+        {settings.theme === 'dark' && (
+          <Row icon="moon" name={t.settings.oled} hint={t.settings.oledHint}>
+            <Switch checked={settings.oled} onChange={(oled) => set({ oled })} label={t.settings.oled} />
+          </Row>
+        )}
         <Row icon="palette" name={t.settings.accent} hint={accentName(settings.accent)} stack>
           <Swatches colors={ACCENT_OPTIONS.map((o) => o.value)} value={settings.accent} onChange={(accent) => set({ accent })} names={accentName} custom={t.settings.customColor} />
         </Row>
-        <Row icon="layout" name={t.settings.defaultView}>
-          <select className="row-select" value={settings.defaultView} onChange={(e) => set({ defaultView: e.target.value as ViewMode })} aria-label={t.settings.defaultView}>
-            {(['day', 'week', 'month', 'agenda'] as const).map((v) => <option key={v} value={v}>{t.views[v]}</option>)}
-          </select>
-          <Icon name="chevronRight" className="irow__ch" />
-        </Row>
-        <Row icon="layout" name={t.settings.monthStyle}>
-          <select className="row-select" value={settings.monthStyle} onChange={(e) => set({ monthStyle: e.target.value as MonthStyle })} aria-label={t.settings.monthStyle}>
-            <option value="compact">{t.settings.monthCompact}</option>
-            <option value="detailed">{t.settings.monthDetailed}</option>
-          </select>
-          <Icon name="chevronRight" className="irow__ch" />
-        </Row>
-        <Row icon="globe" name={t.settings.language}>
-          <select className="row-select" value={settings.locale ?? ''} onChange={(e) => set({ locale: isLocale(e.target.value) ? e.target.value : null })} aria-label={t.settings.language}>
-            <option value="">{t.settings.languageSystem}</option>
-            {LOCALES.map((l) => <option key={l} value={l}>{l.toUpperCase()} · {LOCALE_NAMES[l]}</option>)}
-          </select>
-          <Icon name="chevronRight" className="irow__ch" />
-        </Row>
+        <ChoiceRow icon="layout" name={t.settings.defaultView} ariaLabel={t.settings.defaultView} value={settings.defaultView}
+          onChange={(v) => set({ defaultView: v as ViewMode })}
+          options={(['day', 'week', 'month', 'agenda'] as const).map((v) => ({ value: v, label: t.views[v] }))} />
+        <ChoiceRow icon="layout" name={t.settings.monthStyle} ariaLabel={t.settings.monthStyle} value={settings.monthStyle}
+          onChange={(v) => set({ monthStyle: v as MonthStyle })}
+          options={[{ value: 'compact', label: t.settings.monthCompact }, { value: 'detailed', label: t.settings.monthDetailed }]} />
+        <ChoiceRow icon="globe" name={t.settings.language} ariaLabel={t.settings.language} value={settings.locale ?? ''}
+          onChange={(v) => set({ locale: isLocale(v) ? v : null })}
+          options={[{ value: '', label: t.settings.languageSystem }, ...LOCALES.map((l) => ({ value: l, label: `${l.toUpperCase()} · ${LOCALE_NAMES[l]}` }))]} />
         {isNative && (
           <Row icon="vibrate" name={t.settings.haptics} hint={t.settings.hapticsHint}>
             <Switch checked={settings.haptics} onChange={(haptics) => set({ haptics })} label={t.settings.haptics} />
@@ -223,27 +225,12 @@ export function SettingsScreen() {
             onChange={(e) => set({ pay: { ...settings.pay, currency: e.target.value } })}
           />
         </Row>
-        <Row icon="clock" name={t.pay.overtimeAfter}>
-          <select
-            className="row-select"
-            value={settings.pay.overtimeAfterHours ?? ''}
-            onChange={(e) => set({ pay: { ...settings.pay, overtimeAfterHours: e.target.value === '' ? null : Number(e.target.value) } })}
-            aria-label={t.pay.overtimeAfter}
-          >
-            <option value="">{t.pay.overtimeOff}</option>
-            {[35, 38, 40, 42, 48].map((h) => <option key={h} value={h}>{h}</option>)}
-          </select>
-        </Row>
-        <Row icon="layout" name={t.pay.multiplier}>
-          <select
-            className="row-select"
-            value={settings.pay.overtimeMultiplier}
-            onChange={(e) => set({ pay: { ...settings.pay, overtimeMultiplier: Number(e.target.value) } })}
-            aria-label={t.pay.multiplier}
-          >
-            {[1.25, 1.5, 2, 2.5].map((m) => <option key={m} value={m}>×{m}</option>)}
-          </select>
-        </Row>
+        <ChoiceRow icon="clock" name={t.pay.overtimeAfter} ariaLabel={t.pay.overtimeAfter} value={settings.pay.overtimeAfterHours == null ? '' : String(settings.pay.overtimeAfterHours)}
+          onChange={(v) => set({ pay: { ...settings.pay, overtimeAfterHours: v === '' ? null : Number(v) } })}
+          options={[{ value: '', label: t.pay.overtimeOff }, ...[35, 38, 40, 42, 48].map((h) => ({ value: String(h), label: String(h) }))]} />
+        <ChoiceRow icon="layout" name={t.pay.multiplier} ariaLabel={t.pay.multiplier} value={String(settings.pay.overtimeMultiplier)}
+          onChange={(v) => set({ pay: { ...settings.pay, overtimeMultiplier: Number(v) } })}
+          options={[1.25, 1.5, 2, 2.5].map((m) => ({ value: String(m), label: `×${m}` }))} />
       </Group>
       )}
 
@@ -278,13 +265,9 @@ export function SettingsScreen() {
             </Row>
             {settings.calendar.push && (
               <>
-                <Row icon="calendar" name={t.calendarSync.target}>
-                  <select className="row-select" value={settings.calendar.targetCalendarId ?? ''} onChange={(e) => setCal({ targetCalendarId: e.target.value || null })} aria-label={t.calendarSync.target}>
-                    <option value="">{t.calendarSync.targetSlate}</option>
-                    {writable.filter((c) => c.id !== cal.slateCalendarId || settings.calendar.targetCalendarId === c.id).map((c) => <option key={c.id} value={c.id}>{c.name}{c.account ? ` (${c.account})` : ''}</option>)}
-                  </select>
-                  <Icon name="chevronRight" className="irow__ch" />
-                </Row>
+                  <ChoiceRow icon="calendar" name={t.calendarSync.target} ariaLabel={t.calendarSync.target} value={settings.calendar.targetCalendarId ?? ''}
+                  onChange={(v) => setCal({ targetCalendarId: v || null })}
+                  options={[{ value: '', label: t.calendarSync.targetSlate }, ...writable.filter((c) => c.id !== cal.slateCalendarId || settings.calendar.targetCalendarId === c.id).map((c) => ({ value: c.id, label: `${c.name}${c.account ? ` (${c.account})` : ''}` }))]} />
                 <Row icon="briefcase" name={t.calendarSync.pushShifts}>
                   <Switch checked={settings.calendar.pushShifts} onChange={(v) => setCal({ pushShifts: v })} label={t.calendarSync.pushShifts} />
                 </Row>
@@ -466,11 +449,9 @@ function NotificationsPage({ settings, setNotify }: { settings: NotificationSett
       {settings.enabled && (
         <>
           <Group footer={t.notify.leadHint}>
-            <Row icon="clock" name={t.notify.lead} stack>
-              <select className="row-select" value={settings.leadMinutes} onChange={(e) => setNotify({ leadMinutes: Number(e.target.value) })} aria-label={t.notify.lead}>
-                {LEAD_OPTIONS.map((m) => <option key={m} value={m}>{leadLabel(m, t)}</option>)}
-              </select>
-            </Row>
+            <ChoiceRow icon="clock" name={t.notify.lead} ariaLabel={t.notify.lead} value={String(settings.leadMinutes)}
+              onChange={(v) => setNotify({ leadMinutes: Number(v) })}
+              options={LEAD_OPTIONS.map((m) => ({ value: String(m), label: leadLabel(m, t) }))} />
           </Group>
           <Group>
             <Row icon="calendar" name={t.notify.events}>

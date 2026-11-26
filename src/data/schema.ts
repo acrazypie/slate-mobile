@@ -84,11 +84,13 @@ export interface NotificationSettings {
 }
 
 /** The home-screen icon colour. Teal is the default; it matches the default accent. */
-export type AppIconKey = 'teal' | 'lime' | 'violet' | 'apricot';
-export const APP_ICON_KEYS: AppIconKey[] = ['teal', 'lime', 'violet', 'apricot'];
+export type AppIconKey = 'teal' | 'lime' | 'violet' | 'apricot' | 'mono';
+export const APP_ICON_KEYS: AppIconKey[] = ['teal', 'lime', 'violet', 'apricot', 'mono'];
 
 export interface Settings {
   theme: ThemeSetting;
+  /** Dark theme only: a pure black background (OLED screens). */
+  oled: boolean;
   appIcon: AppIconKey;
   /** Which days the summary covers (Settings › Summary). */
   summaryRange: SummaryRange;
@@ -125,6 +127,7 @@ export const DEFAULT_ACCENT = '#6BB6A3';
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
+  oled: false,
   appIcon: 'teal',
   summaryRange: DEFAULT_SUMMARY_RANGE,
   mode: 'local',

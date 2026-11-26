@@ -43,7 +43,7 @@ export const ja: Dictionary = {
     "amber": "アンバー",
     "sage": "セージ",
     "pink": "ピンク",
-    "gesso": "チョーク"
+    "gesso": "ライム"
   },
   "views": {
     "day": "日",
@@ -307,7 +307,8 @@ export const ja: Dictionary = {
     "teal": "ティール",
     "lime": "ライム",
     "violet": "バイオレット",
-    "apricot": "アプリコット"
+    "apricot": "アプリコット",
+    "mono": "モノクロ"
   },
   "summaryUi": {
     "range": "期間",
@@ -415,6 +416,10 @@ export const ja: Dictionary = {
     "themeLight": "ライト",
     "themeDark": "ダーク",
     "themeSystem": "システム",
+    "oled": "OLED黒",
+    "oledHint": "ダークテーマの背景を純粋な黒にします。",
+    "widgets": "ウィジェット",
+    "widgetsSoon": "近日公開",
     "accent": "アクセントカラー",
     "customColor": "カスタムカラー",
     "accentHint": "このデバイスで、アプリ全体のボタン、選択項目、今日の日付に使われます。",
@@ -472,6 +477,7 @@ export const ja: Dictionary = {
   },
   "settingsGroups": {
     "calendars": "カレンダーとアカウント",
+    "syncNote": "AndroidとiOSの同期はGoogle経由のみです。",
     "work": "仕事",
     "data": "データ"
   },

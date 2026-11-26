@@ -43,7 +43,7 @@ export const fr: Dictionary = {
     "amber": "Ambre",
     "sage": "Sauge",
     "pink": "Rose",
-    "gesso": "Craie"
+    "gesso": "Citron vert"
   },
   "views": {
     "day": "Jour",
@@ -307,7 +307,8 @@ export const fr: Dictionary = {
     "teal": "Sarcelle",
     "lime": "Citron vert",
     "violet": "Violet",
-    "apricot": "Abricot"
+    "apricot": "Abricot",
+    "mono": "Monochrome"
   },
   "summaryUi": {
     "range": "Période",
@@ -415,6 +416,10 @@ export const fr: Dictionary = {
     "themeLight": "Clair",
     "themeDark": "Sombre",
     "themeSystem": "Système",
+    "oled": "Noir OLED",
+    "oledHint": "Fond noir pur dans le thème sombre.",
+    "widgets": "Widgets",
+    "widgetsSoon": "Bientôt",
     "accent": "Couleur principale",
     "customColor": "Couleur personnalisée",
     "accentHint": "S’applique aux boutons, aux sélections et au jour actuel dans toute l’app, sur cet appareil.",
@@ -472,6 +477,7 @@ export const fr: Dictionary = {
   },
   "settingsGroups": {
     "calendars": "Agendas et compte",
+    "syncNote": "Android et iOS ne se synchronisent que via Google.",
     "work": "Travail",
     "data": "Données"
   },

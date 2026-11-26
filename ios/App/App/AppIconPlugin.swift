@@ -19,6 +19,7 @@ public class AppIconPlugin: CAPPlugin, CAPBridgedPlugin {
         case "lime": return "AppIcon-Lime"
         case "violet": return "AppIcon-Violet"
         case "apricot": return "AppIcon-Apricot"
+        case "mono": return "AppIcon-Mono"
         default: return nil
         }
     }

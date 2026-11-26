@@ -42,6 +42,11 @@
 				<key>CFBundleIconName</key>
 				<string>AppIcon-Apricot</string>
 			</dict>
+			<key>AppIcon-Mono</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Mono</string>
+			</dict>
 		</dict>
 	</dict>
 	<key>CFBundleInfoDictionaryVersion</key>

@@ -13,8 +13,9 @@ import tealIcon from '../assets/app-icons/teal.png';
 import limeIcon from '../assets/app-icons/lime.png';
 import violetIcon from '../assets/app-icons/violet.png';
 import apricotIcon from '../assets/app-icons/apricot.png';
+import monoIcon from '../assets/app-icons/mono.png';
 
-const PREVIEW: Record<AppIconKey, string> = { teal: tealIcon, lime: limeIcon, violet: violetIcon, apricot: apricotIcon };
+const PREVIEW: Record<AppIconKey, string> = { teal: tealIcon, lime: limeIcon, violet: violetIcon, apricot: apricotIcon, mono: monoIcon };
 
 export function AppIconPicker({ value }: { value: AppIconKey }) {
   const { t } = useI18n();

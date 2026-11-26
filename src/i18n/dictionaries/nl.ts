@@ -43,7 +43,7 @@ export const nl: Dictionary = {
     "amber": "Amber",
     "sage": "Salie",
     "pink": "Roze",
-    "gesso": "Krijt"
+    "gesso": "Limoen"
   },
   "views": {
     "day": "Dag",
@@ -307,7 +307,8 @@ export const nl: Dictionary = {
     "teal": "Blauwgroen",
     "lime": "Limoen",
     "violet": "Violet",
-    "apricot": "Abrikoos"
+    "apricot": "Abrikoos",
+    "mono": "Monochroom"
   },
   "summaryUi": {
     "range": "Periode",
@@ -415,6 +416,10 @@ export const nl: Dictionary = {
     "themeLight": "Licht",
     "themeDark": "Donker",
     "themeSystem": "Systeem",
+    "oled": "OLED-zwart",
+    "oledHint": "Puur zwarte achtergrond in het donkere thema.",
+    "widgets": "Widgets",
+    "widgetsSoon": "Binnenkort",
     "accent": "Accentkleur",
     "customColor": "Eigen kleur",
     "accentHint": "Geldt voor knoppen, selecties en de dag van vandaag in de hele app, op dit apparaat.",
@@ -472,6 +477,7 @@ export const nl: Dictionary = {
   },
   "settingsGroups": {
     "calendars": "Agenda's en account",
+    "syncNote": "Android en iOS synchroniseren alleen via Google.",
     "work": "Werk",
     "data": "Gegevens"
   },

@@ -13,12 +13,12 @@ import type { ColorKey } from '../lib/types';
  * accent can never be mistaken for a block (owner decision). `light` is the
  * deeper shade used on the light theme (>= 4.5:1 on #fafafa).
  */
+/** The accents are the four app-icon colours: teal, lime, violet and apricot. */
 export const ACCENT_OPTIONS: { value: string; light: string; name: ColorKey | 'gesso' }[] = [
   { value: '#6BB6A3', light: '#2E7266', name: 'teal' },
   { value: '#D4EE5E', light: '#5A7000', name: 'gesso' },
-  { value: '#E0B84C', light: '#7F5D00', name: 'amber' },
-  { value: '#8BC48A', light: '#2F7A34', name: 'sage' },
-  { value: '#E58FB4', light: '#A8346A', name: 'pink' },
+  { value: '#BB86FC', light: '#6A3FB8', name: 'violet' },
+  { value: '#E49C69', light: '#8F4E22', name: 'apricot' },
 ];
 
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -55,10 +55,11 @@ function ink(hex: string): string {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.55 ? '#0a0a0a' : '#ffffff';
 }
 
-export function applyAppearance(settings: Pick<Settings, 'theme' | 'accent'>) {
+export function applyAppearance(settings: Pick<Settings, 'theme' | 'accent' | 'oled'>) {
   const root = document.documentElement;
   const theme = resolveTheme(settings.theme);
   root.dataset.theme = theme;
+  root.dataset.oled = settings.oled && theme === 'dark' ? 'true' : 'false';
   const accent = settings.accent.toUpperCase();
   if (accent === DEFAULT_ACCENT) {
     root.style.removeProperty('--accent');

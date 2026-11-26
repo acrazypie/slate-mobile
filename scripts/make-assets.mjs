@@ -110,13 +110,16 @@ const VARIANTS = [
   { key: 'lime', name: 'Lime', accent: '#D4EE5E' },
   { key: 'violet', name: 'Violet', accent: '#BB86FC' },
   { key: 'apricot', name: 'Apricot', accent: '#E49C69' },
+  // Black and white: white ticks on black, with the same red now line.
+  { key: 'mono', name: 'Mono', accent: '#0A0A0A', ink: '#FFFFFF' },
 ];
 const LEGACY = { mdpi: 48, hdpi: 72, xhdpi: 96, xxhdpi: 144, xxxhdpi: 192 };
 const FOREGROUND = { mdpi: 108, hdpi: 162, xhdpi: 216, xxhdpi: 324, xxxhdpi: 432 };
 
 for (const v of VARIANTS) {
-  const full = svgDoc({ size: 1024, bg: v.accent, body: mark() });
-  const fg = svgDoc({ size: 1024, body: mark() });
+  const ink = v.ink ?? INK;
+  const full = svgDoc({ size: 1024, bg: v.accent, body: mark(ink) });
+  const fg = svgDoc({ size: 1024, body: mark(ink) });
   for (const [density, px] of Object.entries(LEGACY)) {
     await sharp(full).resize(px, px).png().toFile(join(android, `mipmap-${density}/ic_launcher_${v.key}.png`));
   }

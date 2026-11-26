@@ -43,7 +43,7 @@ export const en: Dictionary = {
     "amber": "Amber",
     "sage": "Sage",
     "pink": "Pink",
-    "gesso": "Chalk"
+    "gesso": "Lime"
   },
   "views": {
     "day": "Day",
@@ -307,7 +307,8 @@ export const en: Dictionary = {
     "teal": "Teal",
     "lime": "Lime",
     "violet": "Violet",
-    "apricot": "Apricot"
+    "apricot": "Apricot",
+    "mono": "Mono"
   },
   "summaryUi": {
     "range": "Range",
@@ -415,6 +416,10 @@ export const en: Dictionary = {
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
+    "oled": "OLED black",
+    "oledHint": "Pure black background in the dark theme.",
+    "widgets": "Widgets",
+    "widgetsSoon": "Coming soon",
     "accent": "Accent colour",
     "customColor": "Custom colour",
     "accentHint": "Used for buttons, selections and today across the app, on this device.",
@@ -472,6 +477,7 @@ export const en: Dictionary = {
   },
   "settingsGroups": {
     "calendars": "Calendars and account",
+    "syncNote": "Android and iOS sync only through Google.",
     "work": "Work",
     "data": "Data"
   },

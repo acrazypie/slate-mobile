@@ -44,7 +44,7 @@ export const it = {
     "amber": "Ambra",
     "sage": "Salvia",
     "pink": "Rosa",
-    "gesso": "Gesso"
+    "gesso": "Lime"
   },
   "views": {
     "day": "Giorno",
@@ -308,7 +308,8 @@ export const it = {
     "teal": "Verde acqua",
     "lime": "Lime",
     "violet": "Viola",
-    "apricot": "Albicocca"
+    "apricot": "Albicocca",
+    "mono": "Monocromatica"
   },
   "summaryUi": {
     "range": "Periodo",
@@ -416,6 +417,10 @@ export const it = {
     "themeLight": "Chiaro",
     "themeDark": "Scuro",
     "themeSystem": "Sistema",
+    "oled": "Nero OLED",
+    "oledHint": "Sfondo nero puro nel tema scuro.",
+    "widgets": "Widget",
+    "widgetsSoon": "In arrivo",
     "accent": "Colore principale",
     "customColor": "Colore personalizzato",
     "accentHint": "Vale per pulsanti, selezioni e il giorno di oggi in tutta l'app, su questo dispositivo.",
@@ -473,6 +478,7 @@ export const it = {
   },
   "settingsGroups": {
     "calendars": "Calendari e account",
+    "syncNote": "Android e iOS si sincronizzano solo tramite Google.",
     "work": "Lavoro",
     "data": "Dati"
   },

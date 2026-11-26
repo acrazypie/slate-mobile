@@ -236,6 +236,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
   };
   return {
     theme: s.theme === 'light' || s.theme === 'dark' || s.theme === 'system' ? s.theme : base.theme,
+    oled: typeof s.oled === 'boolean' ? s.oled : base.oled,
     appIcon: APP_ICON_KEYS.includes(s.appIcon as AppIconKey) ? (s.appIcon as AppIconKey) : base.appIcon,
     summaryRange,
     mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
