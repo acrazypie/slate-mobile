@@ -489,7 +489,25 @@ export const en: Dictionary = {
     "calLede": "Slate can show the events from your phone’s calendars next to your blocks, and copy your blocks into a calendar. Your phone will ask for permission; you can change your mind any time in Settings.",
     "connect": "Connect your calendar",
     "notNow": "Not now",
-    "step": "First launch"
+    "step": "First launch",
+    "flow": {
+      "skip": "Skip",
+      "continue": "Continue",
+      "w1Title": "Your week,",
+      "w1Accent": "in blocks.",
+      "w1Lede": "Study, work and classes on one timeline. Your data stays on this phone.",
+      "w1a": "Blocks and shifts on one day",
+      "w1b": "A reminder before each block",
+      "w1c": "Nothing is sent to a server",
+      "n1Title": "A nudge before",
+      "n1Accent": "each block.",
+      "n1Lede": "Slate can remind you a few minutes before a study block, shift or class. Reminders are scheduled on this phone and never sent from a server.",
+      "allowNotif": "Allow notifications",
+      "c1Title": "Your other",
+      "c1Accent": "calendars, too.",
+      "c1Lede": "Slate can show events from the calendars on this phone next to your blocks, and copy your blocks into a calendar called Slate. Nothing is uploaded.",
+      "allowCal": "Allow calendar access"
+    }
   },
   "calendarSync": {
     "title": "Phone calendars",

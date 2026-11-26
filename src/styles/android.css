@@ -150,3 +150,14 @@
 [data-look="android"] .agenda__head { font: 600 14px/1.3 var(--sys); color: var(--mid); margin: 0 0 8px; }
 [data-look="android"] .agenda__day.today .agenda__head { color: var(--accent); }
 [data-look="android"] .agenda__items .rows { border: 0; }
+
+/* Onboarding, Android (Timeline design, screens 01–03). */
+[data-look="android"] .onboarding--android { padding-top: calc(var(--st) + 16px); }
+[data-look="android"] .onboarding__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+[data-look="android"] .onboarding__dots { display: flex; gap: 6px; align-items: center; }
+[data-look="android"] .onboarding__dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--m3-outline); transition: width .2s var(--ease); }
+[data-look="android"] .onboarding__dots i.on { width: 24px; background: var(--accent); }
+[data-look="android"] .onboarding__icon { width: 56px; height: 56px; border-radius: 16px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; margin-bottom: 24px; }
+[data-look="android"] .onboarding__icon svg.i { width: 28px; height: 28px; }
+[data-look="android"] .onboarding--android .h-display .acc { color: var(--accent); }
+[data-look="android"] .onboarding--android .onboarding__acts { margin-top: auto; }

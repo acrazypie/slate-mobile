@@ -490,7 +490,25 @@ export const it = {
     "calLede": "Slate può mostrare gli eventi dei calendari del telefono accanto ai tuoi blocchi, e copiare i blocchi in un calendario. Il telefono ti chiederà il permesso; puoi cambiare idea quando vuoi dalle Impostazioni.",
     "connect": "Collega il calendario",
     "notNow": "Non ora",
-    "step": "Primo avvio"
+    "step": "Primo avvio",
+    "flow": {
+      "skip": "Salta",
+      "continue": "Continua",
+      "w1Title": "La tua settimana,",
+      "w1Accent": "in blocchi.",
+      "w1Lede": "Studio, lavoro e lezioni su un'unica linea del tempo. I tuoi dati restano su questo telefono.",
+      "w1a": "Blocchi e turni nello stesso giorno",
+      "w1b": "Un promemoria prima di ogni blocco",
+      "w1c": "Niente viene inviato a un server",
+      "n1Title": "Un avviso prima",
+      "n1Accent": "di ogni blocco.",
+      "n1Lede": "Slate può ricordarti qualche minuto prima un blocco di studio, un turno o una lezione. I promemoria sono programmati su questo telefono e non vengono mai inviati da un server.",
+      "allowNotif": "Consenti notifiche",
+      "c1Title": "Gli altri",
+      "c1Accent": "calendari, anche.",
+      "c1Lede": "Slate può mostrare gli eventi dei calendari di questo telefono accanto ai tuoi blocchi, e copiare i blocchi in un calendario chiamato Slate. Non viene caricato nulla.",
+      "allowCal": "Consenti accesso ai calendari"
+    }
   },
   "calendarSync": {
     "title": "Calendari del telefono",

@@ -489,7 +489,25 @@ export const nl: Dictionary = {
     "calLede": "Slate kan afspraken uit de agenda’s van je telefoon naast je blokken tonen en je blokken naar een agenda kopiëren. Je telefoon vraagt om toestemming; je kunt dit altijd wijzigen in Instellingen.",
     "connect": "Agenda koppelen",
     "notNow": "Niet nu",
-    "step": "Eerste start"
+    "step": "Eerste start",
+    "flow": {
+      "skip": "Overslaan",
+      "continue": "Doorgaan",
+      "w1Title": "Je week,",
+      "w1Accent": "in blokken.",
+      "w1Lede": "Studie, werk en colleges op één tijdlijn. Je gegevens blijven op deze telefoon.",
+      "w1a": "Blokken en diensten op één dag",
+      "w1b": "Een herinnering vóór elk blok",
+      "w1c": "Niets wordt naar een server gestuurd",
+      "n1Title": "Een seintje vóór",
+      "n1Accent": "elk blok.",
+      "n1Lede": "Slate kan je een paar minuten vóór een studieblok, dienst of les herinneren. Herinneringen worden op deze telefoon ingepland en nooit vanaf een server verstuurd.",
+      "allowNotif": "Meldingen toestaan",
+      "c1Title": "Je andere",
+      "c1Accent": "agenda's, ook.",
+      "c1Lede": "Slate kan gebeurtenissen uit de agenda's op deze telefoon naast je blokken tonen, en je blokken in een agenda met de naam Slate zetten. Er wordt niets geüpload.",
+      "allowCal": "Agenda-toegang toestaan"
+    }
   },
   "calendarSync": {
     "title": "Agenda’s op de telefoon",

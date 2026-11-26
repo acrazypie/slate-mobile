@@ -489,7 +489,25 @@ export const fr: Dictionary = {
     "calLede": "Slate peut afficher les événements des calendriers du téléphone à côté de vos blocs, et copier vos blocs dans un calendrier. Le téléphone vous demandera l’autorisation ; vous pourrez changer d’avis à tout moment dans les Réglages.",
     "connect": "Connecter le calendrier",
     "notNow": "Plus tard",
-    "step": "Premier lancement"
+    "step": "Premier lancement",
+    "flow": {
+      "skip": "Passer",
+      "continue": "Continuer",
+      "w1Title": "Ta semaine,",
+      "w1Accent": "en blocs.",
+      "w1Lede": "Études, travail et cours sur une seule ligne du temps. Tes données restent sur ce téléphone.",
+      "w1a": "Blocs et services sur une même journée",
+      "w1b": "Un rappel avant chaque bloc",
+      "w1c": "Rien n'est envoyé à un serveur",
+      "n1Title": "Un rappel avant",
+      "n1Accent": "chaque bloc.",
+      "n1Lede": "Slate peut te prévenir quelques minutes avant un bloc d'étude, un service ou un cours. Les rappels sont programmés sur ce téléphone et jamais envoyés depuis un serveur.",
+      "allowNotif": "Autoriser les notifications",
+      "c1Title": "Tes autres",
+      "c1Accent": "agendas, aussi.",
+      "c1Lede": "Slate peut afficher les événements des agendas de ce téléphone à côté de tes blocs, et copier tes blocs dans un agenda nommé Slate. Rien n'est envoyé.",
+      "allowCal": "Autoriser l'accès aux agendas"
+    }
   },
   "calendarSync": {
     "title": "Calendriers du téléphone",
