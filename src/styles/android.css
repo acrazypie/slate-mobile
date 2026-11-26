@@ -153,7 +153,7 @@
 [data-look="android"] .cal-head .acc { color: inherit; }
 
 /* Agenda (Timeline design, screen 07): the next seven days on a vertical spine. */
-.agenda { padding: 8px var(--pad) calc(var(--tab-space) + 72px); display: grid; gap: 4px; }
+.agenda { display: grid; gap: 4px; }
 .agenda__day { position: relative; padding-left: 20px; border-left: 2px solid var(--line-hi); margin-left: 6px; padding-bottom: 12px; }
 .agenda__day::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--mid); }
 .agenda__day.today::before { background: var(--accent); border-color: var(--accent); }

@@ -49,7 +49,11 @@ export function PdfExportSheet({ period, onClose }: { period: Period; onClose: (
     const next = on ? [...new Set([...current, id])] : current.filter((x) => x !== id);
     setShiftIds(next.length === all.length && all.every((x) => next.includes(x)) ? null : next);
   };
-  const rangeLabel = `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
+  // One month: "1–30 Nov 2026" (fits one line on a phone); otherwise both ends.
+  const sameMonth = period.start.getMonth() === period.end.getMonth() && period.start.getFullYear() === period.end.getFullYear();
+  const rangeLabel = sameMonth
+    ? `${period.start.getDate()}–${period.end.getDate()} ${formatDate(locale, period.end, 'monthShort')} ${period.end.getFullYear()}`
+    : `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
 
   const share = async () => {
     setBusy(true);

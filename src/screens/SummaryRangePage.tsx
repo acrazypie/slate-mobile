@@ -34,7 +34,7 @@ export function SummaryRangePage() {
 
   return (
     <>
-      <Group footer={t.settingsSummary.lede}>
+      <Group>
         {kindOptions.map((o) => (
           <Row key={o.value} name={o.label} onClick={() => choose(o.value)}>
             <span className={`radio${o.on ? ' on' : ''}`} aria-hidden="true" />

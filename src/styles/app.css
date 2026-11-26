@@ -514,3 +514,6 @@ svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-widt
 .rot-chip { position: relative; height: 36px; padding: 0 14px; }
 .rot-chip .rot-hit { inset: 0; }
 .btn--danger-text { color: var(--warn); }
+
+/* Agenda scrolls inside the calendar body, under the header and above the tab bar. */
+.agenda { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 8px var(--pad) calc(var(--tab-space, 0px) + 72px); }

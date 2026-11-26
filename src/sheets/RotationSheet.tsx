@@ -10,7 +10,7 @@ import { fill } from '../i18n/format';
 import { dateFromKey, keyFromDate } from '../lib/recurrence';
 import type { Rotation } from '../lib/types';
 import { ROTATION_MAX_DAYS, ROTATION_MIN_DAYS } from '../lib/types';
-import { haptics } from '../native/platform';
+import { haptics, platform } from '../native/platform';
 import { Dialog, Sheet } from '../ui/Sheet';
 import { useToast } from '../ui/controls';
 import { Icon } from '../ui/icons';
@@ -87,7 +87,8 @@ export function RotationSheet({ open, rotation, onClose }: { open: boolean; rota
   const shiftLabel = (id: string) => data.shifts.find((x) => x.id === id)?.title ?? '';
 
   return (
-    <Sheet open onClose={onClose} title={rotation ? t.rotation.editTitle : t.rotation.newTitle} onConfirm={save}>
+    // Android: one bottom button, "Place on calendar" (design 15). iOS keeps the header check to save.
+    <Sheet open onClose={onClose} title={rotation ? t.rotation.editTitle : t.rotation.newTitle} onConfirm={platform === 'android' ? undefined : save}>
       <label className="fld fld--title">
         <span className="fld__l">{t.rotation.name}</span>
         <input value={title} onChange={(e) => { setTitle(e.target.value); setError(''); }} placeholder={t.rotation.namePlaceholder} maxLength={100} autoFocus={!rotation} />
