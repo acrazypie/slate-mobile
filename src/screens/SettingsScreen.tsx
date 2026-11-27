@@ -8,7 +8,7 @@ import { appVersion, haptics, isNative, platform } from '../native/platform';
 import { setAppIcon } from '../native/appIcon';
 import { exportBackup, LAST_EXPORT_KEY, readFile } from '../backup/backup';
 import { SlateRepository, type ImportError } from '../data/repository';
-import { BACKGROUND_MATCH, type MonthStyle, type Settings, type SlateData, type ThemeSetting } from '../data/schema';
+import { type MonthStyle, type Settings, type SlateData, type ThemeSetting } from '../data/schema';
 import type { ViewMode } from '../lib/types';
 import { useDeviceCalendar } from '../calendar/CalendarProvider';
 import { Group, Row, Segmented, Swatches, Switch, useToast } from '../ui/controls';
@@ -223,14 +223,6 @@ export function SettingsScreen() {
         <Row icon="palette" name={t.settings.accent} hint={`${accentName(settings.accent)} · ${t.appIcon.hint}`} stack>
           <Swatches colors={presets} value={settings.accent} onChange={(accent) => changeAppearance({ accent })} names={accentName} custom={t.settings.customColor} columns={5} shade={swatchShade} />
         </Row>
-        <Row icon="palette" name={t.settings.matchAccent} hint={t.settings.matchAccentHint}>
-          <Switch checked={settings.background === BACKGROUND_MATCH} onChange={(on) => set({ background: on ? BACKGROUND_MATCH : settings.accent })} label={t.settings.matchAccent} />
-        </Row>
-        {settings.background !== BACKGROUND_MATCH && (
-          <Row icon="palette" name={t.settings.backgroundColour} stack>
-            <Swatches colors={presets} value={settings.background} onChange={(background) => set({ background })} names={accentName} columns={5} shade={swatchShade} />
-          </Row>
-        )}
         {isNative && (
           <Row icon="vibrate" name={t.settings.haptics} hint={t.settings.hapticsHint}>
             <Switch checked={settings.haptics} onChange={(haptics) => set({ haptics })} label={t.settings.haptics} />

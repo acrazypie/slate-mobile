@@ -1,44 +1,44 @@
 /* Android chrome: Material 3 adapted (design-notes §6, docs/mockups/src/android.css). */
 
-/* Timeline design (design/docs/02-tokens.md, Android): navy ground, violet
+/* Timeline design (design/docs/02-tokens.md, Android): neutral ground, violet
    accent, system type. Android only; iOS keeps DESIGN.md tokens. The accent
    applies only when the user has not picked a swatch (theme.ts sets an inline
    --accent for a chosen one). */
 [data-look="android"] {
-  --bg: #0e1320;  --bg-raise: #161d2e;  --nav-bg: rgba(14,19,32,.92);
-  --line: #1e2638;  --line-hi: #3a4560;
+  --bg: #1b1b1b;  --bg-raise: #232323;  --nav-bg: rgba(27,27,27,.92);
+  --line: #2e2e2e;  --line-hi: #3a4560;
   --text: #e8ecf5;  --mid: #8a94ab;  --dim: #5d6781;
-  --accent: #9d8cff;  --accent-ink: #0e1320;
+  --accent: #9d8cff;  --accent-ink: #1b1b1b;
   --syne: var(--sys);  --mono: var(--sys);
   font-variant-numeric: tabular-nums;
 }
 [data-look="android"][data-theme="light"] {
-  --bg: #f4f6fa;  --bg-raise: #ffffff;  --nav-bg: rgba(244,246,250,.92);
-  --line: #e3e8f1;  --line-hi: #c5ccdb;
+  --bg: #f0eee8;  --bg-raise: #ffffff;  --nav-bg: rgba(240,238,232,.92);
+  --line: #dcd9d0;  --line-hi: #c5ccdb;
   --text: #14182a;  --mid: #5c6680;  --dim: #8a94ab;
   --accent: #5b4bc4;  --accent-ink: #ffffff;
 }
 
 [data-look="android"] {
   --tab-space: calc(80px + var(--sb));
-  --m3-c-low: #161d2e;
-  --m3-c: #161d2e;
-  --m3-c-high: #1e2638;
-  --m3-c-highest: #2a3349;
-  --m3-sec: color-mix(in srgb, var(--accent) 22%, #161d2e);
+  --m3-c-low: #232323;
+  --m3-c: #232323;
+  --m3-c-high: #2e2e2e;
+  --m3-c-highest: #383838;
+  --m3-sec: color-mix(in srgb, var(--accent) 22%, #232323);
   --m3-on-sec: #cfc6ff;
   --m3-outline: #5d6781;
-  --m3-outline-var: #2a3349;
+  --m3-outline-var: #383838;
 }
 [data-look="android"][data-theme="light"] {
   --m3-c-low: #ffffff;
   --m3-c: #ffffff;
-  --m3-c-high: #f4f6fa;
-  --m3-c-highest: #e3e8f1;
+  --m3-c-high: #f0eee8;
+  --m3-c-highest: #dcd9d0;
   --m3-sec: color-mix(in srgb, var(--accent) 13%, #ffffff);
   --m3-on-sec: #4a3cb0;
   --m3-outline: #c5ccdb;
-  --m3-outline-var: #e3e8f1;
+  --m3-outline-var: #dcd9d0;
 }
 
 /* top app bar: title left, icon buttons right */

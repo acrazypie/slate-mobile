@@ -30,7 +30,7 @@ export function App() {
   useEffect(() => {
     applyAppearance(settings);
     return onSystemThemeChange(() => applyAppearance(repo.getSnapshot().settings));
-  }, [settings.theme, settings.accent, settings.oled, settings.background]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [settings.theme, settings.accent, settings.oled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => setHapticsEnabled(settings.haptics), [settings.haptics]);
 
