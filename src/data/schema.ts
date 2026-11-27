@@ -109,6 +109,8 @@ export interface Settings {
   defaultView: ViewMode;
   monthStyle: MonthStyle;
   haptics: boolean;
+  /** Hides the empty-day and empty-week tips ("Don't show anymore"). */
+  hideEmptyTips: boolean;
   /** The first-launch flow has been completed or skipped. */
   onboarded: boolean;
   calendar: CalendarSettings;
@@ -142,6 +144,7 @@ export const DEFAULT_SETTINGS: Settings = {
   defaultView: 'day',
   monthStyle: 'compact',
   haptics: true,
+  hideEmptyTips: false,
   onboarded: false,
   calendar: {
     showDeviceEvents: false,

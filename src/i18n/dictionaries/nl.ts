@@ -92,6 +92,7 @@ export const nl: Dictionary = {
     "newEvent": "Nieuw blok",
     "emptyWeekLede": "Geen blokken deze week. Tik op een leeg uur om er een toe te voegen.",
     "createShift": "Dienst maken",
+    "dontShowAgain": "Niet meer tonen",
     "weekTag": "Week {n}, {range}"
   },
   "create": {

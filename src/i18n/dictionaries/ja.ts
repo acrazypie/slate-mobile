@@ -92,6 +92,7 @@ export const ja: Dictionary = {
     "newEvent": "新しいブロック",
     "emptyWeekLede": "今週はブロックがありません。空いている時間をタップして追加しましょう。",
     "createShift": "シフトを作成",
+    "dontShowAgain": "今後表示しない",
     "weekTag": "第{n}週、{range}"
   },
   "create": {

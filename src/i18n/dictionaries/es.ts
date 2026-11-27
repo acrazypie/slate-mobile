@@ -92,6 +92,7 @@ export const es: Dictionary = {
     "newEvent": "Nuevo bloque",
     "emptyWeekLede": "No hay bloques esta semana. Toca una hora vacía para añadir uno.",
     "createShift": "Crear un turno",
+    "dontShowAgain": "No mostrar más",
     "weekTag": "Semana {n}, {range}"
   },
   "create": {

@@ -247,6 +247,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
     defaultView: (['day', 'week', 'month', 'agenda'] as unknown[]).includes(s.defaultView) ? (s.defaultView as ViewMode) : base.defaultView,
     monthStyle: s.monthStyle === 'compact' || s.monthStyle === 'detailed' ? s.monthStyle : base.monthStyle,
     haptics: typeof s.haptics === 'boolean' ? s.haptics : base.haptics,
+    hideEmptyTips: typeof s.hideEmptyTips === 'boolean' ? s.hideEmptyTips : base.hideEmptyTips,
     onboarded: typeof s.onboarded === 'boolean' ? s.onboarded : base.onboarded,
     calendar,
   };

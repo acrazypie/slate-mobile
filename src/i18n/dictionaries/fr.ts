@@ -92,6 +92,7 @@ export const fr: Dictionary = {
     "newEvent": "Nouveau bloc",
     "emptyWeekLede": "Aucun bloc cette semaine. Touchez une heure libre pour en ajouter un.",
     "createShift": "Créer un service",
+    "dontShowAgain": "Ne plus afficher",
     "weekTag": "Semaine {n}, {range}"
   },
   "create": {

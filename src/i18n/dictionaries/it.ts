@@ -93,6 +93,7 @@ export const it = {
     "newEvent": "Nuovo blocco",
     "emptyWeekLede": "Nessun blocco questa settimana. Tocca un'ora vuota per aggiungerne uno.",
     "createShift": "Crea un turno",
+    "dontShowAgain": "Non mostrare più",
     "weekTag": "Settimana {n}, {range}"
   },
   "create": {
