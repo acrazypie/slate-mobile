@@ -54,8 +54,6 @@ export function SettingsScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  if (page === 'calendars') return <CalendarPicker onBack={() => setPage('phone')} />;
-  if (page === 'account') return <AccountScreen onBack={() => setPage('main')} />;
 
   const set = (patch: Parameters<typeof repo.updateSettings>[0]) => void repo.updateSettings(patch);
 
@@ -63,6 +61,10 @@ export function SettingsScreen() {
   // icon asks first, because launchers may move it (the icon picker asked the same).
   type AppearanceChange = Partial<Pick<Settings, 'accent' | 'oled'>>;
   const [pendingAppearance, setPendingAppearance] = useState<AppearanceChange | null>(null);
+
+  // Early returns come after every hook, so the hook order never changes between renders.
+  if (page === 'calendars') return <CalendarPicker onBack={() => setPage('phone')} />;
+  if (page === 'account') return <AccountScreen onBack={() => setPage('main')} />;
   const iconFor = (s: Pick<Settings, 'accent' | 'oled'>) => iconKeyFor(s.accent, s.oled);
   const changeAppearance = (change: AppearanceChange) => {
     const next = { accent: settings.accent, oled: settings.oled, ...change };
