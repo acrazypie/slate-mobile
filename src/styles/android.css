@@ -26,7 +26,7 @@
   --m3-c-high: #2e2e2e;
   --m3-c-highest: #383838;
   --m3-sec: color-mix(in srgb, var(--accent) 22%, #232323);
-  --m3-on-sec: #cfc6ff;
+  --m3-on-sec: color-mix(in srgb, var(--accent) 75%, #ffffff);
   --m3-outline: #5d6781;
   --m3-outline-var: #383838;
 }
@@ -36,7 +36,7 @@
   --m3-c-high: #f0eee8;
   --m3-c-highest: #dcd9d0;
   --m3-sec: color-mix(in srgb, var(--accent) 13%, #ffffff);
-  --m3-on-sec: #4a3cb0;
+  --m3-on-sec: color-mix(in srgb, var(--accent) 80%, #000000);
   --m3-outline: #c5ccdb;
   --m3-outline-var: #dcd9d0;
 }
