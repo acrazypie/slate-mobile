@@ -105,7 +105,7 @@
   --bg: #1b1b1b;  --bg-raise: #232323;  --nav-bg: rgba(27,27,27,.92);
   --line: #2e2e2e;  --line-hi: #3a4560;
   --text: #e8ecf5;  --mid: #8a94ab;  --dim: #5d6781;
-  --accent: #9d8cff;  --accent-ink: #1b1b1b;
+  --accent: #6bb6a3;  --accent-ink: #0a0a0a;
   --group-bg: #232323;  --group-line: #2e2e2e;
   --syne: var(--sys);  --mono: var(--sys);
   font-variant-numeric: tabular-nums;
@@ -114,7 +114,7 @@
   --bg: #f0eee8;  --bg-raise: #ffffff;  --nav-bg: rgba(240,238,232,.92);
   --line: #dcd9d0;  --line-hi: #c5ccdb;
   --text: #14182a;  --mid: #5c6680;  --dim: #8a94ab;
-  --accent: #5b4bc4;  --accent-ink: #ffffff;
+  --accent: #2e7266;  --accent-ink: #ffffff;
   --group-bg: #ffffff;  --group-line: #dcd9d0;
 }
 /* Day title on iOS: the weekday large, the date under it (design/ios/dark/04-day.png). */
