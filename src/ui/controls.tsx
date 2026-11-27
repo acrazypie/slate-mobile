@@ -95,11 +95,15 @@ export function Group({ label, footer, children }: { label?: ReactNode; footer?:
   );
 }
 
-export function Swatches({ colors, value, onChange, names, custom }: { colors: string[]; value: string; onChange: (c: string) => void; names: (c: string) => string; custom?: string }) {
+export function Swatches({ colors, value, onChange, names, custom, columns }: { colors: string[]; value: string; onChange: (c: string) => void; names: (c: string) => string; custom?: string; columns?: number }) {
   const input = useRef<HTMLInputElement>(null);
   const isCustom = !colors.some((c) => c.toUpperCase() === value.toUpperCase());
   return (
-    <div className="swatches" role="radiogroup">
+    <div
+      className="swatches"
+      role="radiogroup"
+      style={columns ? { display: 'grid', gridTemplateColumns: `repeat(${columns}, 32px)`, justifyContent: 'space-between' } : undefined}
+    >
       {colors.map((c) => (
         <button
           key={c}

@@ -44,7 +44,10 @@ export const it = {
     "amber": "Ambra",
     "sage": "Salvia",
     "pink": "Rosa",
-    "gesso": "Lime"
+    "gesso": "Lime",
+    "coral": "Corallo",
+    "periwinkle": "Periwinkle",
+    "chalk": "Gesso"
   },
   "views": {
     "day": "Giorno",

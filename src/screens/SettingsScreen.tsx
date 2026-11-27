@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { kv, repo, useData, useSettings } from '../app/store';
-import { ACCENT_OPTIONS } from '../app/theme';
+import { ACCENT_OPTIONS, iconKeyFor } from '../app/theme';
 import { useI18n } from '../i18n/I18n';
 import { fill, formatDate } from '../i18n/format';
 import { LOCALES, LOCALE_NAMES, isLocale } from '../i18n/config';
 import { appVersion, haptics, isNative, platform } from '../native/platform';
+import { setAppIcon } from '../native/appIcon';
 import { exportBackup, LAST_EXPORT_KEY, readFile } from '../backup/backup';
 import { SlateRepository, type ImportError } from '../data/repository';
-import type { MonthStyle, SlateData, ThemeSetting } from '../data/schema';
+import type { MonthStyle, Settings, SlateData, ThemeSetting } from '../data/schema';
 import type { ViewMode } from '../lib/types';
 import { useDeviceCalendar } from '../calendar/CalendarProvider';
 import { Group, Row, Segmented, Swatches, Switch, useToast } from '../ui/controls';
@@ -20,7 +21,6 @@ import { LEAD_OPTIONS } from '../notify/plan';
 import { leadLabel, permission, requestPermission, type PermissionState } from '../notify/notifications';
 import type { NotificationSettings } from '../data/schema';
 import { AccountScreen } from './AccountScreen';
-import { AppIconPicker } from './AppIconPicker';
 import { SummaryRangePage } from './SummaryRangePage';
 
 /** The pages of Settings: the main list, one page per section, and the two full pages. */
@@ -58,6 +58,34 @@ export function SettingsScreen() {
   if (page === 'account') return <AccountScreen onBack={() => setPage('main')} />;
 
   const set = (patch: Parameters<typeof repo.updateSettings>[0]) => void repo.updateSettings(patch);
+
+  // The accent and the OLED setting also choose the home-screen icon. Changing the
+  // icon asks first, because launchers may move it (the icon picker asked the same).
+  type AppearanceChange = Partial<Pick<Settings, 'accent' | 'oled'>>;
+  const [pendingAppearance, setPendingAppearance] = useState<AppearanceChange | null>(null);
+  const iconFor = (s: Pick<Settings, 'accent' | 'oled'>) => iconKeyFor(s.accent, s.oled);
+  const changeAppearance = (change: AppearanceChange) => {
+    const next = { accent: settings.accent, oled: settings.oled, ...change };
+    if (!isNative || iconFor(next) === iconFor(settings)) {
+      set(change);
+      return;
+    }
+    setPendingAppearance(change);
+  };
+  const confirmAppearance = async () => {
+    const change = pendingAppearance;
+    setPendingAppearance(null);
+    if (!change) return;
+    const next = { accent: settings.accent, oled: settings.oled, ...change };
+    try {
+      await setAppIcon(iconFor(next));
+    } catch {
+      toast(t.appIcon.failed, 'warn');
+      return;
+    }
+    set(change);
+    haptics.success();
+  };
   const setCal = (patch: Partial<typeof settings.calendar>) => set({ calendar: { ...settings.calendar, ...patch } });
   const setNotify = (patch: Partial<NotificationSettings>) => set({ notifications: { ...settings.notifications, ...patch } });
 
@@ -160,10 +188,17 @@ export function SettingsScreen() {
 
       {page === 'appearance' && (
       <>
+      <Dialog
+        open={pendingAppearance !== null}
+        onClose={() => setPendingAppearance(null)}
+        title={t.appIcon.warnTitle}
+        message={t.appIcon.warnBody}
+        actions={[
+          { label: t.appIcon.change, kind: 'primary', onClick: () => void confirmAppearance() },
+          { label: t.appIcon.keep, kind: 'plain', onClick: () => setPendingAppearance(null) },
+        ]}
+      />
       <Group label={t.settings.appearance}>
-        <Row icon="palette" name={t.appIcon.label} hint={t.appIcon.hint} stack>
-          <AppIconPicker value={settings.appIcon} />
-        </Row>
         <Row icon="moon" name={t.settings.theme} stack>
           <Segmented<ThemeSetting>
             label={t.settings.theme}
@@ -178,11 +213,11 @@ export function SettingsScreen() {
         </Row>
         {settings.theme === 'dark' && (
           <Row icon="moon" name={t.settings.oled} hint={t.settings.oledHint}>
-            <Switch checked={settings.oled} onChange={(oled) => set({ oled })} label={t.settings.oled} />
+            <Switch checked={settings.oled} onChange={(oled) => changeAppearance({ oled })} label={t.settings.oled} />
           </Row>
         )}
-        <Row icon="palette" name={t.settings.accent} hint={accentName(settings.accent)} stack>
-          <Swatches colors={ACCENT_OPTIONS.map((o) => o.value)} value={settings.accent} onChange={(accent) => set({ accent })} names={accentName} custom={t.settings.customColor} />
+        <Row icon="palette" name={t.settings.accent} hint={`${accentName(settings.accent)} · ${t.appIcon.hint}`} stack>
+          <Swatches colors={ACCENT_OPTIONS.map((o) => o.value)} value={settings.accent} onChange={(accent) => changeAppearance({ accent })} names={accentName} custom={t.settings.customColor} columns={5} />
         </Row>
         {isNative && (
           <Row icon="vibrate" name={t.settings.haptics} hint={t.settings.hapticsHint}>

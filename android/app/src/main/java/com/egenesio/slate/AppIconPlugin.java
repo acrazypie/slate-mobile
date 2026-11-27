@@ -20,8 +20,8 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 public class AppIconPlugin extends Plugin {
 
     /** Colour key -> alias class suffix. Teal is the default (enabled in the manifest). */
-    private static final String[] KEYS = {"teal", "lime", "violet", "apricot", "mono"};
-    private static final String[] ALIASES = {"LauncherTeal", "LauncherLime", "LauncherViolet", "LauncherApricot", "LauncherMono"};
+    private static final String[] KEYS = {"teal", "teal-oled", "lime", "lime-oled", "violet", "violet-oled", "apricot", "apricot-oled", "amber", "amber-oled", "sage", "sage-oled", "pink", "pink-oled", "coral", "coral-oled", "periwinkle", "periwinkle-oled", "chalk", "chalk-oled"};
+    private static final String[] ALIASES = {"LauncherTeal", "LauncherTealOled", "LauncherLime", "LauncherLimeOled", "LauncherViolet", "LauncherVioletOled", "LauncherApricot", "LauncherApricotOled", "LauncherAmber", "LauncherAmberOled", "LauncherSage", "LauncherSageOled", "LauncherPink", "LauncherPinkOled", "LauncherCoral", "LauncherCoralOled", "LauncherPeriwinkle", "LauncherPeriwinkleOled", "LauncherChalk", "LauncherChalkOled"};
 
     @PluginMethod
     public void set(PluginCall call) {

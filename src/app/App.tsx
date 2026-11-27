@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSettings, repo } from './store';
-import { applyAppearance, onSystemThemeChange } from './theme';
+import { applyAppearance, iconKeyFor, onSystemThemeChange } from './theme';
 import { useI18n } from '../i18n/I18n';
 import { hideSplash, setHapticsEnabled, setRootBackHandler, haptics, syncStatusBar } from '../native/platform';
 import { CalendarScreen } from '../screens/CalendarScreen';
@@ -35,7 +35,10 @@ export function App() {
   useEffect(() => setHapticsEnabled(settings.haptics), [settings.haptics]);
 
   // The launcher icon follows the saved choice (Android; see syncAppIconOnStart).
-  useEffect(() => syncAppIconOnStart(repo.getSnapshot().settings.appIcon), []);
+  useEffect(() => {
+    const s = repo.getSnapshot().settings;
+    syncAppIconOnStart(iconKeyFor(s.accent, s.oled));
+  }, []);
 
   // Reminders, the new-version notice and taps on them; reschedules after every change.
   useEffect(() => startNotifications(() => setTab('settings')), []);

@@ -1,12 +1,22 @@
-// Builds the source images in assets/ that `npx capacitor-assets generate`
-// turns into every iOS/Android icon and splash size, and writes the native
-// pieces that capacitor-assets does not: the Android 12+ animated splash mark,
-// the three picker icons (lime, violet, apricot) and their launcher resources.
-// The mark is the Timeline icon, option 1 "Ticks" (design/icons/icon-option-1.dc.html):
-// six vertical ticks on an accent tile, with one red now line across them.
-// Run: npm run assets
+// Builds the Slate app icon for every accent in the app, in a standard (dark)
+// and an OLED (pure black) version, plus the splash sources.
+//
+// The mark is the timeline: four events on a hairline, the second one active.
+// The active node and bar take the accent colour; everything else is the
+// calendar-cell grey. The tile background is the theme background, so it does
+// not change with the accent.
+//
+// ACCENTS must match ACCENT_OPTIONS in src/app/theme.ts (the app picks an icon
+// from its accent). Run: npm run assets (this script only; see README).
+//
+// Writes:
+//   assets/icon-only.png, icon-background.png, icon-foreground.png (teal, default)
+//   assets/splash.png, splash-dark.png (sources for `capacitor-assets generate`)
+//   android/.../mipmap-*/ic_launcher_<key>[_oled].png and ..._foreground.png
+//   android/.../mipmap-anydpi-v26/ic_launcher_<key>[_oled].xml
+//   ios/.../Assets.xcassets/AppIcon[-<Colour>][-OLED].appiconset (1024px, opaque)
 import sharp from 'sharp';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -14,122 +24,135 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const out = join(root, 'assets');
 await mkdir(out, { recursive: true });
 
-const VIOLET = '#9D8CFF';
-const TEAL = '#6BB6A3';
-const INK = '#0E1320';
-const NOW = '#E0475E';
-
-// Geometry on the 1024 master (design/icons/icon-option-1.dc.html). Inside the
-// inner 66% safe zone for adaptive icons (176–848).
-const TICK_W = 52;
-const TICKS = [
-  [230, 362, 300],
-  [330, 282, 460],
-  [430, 402, 220],
-  [530, 252, 520],
-  [630, 322, 380],
-  [730, 382, 260],
+// Accent key -> hex. Keys are the icon names used everywhere else.
+const ACCENTS = [
+  ['teal', '#6BB6A3'],
+  ['lime', '#D4EE5E'],
+  ['violet', '#BB86FC'],
+  ['apricot', '#E49C69'],
+  ['amber', '#E0B84C'],
+  ['sage', '#8BC48A'],
+  ['pink', '#E58FB4'],
+  ['coral', '#F0785A'],
+  ['periwinkle', '#8FA8FF'],
+  ['chalk', '#F0EEE8'], // near-white
 ];
-const NOW_BAR = { x: 176, y: 505, w: 672, h: 14 };
+const STANDARD_BG = '#0A0A0A';
+const OLED_BG = '#000000';
+const CELL = '#5C5C66';   // calendar-cell grey
+const TRACK = '#2A2A31';  // hairline
+const SIZE = 1024;
 
-function mark(ink = INK, now = NOW) {
-  const bars = TICKS.map(([x, y, h]) => `<rect x="${x}" y="${y}" width="${TICK_W}" height="${h}" rx="26" fill="${ink}"/>`).join('');
-  return bars + `<rect x="${NOW_BAR.x}" y="${NOW_BAR.y}" width="${NOW_BAR.w}" height="${NOW_BAR.h}" rx="7" fill="${now}"/>`;
+// Option 02 geometry on a 1024 canvas, centred horizontally.
+const YS = [236, 418, 600, 788];
+const STATES = ['future', 'active', 'future', 'future'];
+const WIDTHS = [240, 320, 280, 180];
+const LINE_X = 324;
+const ROW_X = 401;
+
+function timeline(accent, { line = TRACK, cell = CELL, hollow = STANDARD_BG } = {}) {
+  let s = `<rect x="${LINE_X - 3}" y="${YS[0]}" width="6" height="${YS[YS.length - 1] - YS[0]}" fill="${line}"/>`;
+  YS.forEach((y, i) => {
+    if (STATES[i] === 'active') {
+      s += `<circle cx="${LINE_X}" cy="${y}" r="50" fill="${accent}" fill-opacity="0.18"/>`;
+      s += `<circle cx="${LINE_X}" cy="${y}" r="30" fill="${accent}"/>`;
+      s += `<rect x="${ROW_X}" y="${y - 26}" width="${WIDTHS[i]}" height="52" rx="26" fill="${accent}"/>`;
+    } else {
+      s += `<circle cx="${LINE_X}" cy="${y}" r="30" fill="${hollow}" stroke="${cell}" stroke-width="6"/>`;
+      s += `<rect x="${ROW_X}" y="${y - 26}" width="${WIDTHS[i]}" height="52" rx="26" fill="${cell}"/>`;
+    }
+  });
+  return s;
 }
-function svgDoc({ size, bg, body = '', scale = 1 }) {
-  const bgRect = bg ? `<rect width="1024" height="1024" fill="${bg}"/>` : '';
+
+function svgDoc({ size = SIZE, bg, body, scale = 1 }) {
+  const bgRect = bg ? `<rect width="${SIZE}" height="${SIZE}" fill="${bg}"/>` : '';
   return Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 1024 1024">${bgRect}` +
-      `<g transform="translate(512 512) scale(${scale}) translate(-512 -512)">${body}</g></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${SIZE} ${SIZE}">${bgRect}` +
+      `<g transform="translate(${SIZE / 2} ${SIZE / 2}) scale(${scale}) translate(${-SIZE / 2} ${-SIZE / 2})">${body}</g></svg>`,
   );
 }
-const render = (doc, file) => sharp(doc).png().toFile(file);
+const png = (doc, size) => sharp(doc, { density: 72 }).resize(size, size).png();
+const cap = (s) => s[0].toUpperCase() + s.slice(1);
 
-// Full-bleed, opaque, no text: the OS applies the iOS squircle or the Android mask.
-await render(svgDoc({ size: 1024, bg: TEAL, body: mark() }), join(out, 'icon-only.png'));
-// Android adaptive layers: a solid violet background and the ticks as foreground.
-await render(svgDoc({ size: 1024, bg: TEAL }), join(out, 'icon-background.png'));
-await render(svgDoc({ size: 1024, body: mark() }), join(out, 'icon-foreground.png'));
-// Splash: the mark small in the middle, light and dark.
-await render(svgDoc({ size: 2732, bg: '#F4F6FA', body: mark('#5B4BC4', NOW), scale: 0.3 }), join(out, 'splash.png'));
-await render(svgDoc({ size: 2732, bg: INK, body: mark(VIOLET, NOW), scale: 0.3 }), join(out, 'splash-dark.png'));
-console.log('assets/: icon-only, icon-foreground, icon-background, splash, splash-dark');
-
-// ---- Native pieces -------------------------------------------------------
-
-const android = join(root, 'android/app/src/main/res');
-const ios = join(root, 'ios/App/App/Assets.xcassets');
-const pickerDir = join(root, 'src/assets/app-icons');
-
-// Android 12+ splash: the Ticks mark as a vector, scaled into the middle 72dp
-// circle of the 108dp icon box. Light and night versions differ in ink colour.
-function roundRectPath(x, y, w, h, r) {
-  return `M${x + r},${y}h${w - 2 * r}a${r},${r} 0 0 1 ${r},${r}v${h - 2 * r}a${r},${r} 0 0 1 -${r},${r}h-${w - 2 * r}a${r},${r} 0 0 1 -${r},-${r}v-${h - 2 * r}a${r},${r} 0 0 1 ${r},-${r}z`;
-}
-function splashVector(ink, now, night) {
-  const ticks = TICKS.map(([x, y, h]) => roundRectPath(x, y, TICK_W, h, 26)).join('');
-  const nowPath = roundRectPath(NOW_BAR.x, NOW_BAR.y, NOW_BAR.w, NOW_BAR.h, 7);
-  const s = 0.11;
-  const t = (512 * (1 - s)).toFixed(2);
-  return `<?xml version="1.0" encoding="utf-8"?>
-<!-- Android 12+ splash icon: the Slate Ticks mark (scripts/make-assets.mjs), centred
-     in the 108dp icon box (only the middle 72dp circle is shown).${night ? ' Night version.' : ''} -->
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp" android:height="108dp"
-    android:viewportWidth="1024" android:viewportHeight="1024">
-    <group android:scaleX="${s}" android:scaleY="${s}" android:translateX="${t}" android:translateY="${t}">
-        <path android:fillColor="${ink}" android:pathData="${ticks}" />
-        <path android:fillColor="${now}" android:pathData="${nowPath}" />
-    </group>
-</vector>
-`;
-}
-await writeFile(join(android, 'drawable/splash_mark.xml'), splashVector('#5B4BC4', NOW, false));
-await mkdir(join(android, 'drawable-night'), { recursive: true });
-await writeFile(join(android, 'drawable-night/splash_mark.xml'), splashVector(VIOLET, NOW, true));
-await writeFile(
-  join(android, 'values/splash_colors.xml'),
-  `<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="splash_background">#F4F6FA</color>
-</resources>
-`,
-);
-await writeFile(
-  join(android, 'values-night/splash_colors.xml'),
-  `<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="splash_background">#0E1320</color>
-</resources>
-`,
-);
-
-// The three picker icons: the Ticks mark on the accent tile, the same structure
-// as the default icon. Lime, violet and apricot are the accent colours of the picker.
-const VARIANTS = [
-  { key: 'lime', name: 'Lime', accent: '#D4EE5E' },
-  { key: 'violet', name: 'Violet', accent: '#BB86FC' },
-  { key: 'apricot', name: 'Apricot', accent: '#E49C69' },
-  // Black and white: white ticks on black, with the same red now line.
-  { key: 'mono', name: 'Mono', accent: '#0A0A0A', ink: '#FFFFFF' },
+// Icon key: "lime", or "lime-oled" for the OLED version.
+const VARIANTS = (key) => [
+  { key, bg: STANDARD_BG, oled: false },
+  { key: `${key}-oled`, bg: OLED_BG, oled: true },
 ];
-const LEGACY = { mdpi: 48, hdpi: 72, xhdpi: 96, xxhdpi: 144, xxxhdpi: 192 };
-const FOREGROUND = { mdpi: 108, hdpi: 162, xhdpi: 216, xxhdpi: 324, xxxhdpi: 432 };
+const ALL_KEYS = ACCENTS.flatMap(([k]) => VARIANTS(k));
 
-for (const v of VARIANTS) {
-  const ink = v.ink ?? INK;
-  const full = svgDoc({ size: 1024, bg: v.accent, body: mark(ink) });
-  const fg = svgDoc({ size: 1024, body: mark(ink) });
-  for (const [density, px] of Object.entries(LEGACY)) {
-    await sharp(full).resize(px, px).png().toFile(join(android, `mipmap-${density}/ic_launcher_${v.key}.png`));
+// 1. Default (teal, standard) sources for capacitor-assets and the splash.
+const teal = ACCENTS[0][1];
+await png(svgDoc({ bg: STANDARD_BG, body: timeline(teal) }), SIZE).toFile(join(out, 'icon-only.png'));
+await png(svgDoc({ bg: STANDARD_BG, body: '' }), SIZE).toFile(join(out, 'icon-background.png'));
+await png(svgDoc({ body: timeline(teal) }), SIZE).toFile(join(out, 'icon-foreground.png'));
+await png(svgDoc({ size: 2732, bg: '#FAFAFA', body: timeline('#2E7266', { line: '#D8D8DE', cell: '#8A8A94', hollow: '#FAFAFA' }), scale: 0.3 }), 2732)
+  .toFile(join(out, 'splash.png'));
+await png(svgDoc({ size: 2732, bg: STANDARD_BG, body: timeline(teal), scale: 0.3 }), 2732).toFile(join(out, 'splash-dark.png'));
+
+// 2. Native icon files for every key.
+const DPI = { mdpi: [48, 108], hdpi: [72, 162], xhdpi: [96, 216], xxhdpi: [144, 324], xxxhdpi: [192, 432] };
+const RES = join(root, 'android/app/src/main/res');
+const XCASSETS = join(root, 'ios/App/App/Assets.xcassets');
+const contentsTemplate = JSON.parse(await readFile(join(XCASSETS, 'AppIcon.appiconset/Contents.json'), 'utf8'));
+const adaptiveXml = (name, bgColor) => `<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive icon. The launcher masks it to a circle, rounded square or squircle, so the
+     artwork is inset to the 66% safe zone; otherwise its corners and rings get cut off. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/${bgColor}" />
+    <foreground>
+        <inset android:drawable="@mipmap/${name}_foreground" android:inset="16.7%" />
+    </foreground>
+</adaptive-icon>
+`;
+
+for (const [accentKey, accent] of ACCENTS) {
+  for (const { key, bg, oled } of VARIANTS(accentKey)) {
+    const name = `ic_launcher_${key.replace('-', '_')}`;
+    const full = svgDoc({ bg, body: timeline(accent, { hollow: bg }) });
+    const fg = svgDoc({ body: timeline(accent, { hollow: bg }) });
+
+    for (const [dpi, [legacy, adaptive]] of Object.entries(DPI)) {
+      const dir = join(RES, `mipmap-${dpi}`);
+      await mkdir(dir, { recursive: true });
+      await png(full, legacy).toFile(join(dir, `${name}.png`));
+      await png(fg, adaptive).toFile(join(dir, `${name}_foreground.png`));
+    }
+    await writeFile(join(RES, 'mipmap-anydpi-v26', `${name}.xml`), adaptiveXml(name, oled ? 'launcher_background_oled' : 'launcher_background'));
+
+    // iOS: opaque 1024 master per set; the system applies the corner mask.
+    const setName = accentKey === 'teal' ? 'AppIcon' : `AppIcon-${cap(accentKey)}`;
+    const dirName = `${setName}${oled ? '-OLED' : ''}`;
+    const fileName = dirName === 'AppIcon' ? 'AppIcon-512@2x.png' : `${dirName}-1024.png`;
+    const setDir = join(XCASSETS, `${dirName}.appiconset`);
+    await mkdir(setDir, { recursive: true });
+    await png(full, SIZE).flatten({ background: bg }).toFile(join(setDir, fileName));
+    const contents = structuredClone(contentsTemplate);
+    contents.images[0].filename = fileName;
+    await writeFile(join(setDir, 'Contents.json'), JSON.stringify(contents, null, 2));
   }
-  for (const [density, px] of Object.entries(FOREGROUND)) {
-    await sharp(fg).resize(px, px).png().toFile(join(android, `mipmap-${density}/ic_launcher_${v.key}_foreground.png`));
-  }
-  const Name = v.name;
-  await sharp(full).png().toFile(join(ios, `AppIcon-${Name}.appiconset/AppIcon-${Name}-1024.png`));
-  await sharp(full).resize(256, 256).png().toFile(join(pickerDir, `${v.key}.png`));
 }
-// The Teal option previews the default icon (teal tile, Ticks).
-await sharp(svgDoc({ size: 1024, bg: TEAL, body: mark() })).resize(256, 256).png().toFile(join(pickerDir, 'teal.png'));
-console.log('native: Android splash mark and splash colours; lime, violet, apricot icons');
+
+// 3. The default launcher icon (what the app uses before any alias is chosen).
+const teal0 = svgDoc({ bg: STANDARD_BG, body: timeline(teal) });
+const teal0fg = svgDoc({ body: timeline(teal) });
+for (const [dpi, [legacy, adaptive]] of Object.entries(DPI)) {
+  const dir = join(RES, `mipmap-${dpi}`);
+  await png(teal0, legacy).toFile(join(dir, 'ic_launcher.png'));
+  await png(teal0, legacy).toFile(join(dir, 'ic_launcher_round.png'));
+  await png(teal0fg, adaptive).toFile(join(dir, 'ic_launcher_foreground.png'));
+  await png(svgDoc({ bg: STANDARD_BG, body: '' }), adaptive).toFile(join(dir, 'ic_launcher_background.png'));
+}
+
+await writeFile(join(RES, 'values/launcher_colors.xml'),
+  `<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Behind the adaptive launcher icons: the same near-black as the icon tile, so the tile edge is invisible. -->
+    <color name="launcher_background">${STANDARD_BG}</color>
+    <!-- OLED icons: the pure black of the OLED theme. -->
+    <color name="launcher_background_oled">${OLED_BG}</color>
+</resources>
+`);
+
+console.log(`icons: ${ALL_KEYS.length} (${ACCENTS.length} accents, standard and OLED); splash: light, dark`);

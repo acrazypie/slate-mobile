@@ -43,7 +43,10 @@ export const ja: Dictionary = {
     "amber": "アンバー",
     "sage": "セージ",
     "pink": "ピンク",
-    "gesso": "ライム"
+    "gesso": "ライム",
+    "coral": "コーラル",
+    "periwinkle": "ペリウィンクル",
+    "chalk": "チョーク"
   },
   "views": {
     "day": "日",

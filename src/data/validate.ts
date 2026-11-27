@@ -7,7 +7,7 @@ import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_M
 import { isLocale } from '../i18n/config';
 import { REPORT_KINDS, type Report, type ReportKind } from '../lib/reportTypes';
 import type { RangeKind, SummaryRange } from '../lib/summaryRange';
-import { APP_ICON_KEYS, DEFAULT_SETTINGS, type AppIconKey, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
+import { DEFAULT_SETTINGS, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
 
 export class ValidationError extends Error {
   constructor(public readonly path: string, message: string) {
@@ -237,7 +237,6 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
   return {
     theme: s.theme === 'light' || s.theme === 'dark' || s.theme === 'system' ? s.theme : base.theme,
     oled: typeof s.oled === 'boolean' ? s.oled : base.oled,
-    appIcon: APP_ICON_KEYS.includes(s.appIcon as AppIconKey) ? (s.appIcon as AppIconKey) : base.appIcon,
     summaryRange,
     mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
     pay: payOut,

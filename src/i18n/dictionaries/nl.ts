@@ -43,7 +43,10 @@ export const nl: Dictionary = {
     "amber": "Amber",
     "sage": "Salie",
     "pink": "Roze",
-    "gesso": "Limoen"
+    "gesso": "Limoen",
+    "coral": "Koraal",
+    "periwinkle": "Vinca",
+    "chalk": "Krijt"
   },
   "views": {
     "day": "Dag",

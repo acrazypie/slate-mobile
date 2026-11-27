@@ -43,7 +43,10 @@ export const fr: Dictionary = {
     "amber": "Ambre",
     "sage": "Sauge",
     "pink": "Rose",
-    "gesso": "Citron vert"
+    "gesso": "Citron vert",
+    "coral": "Corail",
+    "periwinkle": "Pervenche",
+    "chalk": "Craie"
   },
   "views": {
     "day": "Jour",

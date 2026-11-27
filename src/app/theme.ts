@@ -2,7 +2,7 @@
 // only sets data-theme and overrides --accent / --accent-ink when the user
 // picked a colour other than the default.
 
-import type { Settings, ThemeSetting } from '../data/schema';
+import type { IconBaseKey, Settings, ThemeSetting, AppIconKey } from '../data/schema';
 import { DEFAULT_ACCENT } from '../data/schema';
 import { syncStatusBar } from '../native/platform';
 import type { ColorKey } from '../lib/types';
@@ -13,13 +13,47 @@ import type { ColorKey } from '../lib/types';
  * accent can never be mistaken for a block (owner decision). `light` is the
  * deeper shade used on the light theme (>= 4.5:1 on #fafafa).
  */
-/** The accents are the four app-icon colours: teal, lime, violet and apricot. */
-export const ACCENT_OPTIONS: { value: string; light: string; name: ColorKey | 'gesso' }[] = [
-  { value: '#6BB6A3', light: '#2E7266', name: 'teal' },
-  { value: '#D4EE5E', light: '#5A7000', name: 'gesso' },
-  { value: '#BB86FC', light: '#6A3FB8', name: 'violet' },
-  { value: '#E49C69', light: '#8F4E22', name: 'apricot' },
+export type AccentName = ColorKey | 'gesso' | 'coral' | 'periwinkle' | 'chalk';
+
+/**
+ * Ten accents, two rows of five in Settings. Each has its own home-screen icon
+ * (`icon`). `light` is the shade used on the light theme (>= 4.5:1 on #fafafa).
+ * The icon art in scripts/make-assets.mjs uses the same hex values.
+ */
+export const ACCENT_OPTIONS: { value: string; light: string; name: AccentName; icon: IconBaseKey }[] = [
+  { value: '#6BB6A3', light: '#2E7266', name: 'teal', icon: 'teal' },
+  { value: '#D4EE5E', light: '#5A7000', name: 'gesso', icon: 'lime' },
+  { value: '#BB86FC', light: '#6A3FB8', name: 'violet', icon: 'violet' },
+  { value: '#E49C69', light: '#8F4E22', name: 'apricot', icon: 'apricot' },
+  { value: '#E0B84C', light: '#7F5D00', name: 'amber', icon: 'amber' },
+  { value: '#8BC48A', light: '#2F7A34', name: 'sage', icon: 'sage' },
+  { value: '#E58FB4', light: '#A8346A', name: 'pink', icon: 'pink' },
+  { value: '#F0785A', light: '#A34A30', name: 'coral', icon: 'coral' },
+  { value: '#8FA8FF', light: '#3F55B8', name: 'periwinkle', icon: 'periwinkle' },
+  { value: '#F0EEE8', light: '#5E5B52', name: 'chalk', icon: 'chalk' },
 ];
+
+/**
+ * The home-screen icon for an accent and the OLED setting. A custom colour uses
+ * the icon of the nearest accent (RGB distance), because icons must be bundled
+ * with the app.
+ */
+export function iconKeyFor(accent: string, oled: boolean): AppIconKey {
+  const hex = accent.toUpperCase();
+  const rgb = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [r, g, b] = rgb(hex);
+  let best = ACCENT_OPTIONS[0];
+  let bestDistance = Infinity;
+  for (const o of ACCENT_OPTIONS) {
+    const [or, og, ob] = rgb(o.value);
+    const d = (or - r) ** 2 + (og - g) ** 2 + (ob - b) ** 2;
+    if (d < bestDistance) {
+      bestDistance = d;
+      best = o;
+    }
+  }
+  return (oled ? `${best.icon}-oled` : best.icon) as AppIconKey;
+}
 
 const media = window.matchMedia('(prefers-color-scheme: dark)');
 
