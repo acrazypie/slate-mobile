@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { kv, repo, useData, useSettings } from '../app/store';
-import { ACCENT_OPTIONS, iconKeyFor } from '../app/theme';
+import { ACCENT_OPTIONS, iconKeyFor, resolveTheme } from '../app/theme';
 import { useI18n } from '../i18n/I18n';
 import { fill, formatDate } from '../i18n/format';
 import { LOCALES, LOCALE_NAMES, isLocale } from '../i18n/config';
@@ -8,7 +8,7 @@ import { appVersion, haptics, isNative, platform } from '../native/platform';
 import { setAppIcon } from '../native/appIcon';
 import { exportBackup, LAST_EXPORT_KEY, readFile } from '../backup/backup';
 import { SlateRepository, type ImportError } from '../data/repository';
-import type { MonthStyle, Settings, SlateData, ThemeSetting } from '../data/schema';
+import { BACKGROUND_MATCH, type MonthStyle, type Settings, type SlateData, type ThemeSetting } from '../data/schema';
 import type { ViewMode } from '../lib/types';
 import { useDeviceCalendar } from '../calendar/CalendarProvider';
 import { Group, Row, Segmented, Swatches, Switch, useToast } from '../ui/controls';
@@ -125,6 +125,10 @@ export function SettingsScreen() {
     return o ? t.colors[o.name] : t.settings.customColor;
   };
 
+  // Swatches show the light shade in the light theme; the stored value stays the dark one.
+  const swatchShade = (hex: string) => (resolveTheme(settings.theme) === 'light' ? (ACCENT_OPTIONS.find((o) => o.value === hex.toUpperCase())?.light ?? hex) : hex);
+  const presets = ACCENT_OPTIONS.map((o) => o.value);
+
   const sectionText: Record<Exclude<Page, 'main' | 'calendars' | 'account'>, { title: string; lede: string }> = {
     appearance: { title: t.settingsPages.appearance.title, lede: t.settingsPages.appearance.lede },
     notifications: { title: t.settingsPages.notifications.title, lede: t.settingsPages.notifications.lede },
@@ -217,8 +221,16 @@ export function SettingsScreen() {
           </Row>
         )}
         <Row icon="palette" name={t.settings.accent} hint={`${accentName(settings.accent)} · ${t.appIcon.hint}`} stack>
-          <Swatches colors={ACCENT_OPTIONS.map((o) => o.value)} value={settings.accent} onChange={(accent) => changeAppearance({ accent })} names={accentName} custom={t.settings.customColor} columns={5} />
+          <Swatches colors={presets} value={settings.accent} onChange={(accent) => changeAppearance({ accent })} names={accentName} custom={t.settings.customColor} columns={5} shade={swatchShade} />
         </Row>
+        <Row icon="palette" name={t.settings.matchAccent} hint={t.settings.matchAccentHint}>
+          <Switch checked={settings.background === BACKGROUND_MATCH} onChange={(on) => set({ background: on ? BACKGROUND_MATCH : settings.accent })} label={t.settings.matchAccent} />
+        </Row>
+        {settings.background !== BACKGROUND_MATCH && (
+          <Row icon="palette" name={t.settings.backgroundColour} stack>
+            <Swatches colors={presets} value={settings.background} onChange={(background) => set({ background })} names={accentName} columns={5} shade={swatchShade} />
+          </Row>
+        )}
         {isNative && (
           <Row icon="vibrate" name={t.settings.haptics} hint={t.settings.hapticsHint}>
             <Switch checked={settings.haptics} onChange={(haptics) => set({ haptics })} label={t.settings.haptics} />

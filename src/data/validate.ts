@@ -7,7 +7,7 @@ import { BREAK_MAX_MINUTES, CATEGORIES, HEX_COLOR, ROTATION_MAX_DAYS, ROTATION_M
 import { isLocale } from '../i18n/config';
 import { REPORT_KINDS, type Report, type ReportKind } from '../lib/reportTypes';
 import type { RangeKind, SummaryRange } from '../lib/summaryRange';
-import { DEFAULT_SETTINGS, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
+import { BACKGROUND_MATCH, DEFAULT_SETTINGS, type CalendarSettings, type NotificationSettings, type PaySettings, type Settings } from './schema';
 
 export class ValidationError extends Error {
   constructor(public readonly path: string, message: string) {
@@ -243,6 +243,7 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
     notifications,
     google,
     accent: typeof s.accent === 'string' && HEX_COLOR.test(s.accent) ? s.accent.toUpperCase() : base.accent,
+    background: s.background === BACKGROUND_MATCH ? BACKGROUND_MATCH : typeof s.background === 'string' && HEX_COLOR.test(s.background) ? s.background.toUpperCase() : base.background,
     locale: s.locale === null ? null : isLocale(s.locale) ? s.locale : base.locale,
     defaultView: (['day', 'week', 'month', 'agenda'] as unknown[]).includes(s.defaultView) ? (s.defaultView as ViewMode) : base.defaultView,
     monthStyle: s.monthStyle === 'compact' || s.monthStyle === 'detailed' ? s.monthStyle : base.monthStyle,

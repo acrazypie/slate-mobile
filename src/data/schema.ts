@@ -104,6 +104,8 @@ export interface Settings {
   google: GoogleSettings;
   /** Accent colour (dark-theme hex); the light theme derives a deeper shade. */
   accent: string;
+  /** The page colour: BACKGROUND_MATCH (follows the accent) or a preset colour (hex). */
+  background: string;
   /** null = follow the device language. */
   locale: Locale | null;
   defaultView: ViewMode;
@@ -129,6 +131,9 @@ export interface SlateData {
 // The earlier default, "Gesso" (#D4EE5E), is still one of the choices in Appearance.
 export const DEFAULT_ACCENT = '#6BB6A3';
 
+/** Background follows the accent colour (the default). */
+export const BACKGROUND_MATCH = 'match';
+
 export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
   oled: false,
@@ -138,6 +143,7 @@ export const DEFAULT_SETTINGS: Settings = {
   notifications: { enabled: true, leadMinutes: 10, events: true, shifts: true, newVersion: true, donate: true },
   google: { enabled: false, push: false, pushShifts: true, showEvents: false },
   accent: DEFAULT_ACCENT,
+  background: BACKGROUND_MATCH,
   locale: null,
   defaultView: 'day',
   monthStyle: 'compact',

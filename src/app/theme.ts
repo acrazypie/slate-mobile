@@ -3,7 +3,7 @@
 // picked a colour other than the default.
 
 import type { IconBaseKey, Settings, ThemeSetting, AppIconKey } from '../data/schema';
-import { DEFAULT_ACCENT } from '../data/schema';
+import { BACKGROUND_MATCH, DEFAULT_ACCENT } from '../data/schema';
 import { syncStatusBar } from '../native/platform';
 import type { ColorKey } from '../lib/types';
 
@@ -30,7 +30,7 @@ export const ACCENT_OPTIONS: { value: string; light: string; name: AccentName; i
   { value: '#E58FB4', light: '#A8346A', name: 'pink', icon: 'pink' },
   { value: '#F0785A', light: '#A34A30', name: 'coral', icon: 'coral' },
   { value: '#8FA8FF', light: '#3F55B8', name: 'periwinkle', icon: 'periwinkle' },
-  { value: '#F0EEE8', light: '#5E5B52', name: 'chalk', icon: 'chalk' },
+  { value: '#F0EEE8', light: '#1B1B1B', name: 'chalk', icon: 'chalk' },
 ];
 
 /**
@@ -89,11 +89,54 @@ function ink(hex: string): string {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.55 ? '#0a0a0a' : '#ffffff';
 }
 
-export function applyAppearance(settings: Pick<Settings, 'theme' | 'accent' | 'oled'>) {
+const DARK_GROUND = '#0E1320';
+const LIGHT_GROUND = '#F4F6FA';
+const GROUND_VARS = ['--bg', '--bg-raise', '--line', '--nav-bg'];
+
+/** Mixes two hex colours; `weight` is the share of `a`. */
+function mixHex(a: string, b: string, weight: number): string {
+  const ra = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
+  const rb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return '#' + ra.map((v, i) => Math.round(v * weight + rb[i] * (1 - weight)).toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
+/** Page, card and hairline colours for a base hue, the same mix as the web app (lib/accent.ts). */
+export function groundFor(base: string, light: boolean) {
+  if (light) {
+    return {
+      bg: mixHex(base, LIGHT_GROUND, 0.12),
+      surface: mixHex(base, '#FFFFFF', 0.04),
+      border: mixHex(base, '#E3E8F1', 0.22),
+    };
+  }
+  return {
+    bg: mixHex(base, DARK_GROUND, 0.12),
+    surface: mixHex(base, DARK_GROUND, 0.18),
+    border: mixHex(base, DARK_GROUND, 0.26),
+  };
+}
+
+/** Tints the page with the accent. OLED black (dark theme) comes from the stylesheet, so no inline colour is set for it. */
+function applyGround(accent: string, background: string, light: boolean, oled: boolean) {
+  const root = document.documentElement;
+  if (!light && oled) {
+    GROUND_VARS.forEach((v) => root.style.removeProperty(v));
+    return;
+  }
+  const base = background === BACKGROUND_MATCH ? accent : background;
+  const g = groundFor(base, light);
+  root.style.setProperty('--bg', g.bg);
+  root.style.setProperty('--bg-raise', g.surface);
+  root.style.setProperty('--line', g.border);
+  root.style.setProperty('--nav-bg', `color-mix(in srgb, ${g.bg} 92%, transparent)`);
+}
+
+export function applyAppearance(settings: Pick<Settings, 'theme' | 'accent' | 'oled' | 'background'>) {
   const root = document.documentElement;
   const theme = resolveTheme(settings.theme);
   root.dataset.theme = theme;
   root.dataset.oled = settings.oled && theme === 'dark' ? 'true' : 'false';
+  applyGround(settings.accent.toUpperCase(), settings.background, theme === 'light', root.dataset.oled === 'true');
   const accent = settings.accent.toUpperCase();
   if (accent === DEFAULT_ACCENT) {
     root.style.removeProperty('--accent');
