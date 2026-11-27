@@ -83,13 +83,19 @@ export interface NotificationSettings {
   donate: boolean;
 }
 
-/** The home-screen icon colour. Teal is the default; it matches the default accent. */
-export type AppIconKey = 'teal' | 'lime' | 'violet' | 'apricot';
-export const APP_ICON_KEYS: AppIconKey[] = ['teal', 'lime', 'violet', 'apricot'];
+/**
+ * Home-screen icons: one per accent, plus an OLED version of each. The icon
+ * follows the accent and the OLED setting (see iconKeyFor in app/theme.ts).
+ */
+export const ICON_BASE_KEYS = ['teal', 'lime', 'violet', 'apricot', 'amber', 'sage', 'pink', 'coral', 'periwinkle', 'chalk'] as const;
+export type IconBaseKey = (typeof ICON_BASE_KEYS)[number];
+export type AppIconKey = IconBaseKey | `${IconBaseKey}-oled`;
+export const APP_ICON_KEYS: AppIconKey[] = ICON_BASE_KEYS.flatMap((k) => [k, `${k}-oled` as const]);
 
 export interface Settings {
   theme: ThemeSetting;
-  appIcon: AppIconKey;
+  /** Dark theme only: a pure black background (OLED screens). */
+  oled: boolean;
   /** Which days the summary covers (Settings › Summary). */
   summaryRange: SummaryRange;
   notifications: NotificationSettings;
@@ -103,6 +109,8 @@ export interface Settings {
   defaultView: ViewMode;
   monthStyle: MonthStyle;
   haptics: boolean;
+  /** Hides the empty-day and empty-week tips ("Don't show anymore"). */
+  hideEmptyTips: boolean;
   /** The first-launch flow has been completed or skipped. */
   onboarded: boolean;
   calendar: CalendarSettings;
@@ -125,7 +133,7 @@ export const DEFAULT_ACCENT = '#6BB6A3';
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
-  appIcon: 'teal',
+  oled: false,
   summaryRange: DEFAULT_SUMMARY_RANGE,
   mode: 'local',
   pay: { hourlyRate: null, currency: '', overtimeAfterHours: null, overtimeMultiplier: 1.5 },
@@ -133,9 +141,10 @@ export const DEFAULT_SETTINGS: Settings = {
   google: { enabled: false, push: false, pushShifts: true, showEvents: false },
   accent: DEFAULT_ACCENT,
   locale: null,
-  defaultView: 'week',
+  defaultView: 'day',
   monthStyle: 'compact',
   haptics: true,
+  hideEmptyTips: false,
   onboarded: false,
   calendar: {
     showDeviceEvents: false,

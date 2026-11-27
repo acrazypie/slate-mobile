@@ -43,12 +43,16 @@ export const en: Dictionary = {
     "amber": "Amber",
     "sage": "Sage",
     "pink": "Pink",
-    "gesso": "Chalk"
+    "gesso": "Lime",
+    "coral": "Coral",
+    "periwinkle": "Periwinkle",
+    "chalk": "Chalk"
   },
   "views": {
     "day": "Day",
     "week": "Week",
-    "month": "Month"
+    "month": "Month",
+    "agenda": "Agenda"
   },
   "nav": {
     "summary": "Summary",
@@ -57,7 +61,7 @@ export const en: Dictionary = {
     "settings": "Settings"
   },
   "summary": {
-    "title": "summary",
+    "title": "Summary",
     "close": "Close summary",
     "thisWeek": "This week",
     "thisMonth": "This month",
@@ -74,6 +78,7 @@ export const en: Dictionary = {
     "openDay": "Open day",
     "more": "+{count} more",
     "emptyDay": "No shifts or blocks on this day.",
+    "emptyMonth": "No blocks or shifts this month. Tap a day to add one.",
     "recurring": "recurring",
     "allDay": "All day",
     "shiftLabel": "Shift {title}",
@@ -87,6 +92,7 @@ export const en: Dictionary = {
     "newEvent": "New block",
     "emptyWeekLede": "No blocks this week. Tap an empty hour to add one.",
     "createShift": "Create a shift",
+    "dontShowAgain": "Don't show anymore",
     "weekTag": "Week {n}, {range}"
   },
   "create": {
@@ -148,6 +154,7 @@ export const en: Dictionary = {
     "excluded": "Breaks not counted: {minutes}"
   },
   "rotation": {
+    "pattern": "Day pattern",
     "section": "Rotations",
     "intro": "A rotation repeats a pattern of shifts, like two mornings, two nights, four off.",
     "add": "New rotation",
@@ -258,7 +265,7 @@ export const en: Dictionary = {
     "footer": "Updates come from the Slate releases on GitHub. The download is checked against the published SHA-256 before Android asks you to confirm the install. Your data is kept."
   },
   "settingsPages": {
-    "appearance": {"title": "Appearance", "short": "Theme, colour, default view and language", "lede": "Theme, accent colour, the view Slate opens on, and the language of the app. Stored on this device."},
+    "appearance": {"title": "Appearance", "short": "Theme, colour, icon and views", "lede": "Theme, accent colour, the app icon and the views Slate shows. Stored on this device."},
     "pay": {"title": "Pay", "short": "Hourly rate and overtime", "lede": "Used by the summary to show what your shifts are worth. Earnings count shifts only, minus their breaks."},
     "phone": {"title": "Phone calendar", "short": "Show and copy to the phone", "lede": "Choose which phone calendars show next to Slate, and copy blocks and shifts into a calendar on this phone."},
     "backup": {"title": "Backup", "short": "Export, import or erase your data", "lede": "Save everything to a file you keep, load a file on a new phone, or erase all data on this phone."},
@@ -304,7 +311,8 @@ export const en: Dictionary = {
     "teal": "Teal",
     "lime": "Lime",
     "violet": "Violet",
-    "apricot": "Apricot"
+    "apricot": "Apricot",
+    "mono": "Mono"
   },
   "summaryUi": {
     "range": "Range",
@@ -328,9 +336,12 @@ export const en: Dictionary = {
     "total": "Total",
     "days": "days",
     "exportPdf": "Export PDF",
-    "pdfAndroid": "PDF export is available on Android for now."
+    "pdfAndroid": "PDF export is available on Android for now.",
+    "earningsHint": "Shifts only, minus breaks"
   },
   "pdf": {
+    "moreOptions": "More options",
+    "lessOptions": "Fewer options",
     "title": "Export PDF",
     "view": "View",
     "list": "List",
@@ -361,6 +372,8 @@ export const en: Dictionary = {
     "failed": "The PDF could not be made."
   },
   "settingsSummary": {
+      "periodKind": "Period",
+      "rangePeriod": "The period that contains today",
     "title": "Summary range",
     "short": "Which days the summary covers",
     "lede": "The summary shows the period that contains today, or the dates you choose.",
@@ -407,6 +420,11 @@ export const en: Dictionary = {
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
+    "oled": "OLED black",
+    "oledHint": "Pure black background in the dark theme.",
+    "widgets": "Widgets",
+    "widgetsSoon": "Coming soon",
+    "viewSettings": "View settings",
     "accent": "Accent colour",
     "customColor": "Custom colour",
     "accentHint": "Used for buttons, selections and today across the app, on this device.",
@@ -462,6 +480,13 @@ export const en: Dictionary = {
     "readOnly": "Events from your phone’s calendars are edited in the Calendar app.",
     "open": "Open in Calendar"
   },
+  "settingsGroups": {
+    "calendars": "Calendars and account",
+    "syncNote": "Android and iOS sync only through Google.",
+    "permissions": "Permissions",
+    "work": "Work",
+    "data": "Data"
+  },
   "onboarding": {
     "tag": "Welcome",
     "titleBefore": "Your week,",
@@ -488,7 +513,25 @@ export const en: Dictionary = {
     "calLede": "Slate can show the events from your phone’s calendars next to your blocks, and copy your blocks into a calendar. Your phone will ask for permission; you can change your mind any time in Settings.",
     "connect": "Connect your calendar",
     "notNow": "Not now",
-    "step": "First launch"
+    "step": "First launch",
+    "flow": {
+      "skip": "Skip",
+      "continue": "Continue",
+      "w1Title": "Your week,",
+      "w1Accent": "in blocks.",
+      "w1Lede": "Study, work and classes on one timeline. Your data stays on this phone.",
+      "w1a": "Blocks and shifts on one day",
+      "w1b": "A reminder before each block",
+      "w1c": "Nothing is sent to a server",
+      "n1Title": "A nudge before",
+      "n1Accent": "each block.",
+      "n1Lede": "Slate can remind you a few minutes before a study block, shift or class. Reminders are scheduled on this phone and never sent from a server.",
+      "allowNotif": "Allow notifications",
+      "c1Title": "Your other",
+      "c1Accent": "calendars, too.",
+      "c1Lede": "Slate can show events from the calendars on this phone next to your blocks, and copy your blocks into a calendar called Slate. Nothing is uploaded.",
+      "allowCal": "Allow calendar access"
+    }
   },
   "calendarSync": {
     "title": "Phone calendars",

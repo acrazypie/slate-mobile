@@ -95,11 +95,15 @@ export function Group({ label, footer, children }: { label?: ReactNode; footer?:
   );
 }
 
-export function Swatches({ colors, value, onChange, names, custom }: { colors: string[]; value: string; onChange: (c: string) => void; names: (c: string) => string; custom?: string }) {
+export function Swatches({ colors, value, onChange, names, custom, columns, shade }: { colors: string[]; value: string; onChange: (c: string) => void; names: (c: string) => string; custom?: string; columns?: number; /** The colour each swatch shows, when it differs from its value (the light shade in light theme). */ shade?: (c: string) => string }) {
   const input = useRef<HTMLInputElement>(null);
   const isCustom = !colors.some((c) => c.toUpperCase() === value.toUpperCase());
   return (
-    <div className="swatches" role="radiogroup">
+    <div
+      className="swatches"
+      role="radiogroup"
+      style={columns ? { display: 'grid', gridTemplateColumns: `repeat(${columns}, 32px)`, justifyContent: 'space-between' } : undefined}
+    >
       {colors.map((c) => (
         <button
           key={c}
@@ -108,7 +112,7 @@ export function Swatches({ colors, value, onChange, names, custom }: { colors: s
           aria-checked={c.toUpperCase() === value.toUpperCase()}
           aria-label={names(c)}
           className={`sw${c.toUpperCase() === value.toUpperCase() ? ' sel' : ''}`}
-          style={{ ['--c' as string]: c }}
+          style={{ ['--c' as string]: shade ? shade(c) : c }}
           onClick={() => {
             haptics.tick();
             onChange(c);

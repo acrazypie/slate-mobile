@@ -17,6 +17,11 @@ function kindName(t: Dictionary, kind: ReportKind): string {
   return { hours: t.summaryUi.reportHours, counts: t.summaryUi.reportCounts, overtime: t.summaryUi.reportOvertime, pay: t.summaryUi.reportPay }[kind];
 }
 
+/** The icon for each report kind, as in the add-report sheet (design/android 17). */
+function kindIcon(kind: ReportKind): 'clock' | 'calendar' | 'globe' {
+  return { hours: 'clock', counts: 'calendar', overtime: 'clock', pay: 'globe' }[kind] as 'clock' | 'calendar' | 'globe';
+}
+
 function kindHint(t: Dictionary, kind: ReportKind): string {
   return {
     hours: t.summaryUi.reportHoursHint,
@@ -44,6 +49,7 @@ export function AddReportSheet({ open, onClose }: { open: boolean; onClose: () =
               onClose();
             }}
           >
+            <Icon name={kindIcon(kind)} className="row__lead" />
             <span className="row__main">
               <span className="row__name">{kindName(t, kind)}</span>
               <span className="row__meta">{kindHint(t, kind)}</span>

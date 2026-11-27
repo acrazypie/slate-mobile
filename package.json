@@ -1,6 +1,6 @@
 {
   "name": "slate-app",
-  "version": "1.0.0",
+  "version": "2.2.3",
   "private": true,
   "description": "Slate, the time-block weekly planner, as a local-only iOS and Android app built with Capacitor",
   "type": "module",
@@ -13,7 +13,7 @@
     "sync": "npm run build && npx cap sync",
     "android": "npm run sync && npx cap open android",
     "ios": "npm run sync && npx cap open ios",
-    "assets": "node scripts/make-assets.mjs && capacitor-assets generate --ios --android --iconBackgroundColor '#0a0a0a' --iconBackgroundColorDark '#0a0a0a' --splashBackgroundColor '#fafafa' --splashBackgroundColorDark '#0a0a0a'"
+    "assets": "node scripts/make-assets.mjs && capacitor-assets generate --ios --android --iconBackgroundColor '#6BB6A3' --iconBackgroundColorDark '#6BB6A3' --splashBackgroundColor '#F4F6FA' --splashBackgroundColorDark '#0E1320'"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.2",

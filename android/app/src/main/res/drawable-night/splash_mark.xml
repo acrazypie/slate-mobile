@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Android 12+ splash icon: the Slate mark (scripts/make-assets.mjs), centred
-     in the 108dp icon box (only the middle 72dp circle is shown). -->
+<!-- Android 12+ splash icon: the Slate Ticks mark (scripts/make-assets.mjs), centred
+     in the 108dp icon box (only the middle 72dp circle is shown). Night version. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
-    android:viewportWidth="108" android:viewportHeight="108">
-    <group android:scaleX="2" android:scaleY="2" android:translateX="22" android:translateY="22">
-        <path android:fillColor="#5C5C66" android:pathData="M14.45,6.0h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M21.7,6.0h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M7.2,13.25h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M21.7,13.25h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M14.45,20.5h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M21.7,20.5h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z" />
-        <path android:fillColor="#D4EE5E" android:pathData="M7.2,6.0h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M14.45,13.25h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z M7.2,20.5h3.1a1.2,1.2 0 0 1 1.2,1.2v3.1a1.2,1.2 0 0 1 -1.2,1.2h-3.1a1.2,1.2 0 0 1 -1.2,-1.2v-3.1a1.2,1.2 0 0 1 1.2,-1.2z" />
+    android:viewportWidth="1024" android:viewportHeight="1024">
+    <group android:scaleX="0.11" android:scaleY="0.11" android:translateX="455.68" android:translateY="455.68">
+        <path android:fillColor="#9D8CFF" android:pathData="M256,362h0a26,26 0 0 1 26,26v248a26,26 0 0 1 -26,26h-0a26,26 0 0 1 -26,-26v-248a26,26 0 0 1 26,-26zM356,282h0a26,26 0 0 1 26,26v408a26,26 0 0 1 -26,26h-0a26,26 0 0 1 -26,-26v-408a26,26 0 0 1 26,-26zM456,402h0a26,26 0 0 1 26,26v168a26,26 0 0 1 -26,26h-0a26,26 0 0 1 -26,-26v-168a26,26 0 0 1 26,-26zM556,252h0a26,26 0 0 1 26,26v468a26,26 0 0 1 -26,26h-0a26,26 0 0 1 -26,-26v-468a26,26 0 0 1 26,-26zM656,322h0a26,26 0 0 1 26,26v328a26,26 0 0 1 -26,26h-0a26,26 0 0 1 -26,-26v-328a26,26 0 0 1 26,-26zM756,382h0a26,26 0 0 1 26,26v208a26,26 0 0 1 -26,26h-0a26,26 0 0 1 -26,-26v-208a26,26 0 0 1 26,-26z" />
+        <path android:fillColor="#E0475E" android:pathData="M183,505h658a7,7 0 0 1 7,7v0a7,7 0 0 1 -7,7h-658a7,7 0 0 1 -7,-7v-0a7,7 0 0 1 7,-7z" />
     </group>
 </vector>

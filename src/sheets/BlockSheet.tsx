@@ -11,7 +11,7 @@ import { dateFromKey, keyFromDate, weekOffsetForDate } from '../lib/recurrence';
 import type { Block, BlockCategory, BlockFormData, RecurrenceType } from '../lib/types';
 import { CATEGORIES, CATEGORY_COLORS, COLOR_PALETTE, DURATION_OPTIONS, blockEndTime, colorKey, formatDuration, formatTime } from '../lib/types';
 import { Dialog, Sheet } from '../ui/Sheet';
-import { Swatches } from '../ui/controls';
+import { Row, Swatches } from '../ui/controls';
 import { Icon } from '../ui/icons';
 import type { DeleteScope } from '../data/repository';
 import { ReminderField } from './ReminderField';
@@ -42,6 +42,7 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
   const [notes, setNotes] = useState('');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState<'plain' | 'series' | null>(null);
+  const [scope, setScope] = useState<DeleteScope>('current');
   const [reminder, setReminder] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
@@ -222,17 +223,26 @@ export function BlockSheet({ target, onClose }: { target: BlockTarget | null; on
         message={t.blockModal.confirmDelete}
         actions={[{ label: t.common.delete, kind: 'danger', onClick: () => void remove() }]}
       />
-      <Dialog
-        open={confirm === 'series'}
-        onClose={() => setConfirm(null)}
-        title={t.blockModal.deleteWhat}
-        message={series ? fill(t.blockModal.occurrenceOf, { date: formatDate(locale, target.date, 'fullDay') }) : undefined}
-        actions={[
-          { label: t.blockModal.deleteCurrent, kind: 'danger', onClick: () => void remove('current') },
-          { label: t.blockModal.deleteFollowing, kind: 'danger', onClick: () => void remove('this-and-following') },
-          { label: t.blockModal.deleteAll, kind: 'danger', onClick: () => void remove('all') },
-        ]}
-      />
+      {/* Delete a repeating block: choose what to delete, then Delete (design/android 13). */}
+      <Sheet open={confirm === 'series'} onClose={() => setConfirm(null)} title={t.blockModal.deleteWhat} compact>
+        {series && <p className="sheet__sub label">{fill(t.blockModal.occurrenceOf, { date: formatDate(locale, target.date, 'fullDay') })}</p>}
+        <div className="rows pad-x">
+          {([
+            { value: 'current', label: t.blockModal.deleteCurrent },
+            { value: 'this-and-following', label: t.blockModal.deleteFollowing },
+            { value: 'all', label: t.blockModal.deleteAll },
+          ] as { value: DeleteScope; label: string }[]).map((o) => (
+            <Row key={o.value} name={o.label} onClick={() => setScope(o.value)}>
+              <span className={`radio${scope === o.value ? ' on' : ''}`} aria-hidden="true" />
+            </Row>
+          ))}
+        </div>
+        <div className="pad-x sheet__foot">
+          <button type="button" className="btn btn--danger btn--wide" onClick={() => void remove(scope)}>
+            <Icon name="trash" /> {t.common.delete}
+          </button>
+        </div>
+      </Sheet>
     </Sheet>
   );
 }

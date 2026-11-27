@@ -39,6 +39,7 @@ export function PdfExportSheet({ period, onClose }: { period: Period; onClose: (
   const [text, setText] = useState<PdfText>('title');
   const [header, setHeader] = useState<string[]>(['', '', '', '']);
   const [busy, setBusy] = useState(false);
+  const [more, setMore] = useState(false);
 
   const setFlag = (key: keyof Flags, value: boolean) => setFlags((f) => ({ ...f, [key]: value }));
   const included = (id: string) => shiftIds === null || shiftIds.includes(id);
@@ -48,7 +49,11 @@ export function PdfExportSheet({ period, onClose }: { period: Period; onClose: (
     const next = on ? [...new Set([...current, id])] : current.filter((x) => x !== id);
     setShiftIds(next.length === all.length && all.every((x) => next.includes(x)) ? null : next);
   };
-  const rangeLabel = `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
+  // One month: "1–30 Nov 2026" (fits one line on a phone); otherwise both ends.
+  const sameMonth = period.start.getMonth() === period.end.getMonth() && period.start.getFullYear() === period.end.getFullYear();
+  const rangeLabel = sameMonth
+    ? `${period.start.getDate()}–${period.end.getDate()} ${formatDate(locale, period.end, 'monthShort')} ${period.end.getFullYear()}`
+    : `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
 
   const share = async () => {
     setBusy(true);
@@ -86,6 +91,7 @@ export function PdfExportSheet({ period, onClose }: { period: Period; onClose: (
 
   return (
     <Sheet open onClose={onClose} title={t.pdf.title} onConfirm={share} confirmLabel={busy ? t.pdf.preparing : t.pdf.share} confirmDisabled={busy}>
+      {/* Simpler layout (design 18): the period and the layout first; the rest is one tap away. */}
       <Group label={t.pdf.view}>
         <Row icon="layout" name={t.pdf.view} stack>
           <Segmented<PdfView>
@@ -105,6 +111,11 @@ export function PdfExportSheet({ period, onClose }: { period: Period; onClose: (
         <Row icon="calendar" name={t.pdf.range} value={rangeLabel} />
       </Group>
 
+      <button type="button" className="btn btn--text btn--wide pdf-more" aria-expanded={more} onClick={() => setMore((m) => !m)}>
+        {more ? t.pdf.lessOptions : t.pdf.moreOptions}
+      </button>
+
+      {more && (<>
       <Group label={t.pdf.shifts}>
         <Row icon="briefcase" name={t.pdf.all}>
           <Switch label={t.pdf.all} checked={shiftIds === null} onChange={(on) => on && setShiftIds(null)} />
@@ -156,6 +167,7 @@ export function PdfExportSheet({ period, onClose }: { period: Period; onClose: (
           <Switch label={t.pdf.headerDate} checked={flags.headerDate} onChange={(on) => setFlag('headerDate', on)} />
         </Row>
       </Group>
+      </>)}
     </Sheet>
   );
 }

@@ -27,20 +27,100 @@
 		</dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
+			<key>AppIcon-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-OLED</string>
+			</dict>
 			<key>AppIcon-Lime</key>
 			<dict>
 				<key>CFBundleIconName</key>
 				<string>AppIcon-Lime</string>
+			</dict>
+			<key>AppIcon-Lime-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Lime-OLED</string>
 			</dict>
 			<key>AppIcon-Violet</key>
 			<dict>
 				<key>CFBundleIconName</key>
 				<string>AppIcon-Violet</string>
 			</dict>
+			<key>AppIcon-Violet-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Violet-OLED</string>
+			</dict>
 			<key>AppIcon-Apricot</key>
 			<dict>
 				<key>CFBundleIconName</key>
 				<string>AppIcon-Apricot</string>
+			</dict>
+			<key>AppIcon-Apricot-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Apricot-OLED</string>
+			</dict>
+			<key>AppIcon-Amber</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Amber</string>
+			</dict>
+			<key>AppIcon-Amber-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Amber-OLED</string>
+			</dict>
+			<key>AppIcon-Sage</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Sage</string>
+			</dict>
+			<key>AppIcon-Sage-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Sage-OLED</string>
+			</dict>
+			<key>AppIcon-Pink</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Pink</string>
+			</dict>
+			<key>AppIcon-Pink-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Pink-OLED</string>
+			</dict>
+			<key>AppIcon-Coral</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Coral</string>
+			</dict>
+			<key>AppIcon-Coral-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Coral-OLED</string>
+			</dict>
+			<key>AppIcon-Periwinkle</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Periwinkle</string>
+			</dict>
+			<key>AppIcon-Periwinkle-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Periwinkle-OLED</string>
+			</dict>
+			<key>AppIcon-Chalk</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Chalk</string>
+			</dict>
+			<key>AppIcon-Chalk-OLED</key>
+			<dict>
+				<key>CFBundleIconName</key>
+				<string>AppIcon-Chalk-OLED</string>
 			</dict>
 		</dict>
 	</dict>

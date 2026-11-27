@@ -18,21 +18,30 @@
   --glass-line: rgba(0,0,0,.07);
   --seg-track: rgba(118,118,128,.12);
   --seg-thumb: #ffffff;
-  --sheet-bg: #fafafa;
+  --sheet-bg: #ffffff;
 }
-[data-look="ios"][data-theme="light"] .page--grouped { background: #f2f2f5; }
+[data-look="ios"][data-theme="light"] .page--grouped { background: #f0eee8; }
 
 /* glass buttons */
 [data-look="ios"] .gbtn { background: var(--glass); border: .5px solid var(--glass-line); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
 [data-look="ios"] .gbtn.accent { background: var(--accent); border-color: transparent; }
 [data-look="ios"] .gbtn.back { padding: 0 14px 0 8px; gap: 2px; }
 
-/* calendar header: [today .. nav sum add] / title */
-[data-look="ios"] .cal-head__bar { grid-template-columns: auto 1fr auto auto auto; grid-template-areas: "today . nav sum add" "title title title title title"; }
-[data-look="ios"] .cal-head__bar > :nth-child(4) { grid-area: sum; }
-[data-look="ios"] .cal-head__bar > :nth-child(5) { grid-area: add; }
+/* calendar header: title and glass capsule (summary | add) on top, the view switch,
+   then Today and the prev/next arrows on their own row. The bar wrapper is
+   dissolved so its children place on the header grid. */
+[data-look="ios"] .cal-head { display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "title title cap" "seg seg seg" "today . nav"; align-items: center; column-gap: 12px; }
+[data-look="ios"] .cal-head__bar { display: contents; }
+[data-look="ios"] .cal-head__title { grid-area: title; align-self: start; padding: 6px 0 0; }
+[data-look="ios"] .cal-head .seg { grid-area: seg; margin-top: 16px; }
+[data-look="ios"] .cal-head__today { grid-area: today; margin-top: 12px; }
+[data-look="ios"] .cal-head__nav { grid-area: nav; margin-top: 12px; }
 [data-look="ios"] .cal-head__nav .gbtn { background: transparent; border-color: transparent; color: var(--mid); width: 36px; min-width: 36px; }
-[data-look="ios"] .cal-head__title { padding: 8px 4px 0; }
+[data-look="ios"] .cal-head__cap { grid-area: cap; align-self: start; margin-top: 6px; display: flex; align-items: center; height: 44px; border-radius: 22px; background: var(--glass); border: .5px solid var(--glass-line); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+[data-look="ios"] .cal-head__cap-btn { width: 46px; height: 44px; display: grid; place-items: center; background: none; border: 0; color: var(--text); padding: 0; }
+[data-look="ios"] .cal-head__cap-btn svg.i { width: 21px; height: 21px; }
+[data-look="ios"] .cal-head__sep { width: .5px; height: 20px; background: var(--line-hi); }
+[data-look="ios"][data-theme="light"] .cal-head__cap { box-shadow: 0 8px 24px rgba(20,24,42,.10); }
 
 /* segmented capsule */
 [data-look="ios"] .seg { height: 34px; padding: 3px; border-radius: 999px; background: var(--seg-track); }
@@ -50,7 +59,7 @@
 [data-look="ios"] .tabbar__item { border-radius: 27px; color: var(--text); font: 600 10px/1 var(--sys); transition: color .2s, background .3s var(--ease); }
 [data-look="ios"] .tabbar__item.active { background: var(--accent-md); color: var(--accent); }
 [data-look="ios"] .tabfade { display: block; position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; height: calc(var(--tab-space) + 40px); background: linear-gradient(transparent, var(--bg) 75%); pointer-events: none; }
-[data-look="ios"][data-theme="light"] .app[data-tab="settings"] .tabfade { background: linear-gradient(transparent, #f2f2f5 75%); }
+[data-look="ios"][data-theme="light"] .app[data-tab="settings"] .tabfade { background: linear-gradient(transparent, #f0eee8 75%); }
 
 /* inset groups */
 [data-look="ios"] .grp { border-radius: 16px; background: var(--group-bg); }
@@ -89,3 +98,78 @@
 
 /* dialogs as iOS alerts */
 [data-look="ios"] .dialog { background: var(--sheet-bg); }
+
+/* Timeline design (design/docs/02-tokens.md) for iOS: neutral ground, violet accent,
+   system type. A swatch picked in Settings still overrides the accent (theme.ts). */
+[data-look="ios"] {
+  --bg: #1b1b1b;  --bg-raise: #232323;  --nav-bg: rgba(27,27,27,.92);
+  --line: #2e2e2e;  --line-hi: #3a4560;
+  --text: #e8ecf5;  --mid: #8a94ab;  --dim: #5d6781;
+  --accent: #6bb6a3;  --accent-ink: #0a0a0a;
+  --group-bg: #232323;  --group-line: #2e2e2e;
+  --syne: var(--sys);  --mono: var(--sys);
+  font-variant-numeric: tabular-nums;
+}
+[data-look="ios"][data-theme="light"] {
+  --bg: #f0eee8;  --bg-raise: #ffffff;  --nav-bg: rgba(240,238,232,.92);
+  --line: #dcd9d0;  --line-hi: #c5ccdb;
+  --text: #14182a;  --mid: #5c6680;  --dim: #8a94ab;
+  --accent: #2e7266;  --accent-ink: #ffffff;
+  --group-bg: #ffffff;  --group-line: #dcd9d0;
+}
+/* Day title on iOS: the weekday large, the date under it (design/ios/dark/04-day.png). */
+[data-look="ios"] .cal-head__sub { font: 400 15px/1.3 var(--sys); color: var(--mid); margin: 2px 0 0; }
+/* Timeline now line: red with a dot, no time label (design/ios/dark/04-day.png). */
+[data-look="ios"] .now { border-top-color: #e0475e; }
+[data-look="ios"] .now__today, [data-look="ios"] .now__today::before { background: #e0475e; }
+[data-look="ios"] .now__lbl { display: none; }
+
+/* Summary (design/ios/dark/16-summary.png, light too): big total, one stacked bar
+   with its labels, earnings as a grouped row, reports as grouped rows. */
+[data-look="ios"] .summary { margin-top: 6px; }
+[data-look="ios"] .summary__head { margin-bottom: 6px; }
+[data-look="ios"] .summary__range { font: 400 13px/1.3 var(--sys); color: var(--mid); }
+[data-look="ios"] .summary__change { font: 400 13px/1.3 var(--sys); color: var(--accent); }
+[data-look="ios"] .summary .hud { display: block; border: 0; }
+[data-look="ios"] .summary .hud__c { padding: 0; }
+[data-look="ios"] .summary .hud__c:first-child .hud__v { font: 700 44px/1 var(--sys); letter-spacing: -.03em; margin-top: 6px; }
+[data-look="ios"] .summary .hud__c:first-child .hud__v small { font: 400 17px var(--sys); letter-spacing: 0; margin-left: 6px; }
+[data-look="ios"] .summary .hud__c + .hud__c { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding: 14px 16px; border-left: 0; border-radius: 16px; background: var(--group-bg); }
+[data-look="ios"] .summary .hud__c + .hud__c .hud__v { margin-top: 0; font: 400 17px/1.2 var(--sys); letter-spacing: 0; }
+[data-look="ios"] .summary > .srows { display: none; }
+[data-look="ios"] .sumbar { margin-top: 22px; }
+[data-look="ios"] .sumbar__bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; gap: 3px; }
+[data-look="ios"] .sumbar__bar i { min-width: 0; border-radius: 4px; }
+[data-look="ios"] .sumbar__labels { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; font: 400 12px/1.3 var(--sys); color: var(--mid); font-variant-numeric: tabular-nums; }
+[data-look="ios"] .summary .section-h { padding: 26px 0 6px; font: 400 13px/1.3 var(--sys); color: var(--mid); }
+[data-look="ios"] .reports { display: grid; gap: 12px; }
+[data-look="ios"] .report { background: var(--group-bg); border-radius: 16px; padding: 4px 16px 6px; }
+[data-look="ios"] .report__head { padding-top: 8px; }
+[data-look="ios"] .report__head .label { font: 400 13px/1.3 var(--sys); color: var(--text); }
+[data-look="ios"] .report__head .gbtn { background: none; border: 0; width: 36px; min-width: 36px; height: 36px; color: var(--mid); }
+[data-look="ios"] .report .srow { grid-template-columns: 1fr auto; height: auto; min-height: 44px; padding: 10px 0; font: 400 15px/1.3 var(--sys); border-bottom: 0; }
+[data-look="ios"] .report .srow + .srow { border-top: 1px solid var(--group-line); }
+[data-look="ios"] .report .srow .k, [data-look="ios"] .report .srow .b { display: none; }
+[data-look="ios"] .report .srow .n { color: var(--text); }
+[data-look="ios"] .report .srow .v { color: var(--mid); }
+[data-look="ios"] .summary__actions .btn { min-height: 50px; border-radius: 14px; }
+[data-look="ios"] .summary__actions .btn--ghost { box-shadow: inset 0 0 0 1px var(--line-hi); }
+[data-look="ios"] .summary__actions .note { margin-top: 18px; }
+
+/* Shifts: the header plus is a glass button, not a solid one (design/ios/dark/14-shifts.png). */
+[data-look="ios"] .page__bar .gbtn.accent { background: var(--glass); color: var(--text); }
+
+/* Sheet bottom buttons: 50 px, radius 14 (design/docs/04-platform-patterns.md). */
+[data-look="ios"] .sheet__foot .btn { min-height: 50px; border-radius: 14px; }
+
+/* Shifts and rotations as inset groups, chevrons dim (design/ios/dark/14-shifts.png). */
+[data-look="ios"] .shift-rows, [data-look="ios"] .rotations .rows { margin: 0 var(--pad); padding: 0 16px; border-radius: 16px; background: var(--group-bg); border-top: 0; }
+[data-look="ios"] .shift-rows .row, [data-look="ios"] .rotations .row { border-bottom: 0; }
+[data-look="ios"] .shift-rows .row + .row, [data-look="ios"] .rotations .row + .row { border-top: 1px solid var(--group-line); }
+[data-look="ios"] .row__arrow { color: var(--dim); }
+
+/* Sheet lists without their own gutter get the screen gutter (rotation days). */
+[data-look="ios"] .sheet .rows:not(.pad-x) { padding: 0 var(--pad); }
+
+/* Empty states: buttons take the same 50 px, radius 14 shape as the sheets. */
+[data-look="ios"] .empty .btn, [data-look="ios"] .page__empty .btn { min-height: 50px; border-radius: 14px; }

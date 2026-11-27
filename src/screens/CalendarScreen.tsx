@@ -8,19 +8,23 @@ import { useData, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
 import { capitalize, fill, formatDate, formatDayRange } from '../i18n/format';
 import { useDeviceEvents } from '../calendar/CalendarProvider';
-import { haptics } from '../native/platform';
+import { haptics, platform } from '../native/platform';
 import type { Block, DeviceEvent, PlacedShift, ViewMode } from '../lib/types';
 import { dayContents, daysFrom, isoWeek, weekStart } from '../lib/days';
+import { keyFromDate } from '../lib/recurrence';
 import { Icon } from '../ui/icons';
 import { Segmented } from '../ui/controls';
 import { WeekView } from './WeekView';
 import { DayView } from './DayView';
+import { EmptyDay } from './EmptyDay';
 import { MonthView } from './MonthView';
+import { AgendaView } from './AgendaView';
 import { BlockSheet, type BlockTarget } from '../sheets/BlockSheet';
 import { CreateSheet } from '../sheets/CreateSheet';
 import { ShiftSheet } from '../sheets/ShiftSheet';
 import { DeviceEventSheet } from '../sheets/DeviceEventSheet';
 import { DaySheet } from '../sheets/DaySheet';
+import { goToTab } from './SummaryPanel';
 
 export interface CalendarActions {
   onSlot: (date: Date, hour: number) => void;
@@ -60,6 +64,7 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
       const end = endOfWeek(endOfMonth(anchor), { weekStartsOn: 1 });
       return { start, end };
     }
+    if (view === 'agenda') return { start: anchor, end: addDays(anchor, 6) };
     const start = weekStart(anchor);
     return { start, end: addDays(start, 6) };
   }, [view, anchor]);
@@ -74,7 +79,7 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
     (dir: 1 | -1) => {
       haptics.tick();
       setSlide(dir === 1 ? 'next' : 'prev');
-      setAnchor((a) => (view === 'day' ? addDays(a, dir) : view === 'week' ? addDays(a, 7 * dir) : addMonths(a, dir)));
+      setAnchor((a) => (view === 'day' ? addDays(a, dir) : view === 'month' ? addMonths(a, dir) : addDays(a, 7 * dir)));
     },
     [view],
   );
@@ -122,16 +127,26 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
   // header text
   const monthYear = formatDate(locale, anchor, 'monthYear');
   const year = String(anchor.getFullYear());
-  const titleMain = capitalize(monthYear.replace(year, '').trim());
-  // eyebrow only where it says something the title doesn't (design-notes §2)
+  // Timeline design: the day view's title is the day. Android: "Wed 25 November" on one line.
+  // iOS: "Wednesday" with "25 November" under it. Week and month keep the month title.
+  const isAndroid = platform === 'android';
+  const dayView = view === 'day';
+  const titleMain = dayView
+    ? capitalize(formatDate(locale, anchor, isAndroid ? 'weekdayDayMonth' : 'weekdayLong'))
+    : capitalize(monthYear.replace(year, '').trim());
+  const daySub = dayView && !isAndroid ? capitalize(formatDate(locale, anchor, 'dayMonthLong')) : null;
+  // eyebrow only where it says something the title doesn't (design-notes §2); iOS week only
   const tag =
-    view === 'week'
+    view === 'week' && !isAndroid
       ? fill(t.calendar.weekTag, { n: isoWeek(anchor), range: formatDayRange(locale, range.start, range.end) })
-      : view === 'day'
-        ? capitalize(formatDate(locale, anchor, 'fullDay'))
-        : null;
+      : null;
 
   const weekEmpty = view === 'week' && contents.every((c) => c.blocks.length === 0 && c.shifts.length === 0);
+  const dayContent = view === 'day' ? contents.find((c) => isSameDay(c.date, anchor)) : undefined;
+  const dayEmpty = !!dayContent && dayContent.blocks.length === 0 && dayContent.shifts.length === 0;
+  const monthEmpty = view === 'month' && contents.every((c) => c.blocks.length === 0 && c.shifts.length === 0);
+  // Agenda is shown on Android only for now (the design's iOS screens are not built yet).
+  const viewOptions: ViewMode[] = ['day', 'week', 'month', 'agenda'];
 
   return (
     <div className="screen cal" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -144,8 +159,9 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
           <div className="cal-head__title">
             {tag && <span className="tag">{tag}</span>}
             <h1 className="h-page">
-              {titleMain} <span className="acc">{year}</span>
+              {dayView ? titleMain : <>{titleMain} <span className="acc">{year}</span></>}
             </h1>
+            {daySub && <p className="cal-head__sub">{daySub}</p>}
           </div>
           <div className="cal-head__nav">
             <button type="button" className="gbtn round" onClick={() => go(-1)} aria-label={t.calendar.previous}>
@@ -155,9 +171,16 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
               <Icon name="chevronRight" />
             </button>
           </div>
-          <button type="button" className="gbtn round accent ios-only" onClick={() => actions.onSlot(view === 'day' ? anchor : isSameDay(range.start, weekStart(today)) ? today : range.start, 9)} aria-label={t.calendar.add}>
-            <Icon name="plus" />
-          </button>
+          {/* iOS: one glass capsule with the summary and add buttons, split by a hairline (design/ios/dark/04-day.png). */}
+          <div className="cal-head__cap ios-only">
+            <button type="button" className="cal-head__cap-btn" onClick={() => goToTab('summary')} aria-label={t.summary.title}>
+              <Icon name="chart" />
+            </button>
+            <span className="cal-head__sep" aria-hidden="true" />
+            <button type="button" className="cal-head__cap-btn" onClick={() => actions.onSlot(view === 'day' ? anchor : isSameDay(range.start, weekStart(today)) ? today : range.start, 9)} aria-label={t.calendar.add}>
+              <Icon name="plus" />
+            </button>
+          </div>
         </div>
         <Segmented
           label={t.calendar.view}
@@ -166,7 +189,7 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
             setSlide(null);
             setView(v);
           }}
-          options={(['day', 'week', 'month'] as const).map((v) => ({ value: v, label: t.views[v] }))}
+          options={viewOptions.map((v) => ({ value: v, label: t.views[v] }))}
         />
       </header>
 
@@ -188,7 +211,10 @@ export function CalendarScreen({ onGoToShifts }: { onGoToShifts: () => void }) {
             }}
           />
         )}
+        {dayEmpty && <EmptyDay onNewEvent={() => actions.onSlot(anchor, 9)} onNewShift={() => setShiftEdit({ placeOn: keyFromDate(anchor) })} />}
         {view === 'month' && <MonthView anchor={anchor} contents={contents} deviceEvents={deviceEvents} today={today} actions={actions} />}
+        {monthEmpty && <p className="lede cal-empty">{t.calendar.emptyMonth}</p>}
+        {view === 'agenda' && <AgendaView contents={contents} deviceEvents={deviceEvents} today={today} actions={actions} />}
       </div>
 
       <button type="button" className="fab android-only" onClick={() => actions.onSlot(view === 'day' ? anchor : today, 9)} aria-label={t.calendar.add}>

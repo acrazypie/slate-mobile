@@ -2,4 +2,6 @@
 <resources>
     <!-- Behind the adaptive launcher icons: the same near-black as the icon tile, so the tile edge is invisible. -->
     <color name="launcher_background">#0A0A0A</color>
+    <!-- OLED icons: the pure black of the OLED theme. -->
+    <color name="launcher_background_oled">#000000</color>
 </resources>

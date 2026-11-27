@@ -43,12 +43,16 @@ export const nl: Dictionary = {
     "amber": "Amber",
     "sage": "Salie",
     "pink": "Roze",
-    "gesso": "Krijt"
+    "gesso": "Limoen",
+    "coral": "Koraal",
+    "periwinkle": "Vinca",
+    "chalk": "Krijt"
   },
   "views": {
     "day": "Dag",
     "week": "Week",
-    "month": "Maand"
+    "month": "Maand",
+    "agenda": "Agenda"
   },
   "nav": {
     "summary": "Overzicht",
@@ -57,7 +61,7 @@ export const nl: Dictionary = {
     "settings": "Instellingen"
   },
   "summary": {
-    "title": "overzicht",
+    "title": "Overzicht",
     "close": "Overzicht sluiten",
     "thisWeek": "Deze week",
     "thisMonth": "Deze maand",
@@ -74,6 +78,7 @@ export const nl: Dictionary = {
     "openDay": "Dag openen",
     "more": "+{count} meer",
     "emptyDay": "Geen diensten of blokken op deze dag.",
+    "emptyMonth": "Deze maand geen blokken of diensten. Tik op een dag om er een toe te voegen.",
     "recurring": "terugkerend",
     "allDay": "Hele dag",
     "shiftLabel": "Dienst {title}",
@@ -87,6 +92,7 @@ export const nl: Dictionary = {
     "newEvent": "Nieuw blok",
     "emptyWeekLede": "Geen blokken deze week. Tik op een leeg uur om er een toe te voegen.",
     "createShift": "Dienst maken",
+    "dontShowAgain": "Niet meer tonen",
     "weekTag": "Week {n}, {range}"
   },
   "create": {
@@ -148,6 +154,7 @@ export const nl: Dictionary = {
     "excluded": "Pauzes niet geteld: {minutes}"
   },
   "rotation": {
+    "pattern": "Dagpatroon",
     "section": "Roosters",
     "intro": "Een rooster herhaalt een patroon van diensten, bijvoorbeeld twee ochtenden, twee nachten, vier vrij.",
     "add": "Nieuw rooster",
@@ -258,7 +265,7 @@ export const nl: Dictionary = {
     "footer": "Updates komen van de Slate-releases op GitHub. Het bestand wordt gecontroleerd met de gepubliceerde SHA-256 voordat Android om bevestiging vraagt. Je gegevens blijven bewaard."
   },
   "settingsPages": {
-    "appearance": {"title": "Uiterlijk", "short": "Thema, kleur, standaardweergave en taal", "lede": "Thema, accentkleur, de weergave waarmee Slate opent en de taal van de app. Wordt op dit apparaat bewaard."},
+    "appearance": {"title": "Uiterlijk", "short": "Thema, kleur, pictogram en weergaven", "lede": "Thema, accentkleur, pictogram en weergaven van Slate. Wordt op dit apparaat bewaard."},
     "pay": {"title": "Loon", "short": "Uurtarief en overwerk", "lede": "Het overzicht gebruikt dit om te tonen wat je diensten waard zijn. Verdiensten tellen alleen diensten, zonder pauzes."},
     "phone": {"title": "Telefoonagenda", "short": "Tonen en kopiëren naar de telefoon", "lede": "Kies welke telefoonagenda’s naast Slate verschijnen, en kopieer blokken en diensten naar een agenda op deze telefoon."},
     "backup": {"title": "Back-up", "short": "Exporteren, importeren of wissen", "lede": "Bewaar alles in een bestand, laad een bestand op een nieuwe telefoon, of wis alle gegevens op deze telefoon."},
@@ -304,7 +311,8 @@ export const nl: Dictionary = {
     "teal": "Blauwgroen",
     "lime": "Limoen",
     "violet": "Violet",
-    "apricot": "Abrikoos"
+    "apricot": "Abrikoos",
+    "mono": "Monochroom"
   },
   "summaryUi": {
     "range": "Periode",
@@ -328,9 +336,12 @@ export const nl: Dictionary = {
     "total": "Totaal",
     "days": "dagen",
     "exportPdf": "PDF exporteren",
-    "pdfAndroid": "PDF-export is voorlopig beschikbaar op Android."
+    "pdfAndroid": "PDF-export is voorlopig beschikbaar op Android.",
+    "earningsHint": "Alleen diensten, minus de pauzes"
   },
   "pdf": {
+    "moreOptions": "Meer opties",
+    "lessOptions": "Minder opties",
     "title": "PDF exporteren",
     "view": "Weergave",
     "list": "Lijst",
@@ -361,6 +372,8 @@ export const nl: Dictionary = {
     "failed": "De PDF kon niet worden gemaakt."
   },
   "settingsSummary": {
+      "periodKind": "Periode",
+      "rangePeriod": "De periode waarin vandaag valt",
     "title": "Periode van het overzicht",
     "short": "Welke dagen het overzicht omvat",
     "lede": "Het overzicht toont de periode waarin vandaag valt, of de data die je kiest.",
@@ -407,6 +420,11 @@ export const nl: Dictionary = {
     "themeLight": "Licht",
     "themeDark": "Donker",
     "themeSystem": "Systeem",
+    "oled": "OLED-zwart",
+    "oledHint": "Puur zwarte achtergrond in het donkere thema.",
+    "widgets": "Widgets",
+    "widgetsSoon": "Binnenkort",
+    "viewSettings": "Weergave-instellingen",
     "accent": "Accentkleur",
     "customColor": "Eigen kleur",
     "accentHint": "Geldt voor knoppen, selecties en de dag van vandaag in de hele app, op dit apparaat.",
@@ -462,6 +480,13 @@ export const nl: Dictionary = {
     "readOnly": "Afspraken uit de agenda’s van je telefoon bewerk je in de Agenda-app.",
     "open": "Openen in Agenda"
   },
+  "settingsGroups": {
+    "calendars": "Agenda's en account",
+    "syncNote": "Android en iOS synchroniseren alleen via Google.",
+    "permissions": "Rechten",
+    "work": "Werk",
+    "data": "Gegevens"
+  },
   "onboarding": {
     "tag": "Welkom",
     "titleBefore": "Je week,",
@@ -488,7 +513,25 @@ export const nl: Dictionary = {
     "calLede": "Slate kan afspraken uit de agenda’s van je telefoon naast je blokken tonen en je blokken naar een agenda kopiëren. Je telefoon vraagt om toestemming; je kunt dit altijd wijzigen in Instellingen.",
     "connect": "Agenda koppelen",
     "notNow": "Niet nu",
-    "step": "Eerste start"
+    "step": "Eerste start",
+    "flow": {
+      "skip": "Overslaan",
+      "continue": "Doorgaan",
+      "w1Title": "Je week,",
+      "w1Accent": "in blokken.",
+      "w1Lede": "Studie, werk en colleges op één tijdlijn. Je gegevens blijven op deze telefoon.",
+      "w1a": "Blokken en diensten op één dag",
+      "w1b": "Een herinnering vóór elk blok",
+      "w1c": "Niets wordt naar een server gestuurd",
+      "n1Title": "Een seintje vóór",
+      "n1Accent": "elk blok.",
+      "n1Lede": "Slate kan je een paar minuten vóór een studieblok, dienst of les herinneren. Herinneringen worden op deze telefoon ingepland en nooit vanaf een server verstuurd.",
+      "allowNotif": "Meldingen toestaan",
+      "c1Title": "Je andere",
+      "c1Accent": "agenda's, ook.",
+      "c1Lede": "Slate kan gebeurtenissen uit de agenda's op deze telefoon naast je blokken tonen, en je blokken in een agenda met de naam Slate zetten. Er wordt niets geüpload.",
+      "allowCal": "Agenda-toegang toestaan"
+    }
   },
   "calendarSync": {
     "title": "Agenda’s op de telefoon",

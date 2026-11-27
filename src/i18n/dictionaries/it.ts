@@ -44,12 +44,16 @@ export const it = {
     "amber": "Ambra",
     "sage": "Salvia",
     "pink": "Rosa",
-    "gesso": "Gesso"
+    "gesso": "Lime",
+    "coral": "Corallo",
+    "periwinkle": "Periwinkle",
+    "chalk": "Gesso"
   },
   "views": {
     "day": "Giorno",
     "week": "Settimana",
-    "month": "Mese"
+    "month": "Mese",
+    "agenda": "Agenda"
   },
   "nav": {
     "summary": "Riepilogo",
@@ -58,7 +62,7 @@ export const it = {
     "settings": "Impostazioni"
   },
   "summary": {
-    "title": "riepilogo",
+    "title": "Riepilogo",
     "close": "Chiudi riepilogo",
     "thisWeek": "Questa settimana",
     "thisMonth": "Questo mese",
@@ -75,6 +79,7 @@ export const it = {
     "openDay": "Apri giorno",
     "more": "+{count} altri",
     "emptyDay": "Nessun turno o blocco in questo giorno.",
+    "emptyMonth": "Nessun blocco o turno questo mese. Tocca un giorno per aggiungerne uno.",
     "recurring": "ricorrente",
     "allDay": "Tutto il giorno",
     "shiftLabel": "Turno {title}",
@@ -88,6 +93,7 @@ export const it = {
     "newEvent": "Nuovo blocco",
     "emptyWeekLede": "Nessun blocco questa settimana. Tocca un'ora vuota per aggiungerne uno.",
     "createShift": "Crea un turno",
+    "dontShowAgain": "Non mostrare più",
     "weekTag": "Settimana {n}, {range}"
   },
   "create": {
@@ -149,6 +155,7 @@ export const it = {
     "excluded": "Pause escluse: {minutes}"
   },
   "rotation": {
+    "pattern": "Schema dei giorni",
     "section": "Rotazioni",
     "intro": "Una rotazione ripete uno schema di turni, per esempio due mattine, due notti, quattro di riposo.",
     "add": "Nuova rotazione",
@@ -259,7 +266,7 @@ export const it = {
     "footer": "Gli aggiornamenti arrivano dalle release di Slate su GitHub. Il file scaricato viene verificato con il SHA-256 pubblicato prima che Android ti chieda conferma. I tuoi dati restano."
   },
   "settingsPages": {
-    "appearance": {"title": "Aspetto", "short": "Tema, colore, vista predefinita e lingua", "lede": "Tema, colore d’accento, la vista con cui si apre Slate e la lingua dell’app. Salvato su questo dispositivo."},
+    "appearance": {"title": "Aspetto", "short": "Tema, colore, icona e viste", "lede": "Tema, colore d’accento, icona e viste di Slate. Salvato su questo dispositivo."},
     "pay": {"title": "Paga", "short": "Tariffa oraria e straordinari", "lede": "Serve al riepilogo per mostrare quanto valgono i tuoi turni. Il guadagno conta solo i turni, meno le pause."},
     "phone": {"title": "Calendario del telefono", "short": "Mostra e copia sul telefono", "lede": "Scegli quali calendari del telefono appaiono accanto a Slate, e copia blocchi e turni in un calendario di questo telefono."},
     "backup": {"title": "Backup", "short": "Esporta, importa o cancella i dati", "lede": "Salva tutto in un file da tenere, carica un file su un nuovo telefono, o cancella tutti i dati di questo telefono."},
@@ -305,7 +312,8 @@ export const it = {
     "teal": "Verde acqua",
     "lime": "Lime",
     "violet": "Viola",
-    "apricot": "Albicocca"
+    "apricot": "Albicocca",
+    "mono": "Monocromatica"
   },
   "summaryUi": {
     "range": "Periodo",
@@ -329,9 +337,12 @@ export const it = {
     "total": "Totale",
     "days": "giorni",
     "exportPdf": "Esporta PDF",
-    "pdfAndroid": "L’esportazione PDF è disponibile per ora su Android."
+    "pdfAndroid": "L’esportazione PDF è disponibile per ora su Android.",
+    "earningsHint": "Solo turni, meno le pause"
   },
   "pdf": {
+    "moreOptions": "Altre opzioni",
+    "lessOptions": "Meno opzioni",
     "title": "Esporta PDF",
     "view": "Vista",
     "list": "Elenco",
@@ -362,6 +373,8 @@ export const it = {
     "failed": "Non è stato possibile creare il PDF."
   },
   "settingsSummary": {
+      "periodKind": "Periodo",
+      "rangePeriod": "Il periodo che contiene oggi",
     "title": "Periodo del riepilogo",
     "short": "Quali giorni includere",
     "lede": "Il riepilogo mostra il periodo che contiene oggi, oppure le date che scegli.",
@@ -408,6 +421,11 @@ export const it = {
     "themeLight": "Chiaro",
     "themeDark": "Scuro",
     "themeSystem": "Sistema",
+    "oled": "Nero OLED",
+    "oledHint": "Sfondo nero puro nel tema scuro.",
+    "widgets": "Widget",
+    "widgetsSoon": "In arrivo",
+    "viewSettings": "Impostazioni vista",
     "accent": "Colore principale",
     "customColor": "Colore personalizzato",
     "accentHint": "Vale per pulsanti, selezioni e il giorno di oggi in tutta l'app, su questo dispositivo.",
@@ -463,6 +481,13 @@ export const it = {
     "readOnly": "Gli eventi dei calendari del telefono si modificano nell'app Calendario.",
     "open": "Apri in Calendario"
   },
+  "settingsGroups": {
+    "calendars": "Calendari e account",
+    "syncNote": "Android e iOS si sincronizzano solo tramite Google.",
+    "permissions": "Permessi",
+    "work": "Lavoro",
+    "data": "Dati"
+  },
   "onboarding": {
     "tag": "Benvenuto",
     "titleBefore": "La tua settimana,",
@@ -489,7 +514,25 @@ export const it = {
     "calLede": "Slate può mostrare gli eventi dei calendari del telefono accanto ai tuoi blocchi, e copiare i blocchi in un calendario. Il telefono ti chiederà il permesso; puoi cambiare idea quando vuoi dalle Impostazioni.",
     "connect": "Collega il calendario",
     "notNow": "Non ora",
-    "step": "Primo avvio"
+    "step": "Primo avvio",
+    "flow": {
+      "skip": "Salta",
+      "continue": "Continua",
+      "w1Title": "La tua settimana,",
+      "w1Accent": "in blocchi.",
+      "w1Lede": "Studio, lavoro e lezioni su un'unica linea del tempo. I tuoi dati restano su questo telefono.",
+      "w1a": "Blocchi e turni nello stesso giorno",
+      "w1b": "Un promemoria prima di ogni blocco",
+      "w1c": "Niente viene inviato a un server",
+      "n1Title": "Un avviso prima",
+      "n1Accent": "di ogni blocco.",
+      "n1Lede": "Slate può ricordarti qualche minuto prima un blocco di studio, un turno o una lezione. I promemoria sono programmati su questo telefono e non vengono mai inviati da un server.",
+      "allowNotif": "Consenti notifiche",
+      "c1Title": "Gli altri",
+      "c1Accent": "calendari, anche.",
+      "c1Lede": "Slate può mostrare gli eventi dei calendari di questo telefono accanto ai tuoi blocchi, e copiare i blocchi in un calendario chiamato Slate. Non viene caricato nulla.",
+      "allowCal": "Consenti accesso ai calendari"
+    }
   },
   "calendarSync": {
     "title": "Calendari del telefono",

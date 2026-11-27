@@ -43,12 +43,16 @@ export const es: Dictionary = {
     "amber": "Ámbar",
     "sage": "Salvia",
     "pink": "Rosa",
-    "gesso": "Tiza"
+    "gesso": "Lima",
+    "coral": "Coral",
+    "periwinkle": "Periwinkle",
+    "chalk": "Tiza"
   },
   "views": {
     "day": "Día",
     "week": "Semana",
-    "month": "Mes"
+    "month": "Mes",
+    "agenda": "Agenda"
   },
   "nav": {
     "summary": "Resumen",
@@ -57,7 +61,7 @@ export const es: Dictionary = {
     "settings": "Ajustes"
   },
   "summary": {
-    "title": "resumen",
+    "title": "Resumen",
     "close": "Cerrar resumen",
     "thisWeek": "Esta semana",
     "thisMonth": "Este mes",
@@ -74,6 +78,7 @@ export const es: Dictionary = {
     "openDay": "Abrir día",
     "more": "+{count} más",
     "emptyDay": "No hay turnos ni bloques este día.",
+    "emptyMonth": "No hay bloques ni turnos este mes. Toca un día para añadir uno.",
     "recurring": "periódico",
     "allDay": "Todo el día",
     "shiftLabel": "Turno {title}",
@@ -87,6 +92,7 @@ export const es: Dictionary = {
     "newEvent": "Nuevo bloque",
     "emptyWeekLede": "No hay bloques esta semana. Toca una hora vacía para añadir uno.",
     "createShift": "Crear un turno",
+    "dontShowAgain": "No mostrar más",
     "weekTag": "Semana {n}, {range}"
   },
   "create": {
@@ -148,6 +154,7 @@ export const es: Dictionary = {
     "excluded": "Pausas no contadas: {minutes}"
   },
   "rotation": {
+    "pattern": "Patrón de días",
     "section": "Rotaciones",
     "intro": "Una rotación repite un patrón de turnos, por ejemplo dos mañanas, dos noches, cuatro libres.",
     "add": "Nueva rotación",
@@ -258,7 +265,7 @@ export const es: Dictionary = {
     "footer": "Las actualizaciones vienen de las versiones de Slate en GitHub. La descarga se comprueba con el SHA-256 publicado antes de que Android pida confirmación. Tus datos se conservan."
   },
   "settingsPages": {
-    "appearance": {"title": "Apariencia", "short": "Tema, color, vista predeterminada e idioma", "lede": "Tema, color de acento, la vista con la que se abre Slate y el idioma de la app. Se guarda en este dispositivo."},
+    "appearance": {"title": "Apariencia", "short": "Tema, color, icono y vistas", "lede": "Tema, color de acento, icono y vistas de Slate. Se guarda en este dispositivo."},
     "pay": {"title": "Pago", "short": "Tarifa por hora y horas extra", "lede": "Lo usa el resumen para mostrar cuánto valen tus turnos. Las ganancias cuentan solo los turnos, menos sus pausas."},
     "phone": {"title": "Calendario del teléfono", "short": "Mostrar y copiar en el teléfono", "lede": "Elige qué calendarios del teléfono aparecen junto a Slate, y copia bloques y turnos a un calendario de este teléfono."},
     "backup": {"title": "Copia de seguridad", "short": "Exportar, importar o borrar tus datos", "lede": "Guarda todo en un archivo que conservas, carga un archivo en un teléfono nuevo, o borra todos los datos de este teléfono."},
@@ -304,7 +311,8 @@ export const es: Dictionary = {
     "teal": "Verde azulado",
     "lime": "Lima",
     "violet": "Violeta",
-    "apricot": "Albaricoque"
+    "apricot": "Albaricoque",
+    "mono": "Monocromo"
   },
   "summaryUi": {
     "range": "Periodo",
@@ -328,9 +336,12 @@ export const es: Dictionary = {
     "total": "Total",
     "days": "días",
     "exportPdf": "Exportar PDF",
-    "pdfAndroid": "La exportación a PDF está disponible de momento en Android."
+    "pdfAndroid": "La exportación a PDF está disponible de momento en Android.",
+    "earningsHint": "Solo turnos, menos las pausas"
   },
   "pdf": {
+    "moreOptions": "Más opciones",
+    "lessOptions": "Menos opciones",
     "title": "Exportar PDF",
     "view": "Vista",
     "list": "Lista",
@@ -361,6 +372,8 @@ export const es: Dictionary = {
     "failed": "No se pudo crear el PDF."
   },
   "settingsSummary": {
+      "periodKind": "Periodo",
+      "rangePeriod": "El periodo que contiene hoy",
     "title": "Periodo del resumen",
     "short": "Qué días incluye el resumen",
     "lede": "El resumen muestra el periodo que contiene hoy, o las fechas que elijas.",
@@ -407,6 +420,11 @@ export const es: Dictionary = {
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeSystem": "Sistema",
+    "oled": "Negro OLED",
+    "oledHint": "Fondo negro puro en el tema oscuro.",
+    "widgets": "Widgets",
+    "widgetsSoon": "Próximamente",
+    "viewSettings": "Ajustes de vista",
     "accent": "Color principal",
     "customColor": "Color personalizado",
     "accentHint": "Se usa en botones, selecciones y el día de hoy en toda la app, en este dispositivo.",
@@ -462,6 +480,13 @@ export const es: Dictionary = {
     "readOnly": "Los eventos de los calendarios del teléfono se editan en la app Calendario.",
     "open": "Abrir en Calendario"
   },
+  "settingsGroups": {
+    "calendars": "Calendarios y cuenta",
+    "syncNote": "Android e iOS se sincronizan solo a través de Google.",
+    "permissions": "Permisos",
+    "work": "Trabajo",
+    "data": "Datos"
+  },
   "onboarding": {
     "tag": "Bienvenida",
     "titleBefore": "Tu semana,",
@@ -488,7 +513,25 @@ export const es: Dictionary = {
     "calLede": "Slate puede mostrar los eventos de los calendarios del teléfono junto a tus bloques y copiar tus bloques en un calendario. El teléfono te pedirá permiso; puedes cambiarlo cuando quieras en Ajustes.",
     "connect": "Conectar el calendario",
     "notNow": "Ahora no",
-    "step": "Primer inicio"
+    "step": "Primer inicio",
+    "flow": {
+      "skip": "Omitir",
+      "continue": "Continuar",
+      "w1Title": "Tu semana,",
+      "w1Accent": "en bloques.",
+      "w1Lede": "Estudio, trabajo y clases en una sola línea de tiempo. Tus datos se quedan en este teléfono.",
+      "w1a": "Bloques y turnos en un mismo día",
+      "w1b": "Un recordatorio antes de cada bloque",
+      "w1c": "Nada se envía a un servidor",
+      "n1Title": "Un aviso antes",
+      "n1Accent": "de cada bloque.",
+      "n1Lede": "Slate puede recordarte unos minutos antes un bloque de estudio, un turno o una clase. Los recordatorios se programan en este teléfono y nunca se envían desde un servidor.",
+      "allowNotif": "Permitir notificaciones",
+      "c1Title": "Tus otros",
+      "c1Accent": "calendarios, también.",
+      "c1Lede": "Slate puede mostrar eventos de los calendarios de este teléfono junto a tus bloques, y copiar tus bloques en un calendario llamado Slate. No se sube nada.",
+      "allowCal": "Permitir acceso al calendario"
+    }
   },
   "calendarSync": {
     "title": "Calendarios del teléfono",

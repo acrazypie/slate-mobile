@@ -3,7 +3,7 @@
 // user added, and the buttons to add a report and export a PDF.
 
 import { useMemo, useState } from 'react';
-import { useData, useSettings } from '../app/store';
+import { repo, useData, useSettings } from '../app/store';
 import { useI18n } from '../i18n/I18n';
 import { formatDate } from '../i18n/format';
 import { computePay, formatMoney } from '../lib/pay';
@@ -32,7 +32,6 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
 
   const period = useMemo(() => periodFor(settings.summaryRange, anchor), [settings.summaryRange, anchor]);
   const s = useMemo(() => summarize(dayContents(data, periodDays(period))), [data, period]);
-  const max = Math.max(1, ...CATEGORIES.map((c) => s.byCategory[c]), s.shifts);
   const hours = (m: number) => Math.round((m / 60) * 10) / 10;
   const pay = useMemo(
     () => computePay(Object.entries(s.shiftsByWeek).map(([weekStart, minutes]) => ({ weekStart, minutes })), settings.pay),
@@ -40,9 +39,40 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
   );
   const label = `${formatDate(locale, period.start, 'dayMonth')} ${period.start.getFullYear()} – ${formatDate(locale, period.end, 'dayMonth')} ${period.end.getFullYear()}`;
 
+  // The chips set the period kind; other kinds (two weeks, year, custom) stay in Settings › Summary and show as a selected chip.
+  const chipLabel = {
+    week: t.summary.thisWeek,
+    month: t.summary.thisMonth,
+    twoWeeks: t.settingsSummary.rangeTwoWeeks,
+    year: t.settingsSummary.rangeYear,
+    custom: t.settingsSummary.rangeCustom,
+  }[settings.summaryRange.kind];
+
+  // One stacked bar: the categories, then the shifts, each as its share of the total.
+  const segments = [
+    ...CATEGORIES.map((c) => ({ key: c, name: t.categories[c], color: CATEGORY_COLORS[c], minutes: s.byCategory[c] })),
+    { key: 'shifts', name: t.common.shifts, color: SHIFT_DEFAULT_COLOR, minutes: s.shifts },
+  ].filter((seg) => seg.minutes > 0);
+
   return (
     <section className="summary">
       <div className="summary__head">
+        <div className="summary__chips" role="group" aria-label={t.summaryUi.range}>
+          {(['week', 'month'] as const).map((kind) => (
+            <button
+              key={kind}
+              type="button"
+              className={`chip summary__chip${settings.summaryRange.kind === kind ? ' sel' : ''}`}
+              aria-pressed={settings.summaryRange.kind === kind}
+              onClick={() => void repo.updateSettings({ summaryRange: { ...settings.summaryRange, kind } })}
+            >
+              {kind === 'week' ? t.summary.thisWeek : t.summary.thisMonth}
+            </button>
+          ))}
+          {settings.summaryRange.kind !== 'week' && settings.summaryRange.kind !== 'month' && (
+            <span className="chip sel summary__chip">{chipLabel}</span>
+          )}
+        </div>
         <span className="summary__range">{label}</span>
         <button type="button" className="summary__change" onClick={() => goToTab('settings')}>{t.summaryUi.change}</button>
       </div>
@@ -52,35 +82,41 @@ export function SummaryPanel({ anchor }: { anchor: Date }) {
           <span className="label">{t.summaryUi.total}</span>
           <div className="hud__v">{hours(s.total)}<small>h</small></div>
         </div>
-        {settings.pay.hourlyRate !== null && s.shifts > 0 && (
-          <div className="hud__c">
-            <span className="label">{t.pay.earnings}</span>
-            <div className="hud__v acc">{formatMoney(pay.amount ?? 0, settings.pay.currency, locale)}</div>
-          </div>
-        )}
       </div>
 
       {s.total === 0 ? (
         <p className="summary__empty small">{t.summary.empty}</p>
       ) : (
-        <div className="srows">
-          {CATEGORIES.map((c) => (
-            <div key={c} className="srow" style={{ ['--c' as string]: CATEGORY_COLORS[c] }}>
-              <span className="k" />
-              <span className="n">{t.categories[c]}</span>
-              <span className="b"><i style={{ width: `${(s.byCategory[c] / max) * 100}%` }} /></span>
-              <span className="v">{s.byCategory[c] ? formatDuration(s.byCategory[c]) : '–'}</span>
-            </div>
-          ))}
-          <div className="srow" style={{ ['--c' as string]: SHIFT_DEFAULT_COLOR }}>
-            <span className="k s" />
-            <span className="n">{t.common.shifts}</span>
-            <span className="b"><i style={{ width: `${(s.shifts / max) * 100}%` }} /></span>
-            <span className="v">{s.shifts ? formatDuration(s.shifts) : '–'}</span>
+        <div className="summary__bars">
+          <div className="stackbar" role="img" aria-label={segments.map((seg) => `${seg.name} ${formatDuration(seg.minutes)}`).join(', ')}>
+            {segments.map((seg) => (
+              <i key={seg.key} style={{ ['--c' as string]: seg.color, flexGrow: seg.minutes }} />
+            ))}
           </div>
+          <ul className="stackbar__legend">
+            {segments.map((seg) => (
+              <li key={seg.key} style={{ ['--c' as string]: seg.color }}>
+                <span className="k" />
+                <span className="n">{seg.name}</span>
+                <span className="v">{formatDuration(seg.minutes)}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
+      {settings.pay.hourlyRate !== null && s.shifts > 0 && (
+        <div className="earn">
+          <Icon name="globe" className="earn__ic" />
+          <div className="earn__main">
+            <span className="earn__name">{t.pay.earnings}</span>
+            <span className="earn__hint">{t.summaryUi.earningsHint}</span>
+          </div>
+          <span className="earn__v">{formatMoney(pay.amount ?? 0, settings.pay.currency, locale)}</span>
+        </div>
+      )}
+
+      <h2 className="summary__h">{t.summaryUi.reports}</h2>
       <ReportCards period={period} />
 
       <div className="summary__actions">

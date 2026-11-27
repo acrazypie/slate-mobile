@@ -55,6 +55,8 @@ export function ShiftsScreen() {
           <button type="button" className="btn" onClick={() => setEditing(null)}><Icon name="plus" /> {t.shiftsView.createFirst}</button>
         </div>
       ) : (
+        <>
+        <h2 className="section-h ios-only">{t.common.shifts}</h2>
         <div className="rows shift-rows">
           {data.shifts.map((s) => {
             const next = nextDate(s.id);
@@ -75,6 +77,7 @@ export function ShiftsScreen() {
             );
           })}
         </div>
+        </>
       )}
       {data.shifts.length > 0 && <p className="note pad-x"><Icon name="info" />{t.shiftsView.howToPlace}</p>}
 
@@ -82,34 +85,30 @@ export function ShiftsScreen() {
         <section className="rotations">
           <h2 className="section-h">{t.rotation.section}</h2>
           <p className="note pad-x">{t.rotation.intro}</p>
-          {data.rotations.length === 0 ? (
-            <p className="lede pad-x">{t.rotation.empty}</p>
-          ) : (
-            <div className="rows">
-              {data.rotations.map((r) => {
-                const worked = r.pattern.filter((v) => v !== null).length;
-                return (
-                  <button key={r.id} type="button" className="row" onClick={() => setEditingRotation(r)}>
-                    <span className="row__main">
-                      <span className="row__name">{r.title}</span>
-                      <span className="row__meta">{fill(t.rotation.days, { n: r.pattern.length })} · {worked}/{r.pattern.length}</span>
-                    </span>
-                    <Icon name="chevronRight" className="row__arrow" />
-                  </button>
-                );
-              })}
-            </div>
-          )}
-          <div className="pad-x">
-            <button type="button" className="btn btn--ghost" onClick={() => setEditingRotation(null)}>
-              <Icon name="plus" /> {t.rotation.add}
+          <div className="rows">
+            {data.rotations.map((r) => {
+              const worked = r.pattern.filter((v) => v !== null).length;
+              return (
+                <button key={r.id} type="button" className="row" onClick={() => setEditingRotation(r)}>
+                  <span className="row__main">
+                    <span className="row__name">{r.title}</span>
+                    <span className="row__meta">{fill(t.rotation.days, { n: r.pattern.length })} · {worked}/{r.pattern.length}</span>
+                  </span>
+                  <Icon name="chevronRight" className="row__arrow" />
+                </button>
+              );
+            })}
+            <button type="button" className="row row--add" onClick={() => setEditingRotation(null)}>
+              <Icon name="plus" className="row__lead" />
+              <span className="row__main"><span className="row__name">{t.rotation.add}</span></span>
             </button>
           </div>
+          {data.rotations.length === 0 && <p className="lede pad-x">{t.rotation.empty}</p>}
         </section>
       )}
 
-      <button type="button" className="fab fab--ext android-only" onClick={() => setEditing(null)}>
-        <Icon name="plus" /> {t.create.newShift}
+      <button type="button" className="fab android-only" onClick={() => setEditing(null)} aria-label={t.create.newShift}>
+        <Icon name="plus" />
       </button>
       <ShiftSheet open={editing !== undefined} shift={editing ?? null} placed={null} placeOn={null} onClose={() => setEditing(undefined)} />
       <RotationSheet open={editingRotation !== undefined} rotation={editingRotation ?? null} onClose={() => setEditingRotation(undefined)} />

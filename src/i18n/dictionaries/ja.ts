@@ -43,12 +43,16 @@ export const ja: Dictionary = {
     "amber": "アンバー",
     "sage": "セージ",
     "pink": "ピンク",
-    "gesso": "チョーク"
+    "gesso": "ライム",
+    "coral": "コーラル",
+    "periwinkle": "ペリウィンクル",
+    "chalk": "チョーク"
   },
   "views": {
     "day": "日",
     "week": "週",
-    "month": "月"
+    "month": "月",
+    "agenda": "予定"
   },
   "nav": {
     "summary": "集計",
@@ -74,6 +78,7 @@ export const ja: Dictionary = {
     "openDay": "日を開く",
     "more": "他{count}件",
     "emptyDay": "この日はシフトもブロックもありません。",
+    "emptyMonth": "今月はブロックもシフトもありません。日をタップして追加できます。",
     "recurring": "繰り返し",
     "allDay": "終日",
     "shiftLabel": "シフト {title}",
@@ -87,6 +92,7 @@ export const ja: Dictionary = {
     "newEvent": "新しいブロック",
     "emptyWeekLede": "今週はブロックがありません。空いている時間をタップして追加しましょう。",
     "createShift": "シフトを作成",
+    "dontShowAgain": "今後表示しない",
     "weekTag": "第{n}週、{range}"
   },
   "create": {
@@ -148,6 +154,7 @@ export const ja: Dictionary = {
     "excluded": "除外した休憩: {minutes} 分"
   },
   "rotation": {
+    "pattern": "日のパターン",
     "section": "ローテーション",
     "intro": "ローテーションはシフトの繰り返しパターンです。例: 朝2日・夜2日・休み4日。",
     "add": "ローテーションを追加",
@@ -258,7 +265,7 @@ export const ja: Dictionary = {
     "footer": "アップデートはGitHubのSlateリリースから配布されます。Androidが確認を求める前に、公開されたSHA-256でダウンロードを検証します。データは残ります。"
   },
   "settingsPages": {
-    "appearance": {"title": "外観", "short": "テーマ、色、初期表示、言語", "lede": "テーマ、アクセントカラー、Slateを開くときの表示、アプリの言語です。この端末に保存されます。"},
+    "appearance": {"title": "外観", "short": "テーマ、色、アイコン、表示", "lede": "テーマ、アクセントカラー、アイコン、Slateの表示です。この端末に保存されます。"},
     "pay": {"title": "給与", "short": "時給と残業", "lede": "集計で、シフトの価値を表示するために使います。収入はシフトのみで計算し、休憩は除きます。"},
     "phone": {"title": "端末のカレンダー", "short": "表示とコピー", "lede": "Slateの横に表示する端末のカレンダーを選び、ブロックとシフトをこの端末のカレンダーにコピーします。"},
     "backup": {"title": "バックアップ", "short": "データの書き出し、読み込み、削除", "lede": "すべてをファイルに保存したり、新しい端末にファイルを読み込んだり、この端末のデータをすべて削除したりします。"},
@@ -304,7 +311,8 @@ export const ja: Dictionary = {
     "teal": "ティール",
     "lime": "ライム",
     "violet": "バイオレット",
-    "apricot": "アプリコット"
+    "apricot": "アプリコット",
+    "mono": "モノクロ"
   },
   "summaryUi": {
     "range": "期間",
@@ -328,9 +336,12 @@ export const ja: Dictionary = {
     "total": "合計",
     "days": "日",
     "exportPdf": "PDFを書き出す",
-    "pdfAndroid": "PDFの書き出しは現在Androidでのみ利用できます。"
+    "pdfAndroid": "PDFの書き出しは現在Androidでのみ利用できます。",
+    "earningsHint": "シフトのみ、休憩を除く"
   },
   "pdf": {
+    "moreOptions": "その他の設定",
+    "lessOptions": "設定を閉じる",
     "title": "PDFを書き出す",
     "view": "表示",
     "list": "リスト",
@@ -361,6 +372,8 @@ export const ja: Dictionary = {
     "failed": "PDFを作成できませんでした。"
   },
   "settingsSummary": {
+      "periodKind": "期間",
+      "rangePeriod": "今日を含む期間",
     "title": "まとめの期間",
     "short": "まとめに含める日",
     "lede": "まとめには、今日を含む期間か、選んだ日付の期間が表示されます。",
@@ -407,6 +420,11 @@ export const ja: Dictionary = {
     "themeLight": "ライト",
     "themeDark": "ダーク",
     "themeSystem": "システム",
+    "oled": "OLED黒",
+    "oledHint": "ダークテーマの背景を純粋な黒にします。",
+    "widgets": "ウィジェット",
+    "widgetsSoon": "近日公開",
+    "viewSettings": "表示設定",
     "accent": "アクセントカラー",
     "customColor": "カスタムカラー",
     "accentHint": "このデバイスで、アプリ全体のボタン、選択項目、今日の日付に使われます。",
@@ -462,6 +480,13 @@ export const ja: Dictionary = {
     "readOnly": "端末のカレンダーの予定はカレンダーアプリで編集します。",
     "open": "カレンダーで開く"
   },
+  "settingsGroups": {
+    "calendars": "カレンダーとアカウント",
+    "syncNote": "AndroidとiOSの同期はGoogle経由のみです。",
+    "permissions": "権限",
+    "work": "仕事",
+    "data": "データ"
+  },
   "onboarding": {
     "tag": "ようこそ",
     "titleBefore": "あなたの一週間を、",
@@ -488,7 +513,25 @@ export const ja: Dictionary = {
     "calLede": "Slate は端末のカレンダーの予定をブロックの横に表示したり、ブロックをカレンダーにコピーしたりできます。端末から許可を求められます。設定からいつでも変更できます。",
     "connect": "カレンダーを接続",
     "notNow": "今はしない",
-    "step": "はじめての起動"
+    "step": "はじめての起動",
+    "flow": {
+      "skip": "スキップ",
+      "continue": "次へ",
+      "w1Title": "あなたの一週間を、",
+      "w1Accent": "ブロックで。",
+      "w1Lede": "勉強・仕事・授業を一本のタイムラインに。データはこの端末に残ります。",
+      "w1a": "1日にブロックとシフトをまとめて表示",
+      "w1b": "各ブロックの前にリマインダー",
+      "w1c": "サーバーには何も送信されません",
+      "n1Title": "各ブロックの前に",
+      "n1Accent": "お知らせ。",
+      "n1Lede": "勉強ブロック・シフト・授業の数分前にお知らせできます。リマインダーはこの端末でスケジュールされ、サーバーから送られることはありません。",
+      "allowNotif": "通知を許可",
+      "c1Title": "ほかのカレンダーも、",
+      "c1Accent": "一緒に。",
+      "c1Lede": "この端末のカレンダーの予定をブロックの横に表示したり、ブロックを「Slate」という名前のカレンダーにコピーしたりできます。何もアップロードされません。",
+      "allowCal": "カレンダーへのアクセスを許可"
+    }
   },
   "calendarSync": {
     "title": "端末のカレンダー",
