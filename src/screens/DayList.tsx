@@ -55,12 +55,12 @@ export function dayItems(t: Dictionary, date: Date, day: DayContent | undefined,
     }),
     ...dev.allDay.map((e): DayItem => ({
       k: 'a' + e.id, kind: 'device', start: -1, color: e.color, title: e.title, short: '',
-      meta: `${e.source === 'google' ? t.eventTags.google : t.eventTags.device} · ${e.calendarName}, ${t.calendar.allDay.toLowerCase()}`, open: () => actions.onDeviceEvent(e),
+      meta: `${t.eventTags.device} · ${e.calendarName}, ${t.calendar.allDay.toLowerCase()}`, open: () => actions.onDeviceEvent(e),
     })),
     ...dev.timed.map((g): DayItem => ({
       k: 'd' + g.event.id, kind: 'device', start: g.start, color: g.event.color, title: g.event.title,
       short: `${compact(g.event.start_hour, g.event.start_minute)}–${compact(g.event.end_hour, g.event.end_minute)}`,
-      meta: `${g.event.source === 'google' ? t.eventTags.google : t.eventTags.device} · ${g.event.calendarName}, ${formatTime(g.event.start_hour, g.event.start_minute)}–${formatTime(g.event.end_hour, g.event.end_minute)}`,
+      meta: `${t.eventTags.device} · ${g.event.calendarName}, ${formatTime(g.event.start_hour, g.event.start_minute)}–${formatTime(g.event.end_hour, g.event.end_minute)}`,
       open: () => actions.onDeviceEvent(g.event),
     })),
   ];

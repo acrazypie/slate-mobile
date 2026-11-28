@@ -9,7 +9,6 @@ import type { DeviceEvent } from '../lib/types';
 import * as device from './device';
 import { loadPushState, pushedEventIds, PUSH_KEY, removeAllPushed, syncCalendar } from './push';
 import { deviceBackend } from './backend';
-import { useGoogle } from '../google/GoogleProvider';
 
 interface SyncStatus {
   syncing: boolean;
@@ -167,7 +166,6 @@ export function useVisibleCalendars(): device.DeviceCalendar[] {
 /** Device events overlapping [start, end] (calendar days, inclusive). */
 export function useDeviceEvents(start: Date, end: Date): DeviceEvent[] {
   const { access, version, pushedIds } = useDeviceCalendar();
-  const google = useGoogle();
   const visible = useVisibleCalendars();
   const [events, setEvents] = useState<DeviceEvent[]>([]);
   const from = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
@@ -185,15 +183,14 @@ export function useDeviceEvents(start: Date, end: Date): DeviceEvent[] {
             return [] as DeviceEvent[];
           })
       : Promise.resolve([] as DeviceEvent[]);
-    const onGoogle = google.events(new Date(from), new Date(to));
-    void Promise.all([onDevice, onGoogle]).then(([a, b]) => {
-      if (!cancelled) setEvents([...a, ...b]);
+    void onDevice.then((list) => {
+      if (!cancelled) setEvents(list);
     });
     return () => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [access, from, to, ids, version, pushedIds, google.version, google.events]);
+  }, [access, from, to, ids, version, pushedIds]);
 
   return events;
 }

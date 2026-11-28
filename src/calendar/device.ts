@@ -104,7 +104,6 @@ function toDeviceEvent(e: CalendarEvent, cal: DeviceCalendar): DeviceEvent {
   const base = {
     // occurrences of one series share the event id; the start keeps keys unique
     id: `${e.id}@${e.startDate}`,
-    source: 'device' as const,
     writable: cal.writable,
     calendarId: cal.id,
     calendarName: cal.name,

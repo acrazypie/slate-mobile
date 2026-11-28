@@ -150,8 +150,8 @@ export function SettingsScreen() {
             <h1 className="h-page">{t.settings.title}{platform !== 'android' && <span className="acc">.</span>}</h1>
           </header>
             <div className="settings-groups">
-              <Group footer={t.settingsGroups.syncNote}>
-                <Row icon="lock" name={t.account.title} hint={settings.google.enabled ? t.account.googleOn : t.account.googleOff} chevron onClick={() => setPage('account')} />
+              <Group>
+                <Row icon="lock" name={t.account.title} chevron onClick={() => setPage('account')} />
               </Group>
               <Group label={t.settings.appearance}>
                 <Row icon="moon" name={t.settingsPages.appearance.title} chevron onClick={() => setPage('appearance')} />

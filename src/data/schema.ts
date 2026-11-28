@@ -45,21 +45,9 @@ export interface PaySettings {
   overtimeMultiplier: number;
 }
 
-/** Google Calendar options. Like the device options, never exported: the account is per device. */
-export interface GoogleSettings {
-  /** Master switch: when off, Slate makes no Google calls at all (the sign-in is kept). */
-  enabled: boolean;
-  /** Copy blocks into a "Slate" calendar in the signed-in Google account. */
-  push: boolean;
-  /** Also copy placed shifts. */
-  pushShifts: boolean;
-  /** Show events from the user's Google calendars next to Slate's blocks. */
-  showEvents: boolean;
-}
-
 /**
  * How the app stores data. `local`: everything on the phone, optionally with
- * the phone's calendars and Google. `hosted`: connected to a Slate server the
+ * the phone's calendars. `hosted`: connected to a Slate server the
  * user runs (not built yet; see docs/server-plan.md).
  */
 export type AppMode = 'local' | 'hosted';
@@ -101,7 +89,6 @@ export interface Settings {
   notifications: NotificationSettings;
   mode: AppMode;
   pay: PaySettings;
-  google: GoogleSettings;
   /** Accent colour (dark-theme hex); the light theme derives a deeper shade. */
   accent: string;
   /** null = follow the device language. */
@@ -138,7 +125,6 @@ export const DEFAULT_SETTINGS: Settings = {
   mode: 'local',
   pay: { hourlyRate: null, currency: '', overtimeAfterHours: null, overtimeMultiplier: 1.5 },
   notifications: { enabled: true, leadMinutes: 10, events: true, shifts: true, newVersion: true, donate: true },
-  google: { enabled: false, push: false, pushShifts: true, showEvents: false },
   accent: DEFAULT_ACCENT,
   locale: null,
   defaultView: 'day',

@@ -1,7 +1,6 @@
 // Shared types, palettes and small formatters. Ported from the web app's
-// lib/types.ts without the Supabase/Google fields: there is no user_id (the
-// data never leaves the device) and Google events are replaced by device
-// calendar events (DeviceEvent).
+// lib/types.ts without the Supabase fields: there is no user_id (the
+// data never leaves the device).
 
 export type BlockCategory = 'studio' | 'lavoro' | 'lezione' | 'altro';
 export type RecurrenceType = 'weekly' | 'monthly';
@@ -125,9 +124,7 @@ export type BlockOccurrence = Block;
  */
 export interface DeviceEvent {
   id: string;
-  /** Where it lives: the phone's calendars, or the user's Google account (shown read-only). */
-  source: 'device' | 'google';
-  /** Can be edited from Slate (a writable phone calendar). Google events are read-only here. */
+  /** Can be edited from Slate (a writable phone calendar). */
   writable: boolean;
   calendarId: string;
   calendarName: string;

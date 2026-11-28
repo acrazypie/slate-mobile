@@ -416,9 +416,8 @@ export class SlateRepository {
 
   /** Everything except device-specific calendar settings. */
   exportBackup(): BackupFile {
-    const { calendar: _calendar, google: _google, mode: _mode, ...portable } = this.data.settings;
+    const { calendar: _calendar, mode: _mode, ...portable } = this.data.settings;
     void _calendar;
-    void _google;
     void _mode;
     return {
       app: 'slate',
@@ -453,7 +452,7 @@ export class SlateRepository {
       const data = parseDocument(file.data as Record<string, unknown>, current);
       // Calendar ids belong to this device: keep the current ones, never the
       // file's. The language also stays as it is on this phone.
-      data.settings = { ...data.settings, calendar: current.calendar, google: current.google, mode: current.mode, locale: current.locale, onboarded: true };
+      data.settings = { ...data.settings, calendar: current.calendar, mode: current.mode, locale: current.locale, onboarded: true };
       return { ok: true, data };
     } catch (err) {
       if (err instanceof TooNewError) return { ok: false, error: { kind: 'tooNew', version: err.version } };

@@ -17,7 +17,7 @@ Time-block planner: study, work and classes on one timeline, kept on your phone.
 ## Full description (4000 max)
 
 ```
-Slate lays out your week as coloured blocks: study, work, classes and anything else. Keep a set of reusable shifts, copy your plan into your phone calendar or Google Calendar, and see the hours at a glance.
+Slate lays out your week as coloured blocks: study, work, classes and anything else. Keep a set of reusable shifts, copy your plan into your phone calendar, and see the hours at a glance.
 
 DAY, WEEK, MONTH AND AGENDA
 One timeline for the day, the week, the month and the next seven days. The day view opens first, with the current time marked.
@@ -35,7 +35,7 @@ SUMMARY
 Hours per category and per shift for the week or the month, overtime, and optional pay from your hourly rate. Add reports and export a PDF to share.
 
 YOUR CALENDARS, IF YOU WANT THEM
-Slate can show events from the calendars on your phone next to your blocks, read-only. It can also copy your blocks and shifts into a calendar named Slate. Google Calendar sign-in is optional: it syncs directly between your phone and Google, with no Slate server in between.
+Slate can show events from the calendars on your phone next to your blocks, read-only. It can also copy your blocks and shifts into a calendar named Slate.
 
 YOUR DATA STAYS ON YOUR PHONE
 There is no Slate account and no server that stores your plans. Export a backup file whenever you want and import it on another phone. Slate has no ads and no tracking.
@@ -56,7 +56,7 @@ Pianificatore a blocchi: studio, lavoro e lezioni su una timeline, sul telefono.
 Full description (4000 max):
 
 ```
-Slate disegna la tua settimana come blocchi colorati: studio, lavoro, lezioni e tutto il resto. Tieni un insieme di turni riutilizzabili, copia il piano nel calendario del telefono o in Google Calendar e vedi le ore a colpo d'occhio.
+Slate disegna la tua settimana come blocchi colorati: studio, lavoro, lezioni e tutto il resto. Tieni un insieme di turni riutilizzabili, copia il piano nel calendario del telefono e vedi le ore a colpo d'occhio.
 
 GIORNO, SETTIMANA, MESE E AGENDA
 Una sola timeline per il giorno, la settimana, il mese e i sette giorni successivi. La vista giorno si apre per prima, con l'ora attuale evidenziata.
@@ -74,7 +74,7 @@ RIEPILOGO
 Ore per categoria e per turno, per la settimana o il mese, straordinari e, se vuoi, la paga dalla tariffa oraria. Aggiungi report ed esporta un PDF da condividere.
 
 I TUOI CALENDARI, SE LI VUOI
-Slate può mostrare accanto ai blocchi gli eventi dei calendari del telefono, in sola lettura. Può anche copiare blocchi e turni in un calendario chiamato Slate. L'accesso con Google Calendar è facoltativo: la sincronizzazione avviene direttamente tra il telefono e Google, senza un server Slate di mezzo.
+Slate può mostrare accanto ai blocchi gli eventi dei calendari del telefono, in sola lettura. Può anche copiare blocchi e turni in un calendario chiamato Slate.
 
 I TUOI DATI RESTANO SUL TELEFONO
 Non esiste un account Slate né un server che conserva i tuoi piani. Esporta un file di backup quando vuoi e importalo su un altro telefono. Slate non ha pubblicità né tracciamento.

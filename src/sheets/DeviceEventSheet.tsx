@@ -1,7 +1,5 @@
-// Details of an event from a calendar on the phone or from Google. Events in a
-// writable phone calendar can be edited and deleted from here; Google events
-// are read-only. Each event carries its tag (device / google); Slate's own
-// events have no tag.
+// Details of an event from a calendar on the phone. Events in a writable phone
+// calendar can be edited and deleted from here.
 
 import { useEffect, useState } from 'react';
 import { CapacitorCalendar } from '@ebarooni/capacitor-calendar';
@@ -15,10 +13,6 @@ import { Dialog, Sheet } from '../ui/Sheet';
 import { Icon } from '../ui/icons';
 import { useDeviceCalendar } from '../calendar/CalendarProvider';
 import { deleteDeviceEvent, deviceEventStart, updateDeviceEvent } from '../calendar/device';
-
-export function sourceTag(t: { eventTags: { device: string; google: string } }, e: DeviceEvent): string {
-  return e.source === 'google' ? t.eventTags.google : t.eventTags.device;
-}
 
 const pad = (n: number) => String(n).padStart(2, '0');
 const hhmm = (h: number, m: number) => `${pad(h)}:${pad(m)}`;
@@ -51,8 +45,8 @@ export function DeviceEventSheet({ event, onClose }: { event: DeviceEvent | null
   const when = event.allDay
     ? `${event.startDate === event.endDate ? capitalize(formatDate(locale, start0, 'fullDay')) : formatDayRange(locale, start0, end0)}, ${t.calendar.allDay.toLowerCase()}`
     : `${capitalize(formatDate(locale, start0, 'fullDay'))}, ${formatTime(event.start_hour, event.start_minute)}–${formatTime(event.end_hour, event.end_minute)}`;
-  const canEdit = event.source === 'device' && event.writable && !event.allDay;
-  const canDelete = event.source === 'device' && event.writable;
+  const canEdit = event.writable && !event.allDay;
+  const canDelete = event.writable;
 
   const save = async () => {
     const [sh, sm] = start.split(':').map(Number);
@@ -100,7 +94,7 @@ export function DeviceEventSheet({ event, onClose }: { event: DeviceEvent | null
         <span className="tag devev__cal">
           <i className="hatch" />
           {event.calendarName}
-          <span className="devev__src"> · {sourceTag(t, event)}</span>
+          <span className="devev__src"> · {t.eventTags.device}</span>
         </span>
 
         {editing ? (
@@ -137,7 +131,7 @@ export function DeviceEventSheet({ event, onClose }: { event: DeviceEvent | null
               {event.location && <div className="row"><Icon name="mapPin" /><span className="row__main"><span className="row__meta">{t.deviceEvent.location}</span>{event.location}</span></div>}
               {event.notes && <div className="row"><Icon name="note" /><span className="row__main"><span className="row__meta">{t.deviceEvent.notes}</span><span className="pre">{event.notes}</span></span></div>}
             </div>
-            <p className="note"><Icon name="info" />{event.source === 'google' ? t.eventTags.googleReadOnly : canEdit ? t.eventTags.deviceEditable : t.deviceEvent.readOnly}</p>
+            <p className="note"><Icon name="info" />{canEdit ? t.eventTags.deviceEditable : t.deviceEvent.readOnly}</p>
           </>
         )}
 

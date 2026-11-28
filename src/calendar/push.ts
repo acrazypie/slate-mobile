@@ -28,7 +28,6 @@ import type { CalendarBackend } from './backend';
 import { wantedItems } from './plan';
 
 export const PUSH_KEY = 'slate:calendar-push';
-export const GOOGLE_PUSH_KEY = 'slate:google-push';
 
 interface PushedItem {
   hash: string;
