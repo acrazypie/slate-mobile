@@ -1,6 +1,6 @@
 {
   "name": "slate-app",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "private": true,
   "description": "Slate, the time-block weekly planner, as a local-only iOS and Android app built with Capacitor",
   "type": "module",
