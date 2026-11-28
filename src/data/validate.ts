@@ -183,14 +183,6 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
         ? (cal.targetCalendarId as string | null)
         : baseCal.targetCalendarId,
   };
-  const g = isObj(s.google) ? s.google : {};
-  const baseG = base.google;
-  const google = {
-    enabled: typeof g.enabled === 'boolean' ? g.enabled : baseG.enabled,
-    push: typeof g.push === 'boolean' ? g.push : baseG.push,
-    pushShifts: typeof g.pushShifts === 'boolean' ? g.pushShifts : baseG.pushShifts,
-    showEvents: typeof g.showEvents === 'boolean' ? g.showEvents : baseG.showEvents,
-  };
   const pay = isObj(s.pay) ? s.pay : {};
   const basePay = base.pay;
   const payOut: PaySettings = {
@@ -241,7 +233,6 @@ export function sanitizeSettings(raw: unknown, base: Settings = DEFAULT_SETTINGS
     mode: s.mode === 'local' || s.mode === 'hosted' ? s.mode : base.mode,
     pay: payOut,
     notifications,
-    google,
     accent: typeof s.accent === 'string' && HEX_COLOR.test(s.accent) ? s.accent.toUpperCase() : base.accent,
     locale: s.locale === null ? null : isLocale(s.locale) ? s.locale : base.locale,
     defaultView: (['day', 'week', 'month', 'agenda'] as unknown[]).includes(s.defaultView) ? (s.defaultView as ViewMode) : base.defaultView,

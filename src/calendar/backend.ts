@@ -1,6 +1,5 @@
-// What the push needs from a calendar service. Two implementations: the
-// phone's own calendars (device.ts) and Google Calendar (google/backend.ts).
-// push.ts only talks to this interface, so both targets share one sync.
+// What the push needs from a calendar service. The phone's own calendars
+// (device.ts) are the only implementation; push.ts talks to this interface.
 
 import * as device from './device';
 import type { NewEvent } from './plan';

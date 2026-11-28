@@ -10,7 +10,6 @@ import { repo } from './app/store';
 import { applyAppearance } from './app/theme';
 import { I18nProvider } from './i18n/I18n';
 import { CalendarProvider } from './calendar/CalendarProvider';
-import { GoogleProvider } from './google/GoogleProvider';
 import { DonatePrompt } from './app/DonatePrompt';
 import { ToastProvider } from './ui/controls';
 import { App } from './app/App';
@@ -22,12 +21,10 @@ async function boot() {
     <StrictMode>
       <I18nProvider>
         <ToastProvider>
-          <GoogleProvider>
           <CalendarProvider>
             <App />
             <DonatePrompt />
           </CalendarProvider>
-          </GoogleProvider>
         </ToastProvider>
       </I18nProvider>
     </StrictMode>,

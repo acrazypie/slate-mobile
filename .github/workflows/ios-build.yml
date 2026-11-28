@@ -34,15 +34,12 @@ jobs:
           npm run build
           npx cap sync ios
 
-      - name: Leave the Filesystem and Google plugins out of the iOS build
-        # Filesystem: its Swift package does not build on the runners (no such module
+      - name: Leave the Filesystem plugin out of the iOS build
+        # Its Swift package does not build on the runners (no such module
         # 'IONFilesystemLib'); backups are shared as text on iOS instead.
-        # Social login (Google): it pulls in Firebase App Check, which does not build
-        # on the runners either; Google sign-in is off on iPhone for now.
         run: |
           sed -i '' '/CapacitorFilesystem/d' ios/App/CapApp-SPM/Package.swift
-          sed -i '' '/CapgoCapacitorSocialLogin/d' ios/App/CapApp-SPM/Package.swift
-          ! grep -qE 'CapacitorFilesystem|CapgoCapacitorSocialLogin' ios/App/CapApp-SPM/Package.swift
+          ! grep -q 'CapacitorFilesystem' ios/App/CapApp-SPM/Package.swift
 
       - name: Build the app (unsigned)
         working-directory: ios/App
